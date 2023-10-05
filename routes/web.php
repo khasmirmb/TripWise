@@ -29,14 +29,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Authentication
-Route::get('/register', [UserController::class, 'register']);
+// Authentication User Side
+Route::get('/home', [UserController::class, 'home'])->name('login');
+
+Route::post('/store', [UserController::class, 'store'])->middleware('guest');
+
+Route::get('/register', [UserController::class, 'register'])->middleware('guest');
 
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/logout', [UserController::class, 'logout']);
 
-Route::post('/store', [UserController::class, 'store']);
+// Authentication Admin Side
+Route::get('/admin', [UserController::class, 'index']); // Temporary Admin Route
 
 Route::get('/booking', [BookingController::class, 'index'])->middleware('auth');
 

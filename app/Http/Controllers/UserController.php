@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
@@ -12,11 +13,12 @@ class UserController extends Controller
 {
     // View all the users WIP
     public function index(){
-        return 'Hello from Users';
+        return view('admin.index'); // Temporary Admin Route
     }
 
     // Lets the user login
     public function login(Request $request){
+        
         $validated = $request->validate([
             "email" => ['required', 'email'],
             'password' => 'required',
@@ -26,7 +28,14 @@ class UserController extends Controller
             $request->session()->regenerate();
 
             return redirect('/')->with('message', 'Welcome Back!');
-        };
+        }
+
+        return back()->withErrors(['email' => 'The provided credentials do not match our records.'])->onlyInput('email');
+    }
+
+    // Move back to home if not login
+    public function home(){
+        return view('welcome');
     }
 
     // Move to register page
@@ -46,6 +55,7 @@ class UserController extends Controller
 
     // Create an user
     public function store(Request $request){
+
         $validated = $request->validate([
             "firstname" => ['required', 'min:4' ,'string', 'max:30'],
             "lastname" => ['required', 'min:4' ,'string', 'max:30'],
@@ -54,10 +64,14 @@ class UserController extends Controller
             'type' => 'required|string',
         ]);
 
-        $validated['password'] = bcrypt($validated['password']);
+        if($validated){
+            $validated['password'] = bcrypt($validated['password']);
 
-        $user = User::create($validated);
+            $user = User::create($validated);
 
-        auth()->login($user);
+            auth()->login($user);
+
+            return redirect('/');
+        }
     }
 }
