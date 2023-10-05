@@ -13,7 +13,12 @@ class UserController extends Controller
 {
     // View all the users WIP
     public function index(){
-        return view('admin.index'); // Temporary Admin Route
+        return view('welcome');
+    }
+
+    // Temporary Admin Route
+    public function admin(){
+        return view('admin.index');
     }
 
     // Lets the user login

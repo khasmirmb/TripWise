@@ -41,7 +41,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::get('/logout', [UserController::class, 'logout']);
 
 // Authentication Admin Side
-Route::get('/admin', [UserController::class, 'index']); // Temporary Admin Route
+Route::get('/admin', [UserController::class, 'admin']); // Temporary Admin Route
 
 Route::get('/booking', [BookingController::class, 'index'])->middleware('auth');
 
