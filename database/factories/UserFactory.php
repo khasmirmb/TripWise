@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'address' => fake()->address(),
             'image' => fake()->unique()->imageUrl($width = 640, $height = 480, 'cats'),
-            'type' => fake()->randomElement($array = array('admin','client')),
+            'type' => fake()->randomElement($array = array('0','1')),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

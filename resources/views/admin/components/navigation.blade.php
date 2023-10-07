@@ -511,13 +511,19 @@
           >
             <li>
               <a
-                href="#"
+              href="{{ route('logout') }}" onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();"
                 class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >Sign out</a
               >
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+              </form>
             </li>
           </ul>
         </div>
       </div>
     </div>
 </nav>
+
+@include('components.message')
