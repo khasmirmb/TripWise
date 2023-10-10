@@ -38,7 +38,7 @@
         <a href="#" class="flex items-center justify-between mr-4">
           <img
             src="{{ asset('logo/tripwise.png')}}"
-            class="sm:mr-3 h-8 mr-0"
+            class="h-8 mr-3 hidden sm:block"
             alt="Logo"
           />
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white hidden sm:block">{{ config('app.name', 'Laravel') }}</span>

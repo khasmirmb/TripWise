@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Ports;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class BookingController extends Controller
      */
     public function index(): View
     {
-        return view('booking.index');
+        $data = Ports::all();
+
+        return view('booking.index', ['ports' => $data]);
     }
 
     /**

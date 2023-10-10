@@ -14,9 +14,4 @@ class Ferries extends Model
         return $this->hasMany(Schedule::class);
     }
 
-    public function ports()
-    {
-        return $this->hasMany(Port::class);
-    }
-
 }

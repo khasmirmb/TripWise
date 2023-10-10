@@ -18,6 +18,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "jquery": "^3.7.1",
         "tw-elements": "^1.0.0"
     }
 }

@@ -12,9 +12,7 @@ class PortsController extends Controller
      */
     public function index()
     {
-        $data = Ports::all();
-
-        return view('booking.index', ['ports' => $data]);
+        //
     }
 
     /**

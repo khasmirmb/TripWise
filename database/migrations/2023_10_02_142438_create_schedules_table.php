@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('ferry_id')->constrained('ferries'); // Foreign key to relate schedules to ferries
             $table->string('departure_port');
             $table->string('arrival_port');
-            $table->dateTime('departure_time'); // Using timestamp for date and time
-            $table->dateTime('arrival_time');
+            $table->date('departure_date');
+            $table->date('arrival_date');
+            $table->time('departure_time');
+            $table->time('arrival_time');
             // Other schedule-related fields can be added here
             
             $table->timestamps();

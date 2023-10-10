@@ -14,7 +14,7 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        @vite(['resources/css/app.css','resources/js/app.js'])
+        @vite(['resources/css/admin.css','resources/js/admin.js'])
 
         <!-- Dark Mode Script -->
         <script>

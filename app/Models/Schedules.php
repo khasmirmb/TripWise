@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Schedules extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type',
+        'origin',
+        'destination',
+        'depart_date',
+        'return_date',
+        'passenger',
+    ];
+
 }
