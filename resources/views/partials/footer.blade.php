@@ -79,5 +79,48 @@
                 >
             </div>
         </footer>
+        <!--Slick JS-->
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.dates_slick').slick({
+                    infinite: false,
+                    speed: 300,
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    variableWidth: true,
+                    prevArrow: '<button type="button" class="px-5 py-2.5 text-lg font-medium text-white bg-teal-700 text-center dark:bg-teal-600"><</button>',
+                    nextArrow: '<button type="button" class="px-5 py-2.5 text-lg font-medium text-white bg-teal-700 text-center dark:bg-teal-600">></button>',
+                    responsive: [
+                        {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                        }
+                        },
+                        {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                        },
+                        {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                        }
+                    ]
+                });
+            });
+        </script>
+
+        <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
     </body>
 </html>

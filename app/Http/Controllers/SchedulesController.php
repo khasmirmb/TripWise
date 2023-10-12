@@ -33,12 +33,12 @@ class SchedulesController extends Controller
             'passenger' => 'required|integer',
         ]);
 
+        $date_validate = Carbon::createFromFormat('d/m/Y', $inputs['depart_date'])->format('Y-m-d');
+
         $data = DB::table('schedules')
-        ->where([
-            ['departure_port', $inputs['origin']],
-            ['arrival_port', $inputs['destination']],
-            ['departure_date', '>=' , $inputs['depart_date']],
-            ])
+        ->where('departure_port', '=', $inputs['origin'])
+        ->where('arrival_port', '=', $inputs['destination'])
+        ->where('departure_date', '>=', $date_validate)
         ->get();
 
         return view('booking.schedule',[

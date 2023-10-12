@@ -144,14 +144,18 @@
             if (document.getElementById('round-trip').checked) {
                 document.getElementById('round-div').style.visibility = 'visible';
             }
-            else document.getElementById('round-div').style.visibility = 'hidden';
+            else{document.getElementById('round-div').style.visibility = 'hidden';
+            document.getElementById("return_date").value = "";
+            }
 
         }
         @if (count($errors) > 0)
             if (document.getElementById('round-trip').checked) {
                 document.getElementById('round-div').style.visibility = 'visible';
             }
-            else document.getElementById('round-div').style.visibility = 'hidden';
+            else{document.getElementById('round-div').style.visibility = 'hidden';
+            document.getElementById("return_date").value = "";
+            }
         @endif
         </script>
         
