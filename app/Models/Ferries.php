@@ -14,4 +14,9 @@ class Ferries extends Model
         return $this->hasMany(Schedule::class);
     }
 
+    public function fares()
+    {
+        return $this->hasMany(Fares::class);
+    }
+
 }

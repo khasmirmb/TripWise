@@ -21,7 +21,7 @@ class FerriesFactory extends Factory
             'description' => fake()->unique()->paragraph($nbSentences = 3, $variableNbSentences = true),
             'capacity' => fake()->numberBetween($min = 800, $max = 1500),
             'route' => fake()->sentence($nbWords = 6, $variableNbWords = true),
-            'price' => fake()->numberBetween($min = 1500, $max = 3000),
+            'image' => fake()->imageUrl($width = 640, $height = 480, 'cats'),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fares;
 use App\Models\Schedules;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,12 +34,14 @@ class SchedulesController extends Controller
             'passenger' => 'required|integer',
         ]);
 
-        $date_validate = Carbon::createFromFormat('d/m/Y', $inputs['depart_date'])->format('Y-m-d');
+
+        $validated_date = Carbon::createFromFormat('d/m/Y', $inputs['depart_date'])->format('Y-m-d');
 
         $data = DB::table('schedules')
+        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
         ->where('departure_port', '=', $inputs['origin'])
         ->where('arrival_port', '=', $inputs['destination'])
-        ->where('departure_date', '>=', $date_validate)
+        ->where('departure_date', '>=', $validated_date)
         ->get();
 
         return view('booking.schedule',[

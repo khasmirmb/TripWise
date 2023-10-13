@@ -6,7 +6,7 @@
 
     @include('layouts.progress-schedule')
 
-    <section class="bg-slate-50 dark:bg-gray-900">
+    <section class="bg-slate-50 dark:bg-gray-800">
         <!-- Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-5 bg-white dark:bg-gray-800 p-3">
             <!-- First column -->
@@ -18,42 +18,84 @@
                     </h3>
                     <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$destination}}</h3>
                 </div>
-                <div class="dates_slick flex">
-                    @foreach ($schedules as $schedule)
+                <div class="dates_slick flex border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                    @for ($i = 0; $i < 17; $i++)
                     <div>
-                        <input {{$loop->first ? 'checked' : ''}} type="radio" id="schedule{{$schedule->id}}" name="schedule" value="{{$schedule->id}}" class="hidden peer" required="">
-                        <label for="schedule{{$schedule->id}}" class="inline-flex items-center justify-between p-3 w-autotext-gray-500 bg-white border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-teal-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-teal-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                        @php
+
+                            $validated_date = \Carbon\Carbon::createFromFormat('d/m/Y', $depart_date);
+
+                            $valid_date = $validated_date->addDays($i);
+
+                            $maximum_date = $valid_date->format('Y-m-d');
+
+                        @endphp
+
+                        <input @if ($i == 0)
+                        checked
+                        @endif  data='{{$i}}' type="radio" id="schedule{{$i}}" name="schedule" value="{{ $maximum_date }}" class="hidden peer">
+                        <label for="schedule{{$i}}" class="inline-flex items-center justify-between p-3 w-autotext-gray-500 bg-white border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-teal-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-teal-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                         <div class="block text-center">
-                            <div class="w-full text-lg font-semibold">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $schedule->departure_date)->format('d') }}</div>
-                            <div class="w-full text-md">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $schedule->departure_date)->format('D') }}, {{ \Carbon\Carbon::createFromFormat('Y-m-d', $schedule->departure_date)->format('M') }}</div>
+                            <div class="w-full text-lg font-semibold">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('d') }}</div>
+                            <div class="w-full text-md">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('D') }}, {{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('M') }}</div>
                         </div>
                         </label>
                     </div>
-                    @endforeach
+                    @endfor
                 </div>
-    
-                <div class="w-full bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-4">
-                    <div class="flex space-x-4 p-6 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
-                        <h5 class="text-xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mr-3">6:00 AM</h5>
-                        <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full sm:w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="US">Economy</option>
-                            <option value="CA">Aircon</option>
-                        </select>
+
+                @foreach ($schedules as $schedule)
+
+                @php
+
+                    $arrival = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->arrival_time);
+
+                    $departure = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->departure_time);
+
+                    
+                    $totalDuration = $arrival->diffInHours($departure);
+
+                    $fares = DB::table('fares')
+                    ->where('ferry_id', '=', $schedule->ferry_id)
+                    ->get();
+                    
+                @endphp
+
+                <div class="{{$schedule->departure_date}} box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-4"     @if ($loop->first) style="display: block"    @endif style="display: none">
+                    <div class="flex space-x-6 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
+                        <h5 class="text-xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
+                        <div class="flex mt-0 sm:mt-1">
+                            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                @foreach ($fares as $fare)
+                                    <option value="{{$fare->price}}">{{$fare->type}}</option>
+                                @endforeach
+                              </select>
+                        </div>
                     </div>
                     <div class="px-5 pb-5">
                         <div class="flex items-center">
-                            <h5 class="text-2xl sm:text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">The Winchester</h5>
+                            <h5 class="text-2xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$schedule->name}}</h5>
                         </div>
                         <div class="flex items-center mt-2.5 mb-5">
-                            <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Vessel</span>
+                            <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-xl sm:text-3xl font-medium text-gray-900 dark:text-white">₱399</span>
+                            <span class="text-xl sm:text-3xl font-medium text-gray-800 dark:text-white">₱399</span>
                             <a href="#" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Select</a>
                         </div>
                     </div>
                 </div>
-                
+                @endforeach
+                <script type="module">
+                    $(document).ready(function(){
+                        $('input[type="radio"]').click(function(){
+                            var inputValue = $(this).attr("value");
+                            var targetBox = $("." + inputValue);
+                            $(".box").not(targetBox).hide();
+                            $(targetBox).show();
+                        });
+                    });
+                </script>
             </div>
             <!-- First column -->
     
@@ -75,16 +117,16 @@
                       <div class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
                         <ol class="relative border-l border-gray-400 dark:border-white">                  
                             <li class="mb-10 ml-6">            
-                                <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                                    <svg class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                    <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
                                     </svg>
                                 </span>
                                 <h3 class="flex items-center mb-1 text-md font-semibold text-gray-900 dark:text-white">{{$origin}}</h3>
                             </li>
                             <li class="mb-10 ml-6">
-                                <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                                    <svg class="w-2.5 h-2.5 text-blue-800 dark:text-blue-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                    <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
                                     </svg>
                                 </span>
@@ -100,5 +142,4 @@
         </div>
         <!-- Grid -->
     </section>
-    
 @include('partials.footer')
