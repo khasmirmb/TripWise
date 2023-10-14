@@ -62,40 +62,36 @@
                 @endphp
 
                 <div class="{{$schedule->departure_date}} box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-4"     @if ($loop->first) style="display: block"    @endif style="display: none">
-                    <div class="flex space-x-6 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
-                        <h5 class="text-xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
-                        <div class="flex mt-0 sm:mt-1">
+                    <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
+                        <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
+                        <div class="block">
+                            <span class="bg-sky-100 text-sky-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-sky-200 dark:text-sky-800">Capacity: {{$schedule->capacity}}</span>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <div class="flex items-center justify-between">
+                            <h5 class="text-xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$schedule->name}}</h5>
+                            <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
+                        </div>
+                        <div class="flex items-center mt-2.5 mb-2.5">
+                            <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Vessel</span>
+                        </div>
+                        <div class="flex items-center space-x-2 my-2 text-center">
+                            @foreach ($fares as $fare)
+                                <span class="bg-lime-100 text-lime-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-lime-200 dark:text-lime-800"><span class="dark:text-sky-800 text-sky-800 font-bold">{{$fare->type}}:</span> {{$fare->price}}</span>
+                            @endforeach
+                        </div>
+                        <div class="flex items-center justify-between">
                             <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                 @foreach ($fares as $fare)
                                     <option value="{{$fare->price}}">{{$fare->type}}</option>
                                 @endforeach
-                              </select>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-5">
-                        <div class="flex items-center">
-                            <h5 class="text-2xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$schedule->name}}</h5>
-                        </div>
-                        <div class="flex items-center mt-2.5 mb-5">
-                            <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xl sm:text-3xl font-medium text-gray-800 dark:text-white">₱399</span>
-                            <a href="#" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Select</a>
+                            </select>
+                            <button type="button" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Select</button>
                         </div>
                     </div>
                 </div>
                 @endforeach
-                <script type="module">
-                    $(document).ready(function(){
-                        $('input[type="radio"]').click(function(){
-                            var inputValue = $(this).attr("value");
-                            var targetBox = $("." + inputValue);
-                            $(".box").not(targetBox).hide();
-                            $(targetBox).show();
-                        });
-                    });
-                </script>
             </div>
             <!-- First column -->
     
@@ -142,4 +138,16 @@
         </div>
         <!-- Grid -->
     </section>
+
+    <script type="module">
+        $(document).ready(function(){
+            $('input[type="radio"]').click(function(){
+                var inputValue = $(this).attr("value");
+                var targetBox = $("." + inputValue);
+                $(".box").not(targetBox).hide();
+                $(targetBox).show();
+            });
+        });
+    </script>
+    
 @include('partials.footer')

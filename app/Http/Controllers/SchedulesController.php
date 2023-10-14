@@ -45,6 +45,7 @@ class SchedulesController extends Controller
         ->get();
 
         return view('booking.schedule',[
+            'trip_type' => $inputs['type'],
             'origin' => $inputs['origin'],
             'destination' => $inputs['destination'],
             'depart_date' => $inputs['depart_date'],
