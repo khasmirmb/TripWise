@@ -42,6 +42,8 @@ class SchedulesController extends Controller
         ->where('departure_port', '=', $inputs['origin'])
         ->where('arrival_port', '=', $inputs['destination'])
         ->where('departure_date', '>=', $validated_date)
+        ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity' , 'description', 'route', 'image')
+        ->orderBy('departure_date', 'asc')
         ->get();
 
         return view('booking.schedule',[
