@@ -1,7 +1,5 @@
-                <!-- Date Picking Return -->
-@if (is_null($return_date))
-
-@else
+<!-- Date Picking Return -->
+@if (!is_null($return_date))
 <div class="flex mb-2 mt-6 gap-1 sm:gap-4">  
     <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$destination}}</h3>
     <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:w-11 sm:h-11 w-8 h-8">
@@ -121,6 +119,7 @@
             var fareId = $(this).siblings('.fareSelect2').val();
             $("#return_summary").show();
             $("#no-return").hide();
+            $("#iti_ret_date").hide();
 
             // Send an Ajax request to get schedule information
             $.ajax({
@@ -141,6 +140,8 @@
                             $('#return_ariv_port').html(scheduleResponse.arrival_port);
 
                             $('#return_dep_date').html(scheduleResponse.departure_date);
+
+                            $('#new_ret_date').html(scheduleResponse.departure_date);
 
                             $('#return_dep_time').html(scheduleResponse.departure_time);
 

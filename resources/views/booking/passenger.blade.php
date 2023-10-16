@@ -2,7 +2,7 @@
 
     @include('components.navigation')
 
-    @include('layouts.itinerary')
+    @include('layouts.itinerary-passenger')
 
     @include('layouts.progress-passenger')
 

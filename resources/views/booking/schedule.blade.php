@@ -2,7 +2,7 @@
 
     @include('components.navigation')
 
-    @include('layouts.itinerary')
+    @include('layouts.itinerary-schedule')
 
     @include('layouts.progress-schedule')
 
@@ -85,9 +85,7 @@
                     </div>
                 </div>
 
-                @if (is_null($return_date))
-
-                @else
+                @if (!is_null($return_date))
                 <!-- Return Summary -->
                 <div id="accordion-return" data-accordion="return" class="my-3 shadow">
                     <h2 id="accordion-return-heading-1">
@@ -158,21 +156,17 @@
                         <input type="hidden" name="origin" value="{{$origin}}" required>
                         <input type="hidden" name="trip_type" value="{{$trip_type}}" required>
                         <input type="hidden" name="destination" value="{{$destination}}" required>
-                        <input type="hidden" name="depart_date" value="{{$depart_date}}" required>
-                        <input type="hidden" name="return_date" value="{{$return_date}}">
 
                         <input type="hidden" name="dep_sched_id" required>
                         <input type="hidden" name="dep_sched_type" required>
                         <input type="hidden" name="dep_sched_price" required>
                         <input type="hidden" name="depart_depart_valid" required>
+                        <input type="hidden" name="return_depart_valid">
 
-                        @if (is_null($return_date))
-
-                        @else
+                        @if (!is_null($return_date))
                         <input type="hidden" name="ret_sched_id" required>
                         <input type="hidden" name="ret_sched_type" required>
                         <input type="hidden" name="ret_sched_price" required>
-                        <input type="hidden" name="return_depart_valid" required>
                         @endif
                         <button id="continueButton" type="button" class="w-full px-5 py-3 text-lg font-medium text-center text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Continue</button>
                     </form>
@@ -201,13 +195,18 @@
                 if (returnDate !== '' && new Date(departureDate) >= new Date(returnDate)) {
                     $('#error-container').show()
                     $('#error-message').html(" The return date should be after the departure date.");
+                    
                 } else if (departureDate === '') {
                     $('#error-container').show()
                     $('#error-message').html(" Please departure date.");
-                } else if (departureDate === '' || returnDate === '') {
+                } 
+                @if (!is_null($return_date))
+                else if (departureDate === '' || returnDate === '') {
                     $('#error-container').show()
                     $('#error-message').html(" Please select both departure and return dates.");
-                }else {
+                }
+                @endif
+                 else {
                     $("form").submit(); // Submit the form if the validation passes
                 }
             });

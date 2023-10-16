@@ -22,6 +22,9 @@ class PassengerController extends Controller
     public function input(Request $request)
     {
         $inputs = $request->all();
+        $this->validate($request, [
+            'return_depart_valid' => 'nullable',
+        ]);
 
         $schedule = Schedules::find($inputs['dep_sched_id']);
 
@@ -29,8 +32,8 @@ class PassengerController extends Controller
             'trip_type' => $inputs['trip_type'],
             'origin' => $inputs['origin'],
             'destination' => $inputs['destination'],
-            'depart_date' => $inputs['depart_date'],
-            'return_date' => $inputs['return_date'],
+            'depart_date' => $inputs['depart_depart_valid'],
+            'return_date' => $inputs['return_depart_valid'],
             'passenger' => $inputs['passenger'],
         ]);
     }

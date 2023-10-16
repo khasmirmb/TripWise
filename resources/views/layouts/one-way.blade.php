@@ -101,6 +101,7 @@
             var fareId = $(this).siblings('.fareSelect').val();
             $("#depart_summary").show();
             $("#no-departure").hide();
+            $("#iti_dep_date").hide();
 
             // Send an Ajax request to get schedule information
             $.ajax({
@@ -121,6 +122,8 @@
                             $('#depart_ariv_port').html(scheduleResponse.arrival_port);
 
                             $('#depart_dep_date').html(scheduleResponse.departure_date);
+
+                            $('#new_dep_date').html(scheduleResponse.departure_date);
 
                             $('#depart_dep_time').html(scheduleResponse.departure_time);
 
