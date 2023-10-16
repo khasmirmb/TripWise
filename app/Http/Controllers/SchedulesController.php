@@ -57,6 +57,27 @@ class SchedulesController extends Controller
         ]);
     }
 
+    public function getSchedule(Request $request) {
+        $scheduleId = $request->input('scheduleId');
+        $fareId = $request->input('fareId');
+    
+        $schedule = Schedules::find($scheduleId);
+        $fare = Fares::find($fareId);
+    
+        if ($schedule && $fare) {
+            return response()->json([
+                'departure_port' => $schedule->departure_port,
+                'arrival_port' => $schedule->arrival_port,
+                'departure_date' => date("j F Y", strtotime($schedule->departure_date)),
+                'departure_time' => date('g:i a', strtotime($schedule->departure_time)),
+                'price' => $fare->price,
+                'type' => $fare->type
+            ]);
+        } else {
+            return response()->json(['error' => 'Schedule information not found'], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

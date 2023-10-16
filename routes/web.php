@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\UserController;
@@ -57,6 +59,12 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/booking/search', [BookingController::class, 'index'])->name('booking.search.show');
 
     Route::post('/booking/schedule', [SchedulesController::class, 'search'])->name('booking.schedule.show');
+
+    Route::post('/booking/passenger', [PassengerController::class, 'input'])->name('booking.passenger.show');
+
+    Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);
+
+    Route::get('/get-ferry-info', [FerriesController::class, 'getFerryInfo']);
     
 });
 

@@ -11,192 +11,9 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-5 bg-white dark:bg-gray-800 p-3">
             <!-- First column -->
             <div class="col-span-3">
-                <div class="flex my-2 gap-1 sm:gap-4">  
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$origin}}</h3>
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:w-11 sm:h-11 w-8 h-8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                    </h3>
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$destination}}</h3>
-                </div>
-                
-                <!-- Date Picking Departure -->
-                <div class="dates_slick flex border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                    @for ($i = 0; $i < 17; $i++)
-                    <div>
-                        @php
+                @include('layouts.one-way')
 
-                            $validated_depart = \Carbon\Carbon::createFromFormat('d/m/Y', $depart_date);
-
-                            $valid_date = $validated_depart->addDays($i);
-
-                            $maximum_date = $valid_date->format('Y-m-d');
-
-                        @endphp
-
-                        <input @if ($i == 0)
-                        checked
-                        @endif  type="radio" id="schedule_depart{{$i}}" name="schedule_depart" value="dep-{{ $maximum_date }}" class="hidden peer">
-                        <label for="schedule_depart{{$i}}" class="inline-flex items-center justify-between p-3 w-autotext-gray-500 bg-white border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-teal-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-teal-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
-                        <div class="block text-center">
-                            <div class="w-full text-lg font-semibold">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('d') }}</div>
-                            <div class="w-full text-md">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('D') }}, {{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('M') }}</div>
-                        </div>
-                        </label>
-                    </div>
-                    @endfor
-                </div>
-
-                <!-- Time Available for the Departure Date -->
-                @foreach ($schedules as $schedule)
-
-                @php
-
-                    $arrival = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->arrival_time);
-
-                    $departure = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->departure_time);
-
-                    
-                    $totalDuration = $arrival->diffInHours($departure);
-
-                    $fares = DB::table('fares')
-                    ->where('ferry_id', '=', $schedule->ferry_id)
-                    ->get();
-
-                @endphp
-                <div class="dep-{{$schedule->departure_date}} depart_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" @if ($loop->first) style="display: block" @endif style="display: none">
-                    <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
-                        <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
-                        <div class="block">
-                            <span class="bg-sky-100 text-sky-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-sky-200 dark:text-sky-800">Capacity: {{$schedule->capacity}}</span>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-5">
-                        <div class="flex items-center justify-between">
-                            <h5 class="text-xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$schedule->name}}</h5>
-                            <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
-                        </div>
-                        <div class="flex items-center mt-2.5 mb-2.5">
-                            <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Vessel</span>
-                        </div>
-                        <div class="flex items-center space-x-2 my-2 text-center">
-                            @foreach ($fares as $fare)
-                                <span class="bg-lime-100 text-lime-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-lime-200 dark:text-lime-800"><span class="dark:text-sky-800 text-sky-800 font-bold">{{$fare->type}}:</span> ₱{{$fare->price}}</span>
-                            @endforeach
-                        </div>
-                        <div class="flex items-center justify-between mt-3">
-                            <select id="fare" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm md:text-base rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                @foreach ($fares as $fare)
-                                    <option value="{{$fare->type}}">{{$fare->type}}</option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Select</button>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-
-                <!-- Date Picking Return -->
-                @if (is_null($return_date))
-
-                @else
-                <div class="flex mb-2 mt-6 gap-1 sm:gap-4">  
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$destination}}</h3>
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:w-11 sm:h-11 w-8 h-8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                    </h3>
-                    <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$origin}}</h3>
-                </div>
-                <div class="dates_slick flex border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                    @for ($y = 0; $y < 17; $y++)
-                    <div>
-                        @php
-
-                            $validated_return = \Carbon\Carbon::createFromFormat('d/m/Y', $return_date);
-
-                            $valid_return_date = $validated_return->addDays($y);
-
-                            $maxium_date_return = $valid_return_date->format('Y-m-d');
-
-                        @endphp
-
-                        <input @if ($y == 0)
-                        checked
-                        @endif  type="radio" id="schedule_return{{$y}}" name="schedule_return" value="ret-{{ $maxium_date_return }}" class="hidden peer">
-                        <label for="schedule_return{{$y}}" class="inline-flex items-center justify-between p-3 w-autotext-gray-500 bg-white border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-teal-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-teal-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
-                        <div class="block text-center">
-                            <div class="w-full text-lg font-semibold">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maxium_date_return)->format('d') }}</div>
-                            <div class="w-full text-md">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maxium_date_return)->format('D') }}, {{ \Carbon\Carbon::createFromFormat('Y-m-d', $maxium_date_return)->format('M') }}</div>
-                        </div>
-                        </label>
-                    </div>
-                    @endfor
-                </div>
-                @php
-                    
-                    $validated_date = \Carbon\Carbon::createFromFormat('d/m/Y', $return_date)->format('Y-m-d');
-
-                    $return_data = DB::table('schedules')
-                    ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-                    ->where('departure_port', '=', $origin)
-                    ->where('arrival_port', '=', $destination)
-                    ->where('departure_date', '>=', $validated_date)
-                    ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity' , 'description', 'route', 'image')
-                    ->orderBy('departure_date', 'asc')
-                    ->get();
-
-                @endphp
-
-                <!-- Time Available for the Return Date -->
-                @foreach ($return_data as $return)
-
-                @php
-
-                    $arrival = \Carbon\Carbon::createFromFormat('H:i:s' , $return->arrival_time);
-
-                    $departure = \Carbon\Carbon::createFromFormat('H:i:s' , $return->departure_time);
-
-                    
-                    $totalDuration = $arrival->diffInHours($departure);
-
-                    $fares = DB::table('fares')
-                    ->where('ferry_id', '=', $return->ferry_id)
-                    ->get();
-                    
-                @endphp
-                <div class="ret-{{$return->departure_date}} return_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" @if ($loop->first) style="display: block" @endif style="display: none">
-                    <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
-                        <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$return->departure_time)->format('h:i A')}}</h5>
-                        <div class="block">
-                            <span class="bg-sky-100 text-sky-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-sky-200 dark:text-sky-800">Capacity: {{$return->capacity}}</span>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-5">
-                        <div class="flex items-center justify-between">
-                            <h5 class="text-xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$return->name}}</h5>
-                            <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
-                        </div>
-                        <div class="flex items-center mt-2.5 mb-2.5">
-                            <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">Vessel</span>
-                        </div>
-                        <div class="flex items-center space-x-2 my-2 text-center">
-                            @foreach ($fares as $fare)
-                                <span class="bg-lime-100 text-lime-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-lime-200 dark:text-lime-800"><span class="dark:text-sky-800 text-sky-800 font-bold">{{$fare->type}}:</span> ₱{{$fare->price}}</span>
-                            @endforeach
-                        </div>
-                        <div class="flex items-center justify-between mt-3">
-                            <select id="fare" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm md:text-base rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                @foreach ($fares as $fare)
-                                    <option value="{{$fare->price}}">{{$fare->type}}</option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Select</button>
-                        </div>
-                    </div>
-                </div>
-
-                @endforeach
-                @endif
-
+                @include('layouts.round-trip')
             </div>
             <!-- First column -->
     
@@ -216,30 +33,55 @@
                       </button>
                     </h2>
                     <div id="accordion-depart-body-1" class="hidden" aria-labelledby="accordion-depart-heading-1">
-                      <div class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                        <div class="block">
-                            <ol class="relative border-l border-gray-400 dark:border-white">                  
-                                <li class="mb-10 ml-6">            
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
-                                        <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
-                                        </svg>
-                                    </span>
-                                    <h3 class="flex items-center mb-1 text-md font-semibold text-gray-900 dark:text-white">{{$origin}}</h3>
-                                </li>
-                                <li class="mb-10 ml-6">
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
-                                        <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
-                                        </svg>
-                                    </span>
-                                    <h3 class="mb-1 text-md font-semibold text-gray-900 dark:text-white">{{$destination}}</h3>
-                                </li>
-                            </ol>
+                        <div id="depart_summary" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900" style="display:none">
+                            <div class="block">
+                                <div class="block mb-5">
+                                    <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="depart_ferry_name"></span></h3>
+                                </div>
+                                <ol class="relative border-l border-gray-400 dark:border-white">                  
+                                    <li class="mb-10 ml-6">            
+                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                            <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
+                                            </svg>
+                                        </span>
+                                        <h3 class="flex items-center mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="depart_dep_port"></span></h3>
+                                    </li>
+                                    <li class="mb-5 ml-6">
+                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                            <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
+                                            </svg>
+                                        </span>
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="depart_ariv_port"></span></h3>
+                                    </li>
+                                </ol>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Departure Date:</h3>
+                                    <div class="flex items-center justify-between">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="depart_dep_date"></span></h3>
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="depart_dep_time"></span></h3>
+                                    </div>
+                                </div>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Accommodation:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="depart_fare_type"></span></h3>
+                                    </div>
+                                </div>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Price:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white">₱<span id="depart_fare_price"></span></h3>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="database-data">
+                        <div id="no-departure" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                            <div class="block">
+                                <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white">Please Select a Departure</h3>
+                            </div>
                         </div>
-                      </div>
                     </div>
                 </div>
 
@@ -247,7 +89,7 @@
 
                 @else
                 <!-- Return Summary -->
-                <div id="accordion-return" data-accordion="return" class="mt-3 shadow">
+                <div id="accordion-return" data-accordion="return" class="my-3 shadow">
                     <h2 id="accordion-return-heading-1">
                       <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-return-body-1" aria-expanded="true" aria-controls="accordion-return-body-1">
                         <span class="flex items-center">Return</span>
@@ -257,30 +99,93 @@
                       </button>
                     </h2>
                     <div id="accordion-return-body-1" class="hidden" aria-labelledby="accordion-return-heading-1">
-                      <div class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                        <ol class="relative border-l border-gray-400 dark:border-white">                  
-                            <li class="mb-10 ml-6">            
-                                <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
-                                    <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
-                                    </svg>
-                                </span>
-                                <h3 class="flex items-center mb-1 text-md font-semibold text-gray-900 dark:text-white">{{$destination}}</h3>
-                            </li>
-                            <li class="mb-10 ml-6">
-                                <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
-                                    <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
-                                    </svg>
-                                </span>
-                                <h3 class="mb-1 text-md font-semibold text-gray-900 dark:text-white">{{$origin}}</h3>
-                            </li>
-                        </ol>
-                      </div>
+                        <div id="return_summary" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900" style="display:none">
+                            <div class="block">
+                                <div class="block mb-5">
+                                    <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="return_ferry_name"></span></h3>
+                                </div>
+                                <ol class="relative border-l border-gray-400 dark:border-white">                  
+                                    <li class="mb-10 ml-6">            
+                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                            <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
+                                            </svg>
+                                        </span>
+                                        <h3 class="flex items-center mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_ariv_port"></span></h3>
+                                    </li>
+                                    <li class="mb-5 ml-6">
+                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
+                                            <svg class="w-2.5 h-2.5 text-teal-800 dark:text-teal-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
+                                            </svg>
+                                        </span>
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_dep_port"></span></h3>
+                                    </li>
+                                </ol>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Return Date:</h3>
+                                    <div class="flex items-center justify-between">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_dep_date"></span></h3>
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_dep_time"></span></h3>
+                                    </div>
+                                </div>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Accommodation:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_fare_type"></span></h3>
+                                    </div>
+                                </div>
+                                <div class="block items-center justify-start mt-3">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Price:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white">₱<span id="return_fare_price"></span></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="no-return" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                            <div class="block">
+                                <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white">Please Select a Return</h3>
+                            </div>
+                        </div>
                     </div>
-                </div>  
+                </div>
                 @endif
+                <div class="block w-full mt-4">
+                    <form method="POST" action="{{route('booking.passenger.show')}}">
+                        @csrf
+                        <input type="hidden" name="passenger" value="{{$passenger}}" required>
+                        <input type="hidden" name="origin" value="{{$origin}}" required>
+                        <input type="hidden" name="trip_type" value="{{$trip_type}}" required>
+                        <input type="hidden" name="destination" value="{{$destination}}" required>
+                        <input type="hidden" name="depart_date" value="{{$depart_date}}" required>
+                        <input type="hidden" name="return_date" value="{{$return_date}}">
 
+                        <input type="hidden" name="dep_sched_id" required>
+                        <input type="hidden" name="dep_sched_type" required>
+                        <input type="hidden" name="dep_sched_price" required>
+                        <input type="hidden" name="depart_depart_valid" required>
+
+                        @if (is_null($return_date))
+
+                        @else
+                        <input type="hidden" name="ret_sched_id" required>
+                        <input type="hidden" name="ret_sched_type" required>
+                        <input type="hidden" name="ret_sched_price" required>
+                        <input type="hidden" name="return_depart_valid" required>
+                        @endif
+                        <button id="continueButton" type="button" class="w-full px-5 py-3 text-lg font-medium text-center text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Continue</button>
+                    </form>
+                    <div id="error-container" class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800 mt-4" role="alert" style="display: none">
+                        <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                          <span class="font-medium">Error!</span><span id="error-message"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Second column -->
         </div>
@@ -288,22 +193,26 @@
     </section>
 
     <script type="module">
-        // Schedule Show the Date Time for Depart and Return
-        $(document).ready(function(){
-            $('input[name="schedule_depart"]').click(function(){
-                var inputValue = $(this).attr("value");
-                var targetBox = $("." + inputValue);
-                $(".depart_box").not(targetBox).hide();
-                $(targetBox).show();
-            });
+        $(document).ready(function () {
+            $("#continueButton").click(function () {
+                var departureDate = $("input[name='depart_depart_valid']").val();
+                var returnDate = $("input[name='return_depart_valid']").val();
 
-            $('input[name="schedule_return"]').click(function(){
-                var inputValue = $(this).attr("value");
-                var targetBox = $("." + inputValue);
-                $(".return_box").not(targetBox).hide();
-                $(targetBox).show();
+                if (returnDate !== '' && new Date(departureDate) >= new Date(returnDate)) {
+                    $('#error-container').show()
+                    $('#error-message').html(" The return date should be after the departure date.");
+                } else if (departureDate === '') {
+                    $('#error-container').show()
+                    $('#error-message').html(" Please departure date.");
+                } else if (departureDate === '' || returnDate === '') {
+                    $('#error-container').show()
+                    $('#error-message').html(" Please select both departure and return dates.");
+                }else {
+                    $("form").submit(); // Submit the form if the validation passes
+                }
             });
         });
     </script>
+
     
 @include('partials.footer')
