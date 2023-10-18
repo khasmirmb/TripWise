@@ -5,6 +5,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PassengerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\UserController;
@@ -60,7 +61,10 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     Route::post('/booking/schedule', [SchedulesController::class, 'search'])->name('booking.schedule.show');
 
-    Route::post('/booking/passenger', [PassengerController::class, 'input'])->name('booking.passenger.show');
+    Route::match(['get', 'post'], '/booking/passenger', [PassengerController::class, 'input'])->name('booking.passenger.show');
+
+
+    Route::post('/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
 
     Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);
 

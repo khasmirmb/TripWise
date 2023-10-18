@@ -65,7 +65,7 @@
                     
 @endphp
 
-<div class="ret-{{$return->departure_date}} return_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" @if ($loop->first) style="display: block" @endif style="display: none">
+<div class="ret-{{$return->departure_date}} return_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" style="display: none">
     <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
         <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$return->departure_time)->format('h:i A')}}</h5>
         <div class="block">
@@ -87,7 +87,7 @@
         </div>
         <div class="block">
             <form class="flex items-center justify-between mt-3">
-                <select class="fareSelect2" data-schedule-id="{{$return->id}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm md:text-base rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                <select data-schedule-id="{{$return->id}}" class="fareSelect2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     @foreach ($fares as $fare)
                         <option value="{{$fare->id}}">{{$fare->type}}</option>
                     @endforeach
@@ -107,6 +107,9 @@
 <script type="module">
     // Schedule Show the Date Time for Return
     $(document).ready(function(){
+
+        var selectedButton2 = null;
+
         $('input[name="schedule_return"]').click(function(){
             var inputValue = $(this).attr("value");
             var targetBox = $("." + inputValue);
@@ -114,12 +117,23 @@
             $(targetBox).show();
         });
 
+        // Automatically click the first radio button when the page loads
+        $('input[name="schedule_return"]:first').click();
+
         $(".selectButton2").click(function () {
             var scheduleId = $(this).siblings('.fareSelect2').data('schedule-id');
             var fareId = $(this).siblings('.fareSelect2').val();
             $("#return_summary").show();
             $("#no-return").hide();
             $("#iti_ret_date").hide();
+
+            // Check if a button was previously selected
+            if (selectedButton2) {
+                selectedButton2.html("Select");
+            }
+            // Set the text of the clicked button to "Selected"
+            $(this).html("Selected");
+            selectedButton2 = $(this);
 
             // Send an Ajax request to get schedule information
             $.ajax({

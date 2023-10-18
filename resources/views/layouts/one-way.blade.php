@@ -20,9 +20,7 @@
 
         @endphp
 
-        <input @if ($i == 0)
-        checked
-        @endif  type="radio" id="schedule_depart{{$i}}" name="schedule_depart" value="dep-{{ $maximum_date }}" class="hidden peer">
+        <input type="radio" id="schedule_depart{{$i}}" name="schedule_depart" value="dep-{{ $maximum_date }}" class="hidden peer">
         <label for="schedule_depart{{$i}}" class="inline-flex items-center justify-between p-3 w-autotext-gray-500 bg-white border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-teal-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-teal-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
         <div class="block text-center">
             <div class="w-full text-lg font-semibold">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $maximum_date)->format('d') }}</div>
@@ -50,7 +48,7 @@
     ->get();
 
 @endphp
-<div class="dep-{{$schedule->departure_date}} depart_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" @if ($loop->first) style="display: block" @endif style="display: none">
+<div class="dep-{{$schedule->departure_date}} depart_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" style="display: none">
     <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
         <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
         <div class="block">
@@ -72,7 +70,7 @@
         </div>
         <div class="block">
             <form class="flex items-center justify-between mt-3">
-                <select class="fareSelect" data-schedule-id="{{$schedule->id}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm md:text-base rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                <select data-schedule-id="{{$schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     @foreach ($fares as $fare)
                         <option value="{{$fare->id}}">{{$fare->type}}</option>
                     @endforeach
@@ -89,12 +87,20 @@
 <script type="module">
     // Schedule Show the Date Time for Depart
     $(document).ready(function(){
-        $('input[name="schedule_depart"]').click(function(){
+
+        var selectedButton = null;
+
+        $("#schedule_depart0").click();
+        
+        $('input[name="schedule_depart"]').click(function () {
             var inputValue = $(this).attr("value");
             var targetBox = $("." + inputValue);
             $(".depart_box").not(targetBox).hide();
             $(targetBox).show();
         });
+
+        // Automatically click the first radio button when the page loads
+        $('input[name="schedule_depart"]:first').click();
 
         $(".selectButton").click(function () {
             var scheduleId = $(this).siblings('.fareSelect').data('schedule-id');
@@ -102,6 +108,14 @@
             $("#depart_summary").show();
             $("#no-departure").hide();
             $("#iti_dep_date").hide();
+
+            // Check if a button was previously selected
+            if (selectedButton) {
+                selectedButton.html("Select");
+            }
+            // Set the text of the clicked button to "Selected"
+            $(this).html("Selected");
+            selectedButton = $(this);
 
             // Send an Ajax request to get schedule information
             $.ajax({

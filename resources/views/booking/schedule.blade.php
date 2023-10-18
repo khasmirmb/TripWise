@@ -35,8 +35,11 @@
                     <div id="accordion-depart-body-1" class="hidden" aria-labelledby="accordion-depart-heading-1">
                         <div id="depart_summary" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900" style="display:none">
                             <div class="block">
-                                <div class="block mb-5">
-                                    <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="depart_ferry_name"></span></h3>
+                                <div class="block items-center justify-start mb-5">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Vessel:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="depart_ferry_name"></span></h3>
+                                    </div>
                                 </div>
                                 <ol class="relative border-l border-gray-400 dark:border-white">                  
                                     <li class="mb-10 ml-6">            
@@ -99,8 +102,11 @@
                     <div id="accordion-return-body-1" class="hidden" aria-labelledby="accordion-return-heading-1">
                         <div id="return_summary" class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900" style="display:none">
                             <div class="block">
-                                <div class="block mb-5">
-                                    <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="return_ferry_name"></span></h3>
+                                <div class="block items-center justify-start mb-5">
+                                    <h3 class="mb-1 text-md font-medium text-gray-500 dark:text-gray-400">Vessel:</h3>
+                                    <div class="block items-center justify-start">
+                                        <h3 class="mb-1 text-xl font-semibold text-gray-700 dark:text-white"><span id="return_ferry_name"></span></h3>
+                                    </div>
                                 </div>
                                 <ol class="relative border-l border-gray-400 dark:border-white">                  
                                     <li class="mb-10 ml-6">            

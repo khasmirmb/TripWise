@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fares;
 use App\Models\Schedules;
 use Carbon\Carbon;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,14 +38,19 @@ class SchedulesController extends Controller
 
         $validated_date = Carbon::createFromFormat('d/m/Y', $inputs['depart_date'])->format('Y-m-d');
 
+        $now = Carbon::now(new DateTimeZone('Asia/Manila'));
+        $today = $now->format('Y-m-d');
+        
         $data = DB::table('schedules')
-        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-        ->where('departure_port', '=', $inputs['origin'])
-        ->where('arrival_port', '=', $inputs['destination'])
-        ->where('departure_date', '>=', $validated_date)
-        ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity' , 'description', 'route', 'image')
-        ->orderBy('departure_date', 'asc')
-        ->get();
+            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
+            ->where('departure_port', '=', $inputs['origin'])
+            ->where('arrival_port', '=', $inputs['destination'])
+            ->where('departure_date', '>=', $today)
+            ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
+            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'route', 'image')
+            ->orderBy('departure_date', 'asc')
+            ->orderBy('departure_time', 'asc')
+            ->get();
 
         return view('booking.schedule',[
             'trip_type' => $inputs['type'],

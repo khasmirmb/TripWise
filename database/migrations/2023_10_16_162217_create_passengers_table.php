@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('passengers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booking_id')->constrained('bookings'); // Foreign key to relate 
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->date('birthdate');
+            $table->string('gender');
+            $table->string('discount_type')->nullable(); // Discount type field
+
             $table->timestamps();
         });
     }
