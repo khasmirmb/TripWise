@@ -115,7 +115,7 @@
                                                 <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
                                             </svg>
                                         </span>
-                                        <h3 class="flex items-center mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_ariv_port"></span></h3>
+                                        <h3 class="flex items-center mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_dep_port"></span></h3>
                                     </li>
                                     <li class="mb-5 ml-6">
                                         <span class="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-teal-900">
@@ -123,7 +123,7 @@
                                                 <path d="M18 14H2a2 2 0 0 1-2-2V9.5a1 1 0 0 1 1-1 1.5 1.5 0 0 0 0-3 1 1 0 0 1-1-1V2a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5a1 1 0 0 1-1 1 1.5 1.5 0 0 0 0 3 1 1 0 0 1 1 1V12a2 2 0 0 1-2 2Z"/>
                                             </svg>
                                         </span>
-                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_dep_port"></span></h3>
+                                        <h3 class="mb-1 text-md font-semibold text-gray-700 dark:text-white"><span id="return_ariv_port"></span></h3>
                                     </li>
                                 </ol>
                                 <div class="block items-center justify-start mt-3">

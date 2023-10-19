@@ -32,32 +32,32 @@
 </div>
 
 <!-- Time Available for the Departure Date -->
-@foreach ($schedules as $schedule)
+@foreach ($depart_schedules as $depart_schedule)
 
 @php
 
-    $arrival = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->arrival_time);
+    $arrival = \Carbon\Carbon::createFromFormat('H:i:s' , $depart_schedule->arrival_time);
 
-    $departure = \Carbon\Carbon::createFromFormat('H:i:s' , $schedule->departure_time);
+    $departure = \Carbon\Carbon::createFromFormat('H:i:s' , $depart_schedule->departure_time);
 
     
     $totalDuration = $arrival->diffInHours($departure);
 
     $fares = DB::table('fares')
-    ->where('ferry_id', '=', $schedule->ferry_id)
+    ->where('ferry_id', '=', $depart_schedule->ferry_id)
     ->get();
 
 @endphp
-<div class="dep-{{$schedule->departure_date}} depart_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" style="display: none">
+<div class="dep-{{$depart_schedule->departure_date}} depart_box w-full bg-white border-2 border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 my-5" style="display: none">
     <div class="flex justify-between space-x-2 p-6 bg-white border-b-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-6">
-        <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$schedule->departure_time)->format('h:i A')}}</h5>
+        <h5 class="text-2xl sm:text-5xl font-medium tracking-tight text-gray-700 dark:text-white mt-2 sm:mt-0">{{\Carbon\Carbon::createFromFormat('H:i:s',$depart_schedule->departure_time)->format('h:i A')}}</h5>
         <div class="block">
-            <span class="bg-sky-100 text-sky-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-sky-200 dark:text-sky-800">Capacity: {{$schedule->capacity}}</span>
+            <span class="bg-sky-100 text-sky-800 text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-sky-200 dark:text-sky-800">Capacity: {{$depart_schedule->capacity}}</span>
         </div>
     </div>
     <div class="px-5 pb-5">
         <div class="flex items-center justify-between">
-            <h5 class="text-xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$schedule->name}}</h5>
+            <h5 class="text-xl sm:text-3xl font-semibold tracking-tight text-gray-800 dark:text-white">{{$depart_schedule->name}}</h5>
             <span class="bg-teal-100 text-teal-800 text-xs sm:text-base font-semibold px-2.5 py-0.5 rounded dark:bg-teal-200 dark:text-teal-800">Duration: {{$totalDuration}} Hour/s</span>
         </div>
         <div class="flex items-center mt-2.5 mb-2.5">
@@ -70,7 +70,7 @@
         </div>
         <div class="block">
             <form class="flex items-center justify-between mt-3">
-                <select data-schedule-id="{{$schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                <select data-schedule-id="{{$depart_schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     @foreach ($fares as $fare)
                         <option value="{{$fare->id}}">{{$fare->type}}</option>
                     @endforeach

@@ -59,6 +59,31 @@ class PaymentController extends Controller
                 $rules["id_back{$x}"] = 'required|image';
             }
         }
+
+        $messages = [];
+
+        for ($x = 1; $x <= $passengerCount; $x++) {
+            $messages["firstname{$x}.required"] = "The first name for passenger {$x} is required.";
+            $messages["firstname{$x}.string"] = "The first name for passenger {$x} must be a string.";
+            $messages["middlename{$x}.string"] = "The middle name for passenger {$x} must be a string.";
+            $messages["lastname{$x}.required"] = "The last name for passenger {$x} is required.";
+            $messages["lastname{$x}.string"] = "The last name for passenger {$x} must be a string.";
+            $messages["gender{$x}.required"] = "The gender for passenger {$x} is required.";
+            $messages["gender{$x}.in"] = "The selected gender for passenger {$x} is invalid.";
+            $messages["birthday{$x}.required"] = "The date of birth for passenger {$x} is required.";
+            $messages["birthday{$x}.date"] = "The date of birth for passenger {$x} must be a valid date.";
+        
+            if ($request->has("discountToggle{$x}")) {
+                $messages["dis_type{$x}.required"] = "The discount type for passenger {$x} is required.";
+                $messages["dis_type{$x}.string"] = "The discount type for passenger {$x} must be a string.";
+                $messages["id_front{$x}.required"] = "The front of ID for passenger {$x} is required.";
+                $messages["id_front{$x}.image"] = "The front of ID for passenger {$x} must be an image.";
+                $messages["id_back{$x}.required"] = "The back of ID for passenger {$x} is required.";
+                $messages["id_back{$x}.image"] = "The back of ID for passenger {$x} must be an image.";
+            }
+        }
+
+        $validator = $request->validate($rules, $messages);
     
         // Perform image classification and add more validation
         for ($x = 1; $x <= $passengerCount; $x++) {
@@ -67,12 +92,6 @@ class PaymentController extends Controller
                 $idFrontFile = $request->file("id_front{$x}");
                 $idBackFile = $request->file("id_back{$x}");
     
-                // Check the if the input is empty
-                if(empty($request->file("id_front{$x}")) || empty($request->file("id_back{$x}"))){
-                    return redirect()->back()->withInput()->withErrors([
-                        "dis_type{$x}" => 'Both Image is required.',
-                    ]);
-                }
 
                 // Perform OCR on the images
                 $idFrontText = (new TesseractOCR($idFrontFile))->lang('eng')->run();
@@ -123,15 +142,12 @@ class PaymentController extends Controller
                     'lastname' => $request->input("lastname{$x}"),
                     'gender' => $request->input("gender{$x}"),
                     'birthday' => $request->input("birthday{$x}"),
-                    'classification' => 'None',
+                    'classification' => 'Regular',
                 ];
     
                 $passengers[] = $passengerData;
             }
         }
-    
-        // Use the validator to perform the validation
-        $validator = $request->validate($rules);
 
         // Use old() to retrieve old input data
         $trip_type = old('trip_type', $request->input('trip_type'));
@@ -146,8 +162,6 @@ class PaymentController extends Controller
         $ret_sched_id = old('ret_sched_id', $request->input('ret_sched_id'));
         $ret_sched_type = old('ret_sched_type', $request->input('ret_sched_type'));
         $ret_sched_price = old('ret_sched_price', $request->input('ret_sched_price'));
-    
-        dd($contactPerson, $passengers);
     
         return view('booking.payment', compact(
             'trip_type',

@@ -41,16 +41,36 @@ class SchedulesController extends Controller
         $now = Carbon::now(new DateTimeZone('Asia/Manila'));
         $today = $now->format('Y-m-d');
         
-        $data = DB::table('schedules')
+        $depart_schedule = DB::table('schedules')
             ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
             ->where('departure_port', '=', $inputs['origin'])
             ->where('arrival_port', '=', $inputs['destination'])
+            ->where('departure_date', '>=', $validated_date)
             ->where('departure_date', '>=', $today)
             ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
             ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'route', 'image')
             ->orderBy('departure_date', 'asc')
             ->orderBy('departure_time', 'asc')
             ->get();
+
+        $return_data = null;
+        
+        if(!is_null($inputs['return_date'])){
+
+            $ret_validated_date = \Carbon\Carbon::createFromFormat('d/m/Y', $inputs['return_date'])->format('Y-m-d');
+
+            $return_data = DB::table('schedules')
+            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
+            ->where('departure_port', '=', $inputs['destination'])
+            ->where('arrival_port', '=', $inputs['origin'])
+            ->where('departure_date', '>=', $ret_validated_date)
+            ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
+            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'route', 'image')
+            ->orderBy('departure_date', 'asc')
+            ->orderBy('departure_time', 'asc')
+            ->get();
+        }
+
 
         return view('booking.schedule',[
             'trip_type' => $inputs['type'],
@@ -59,7 +79,8 @@ class SchedulesController extends Controller
             'depart_date' => $inputs['depart_date'],
             'return_date' => $inputs['return_date'],
             'passenger' => $inputs['passenger'],
-            'schedules' => $data,
+            'depart_schedules' => $depart_schedule,
+            'return_schedules' => $return_data,
         ]);
     }
 
