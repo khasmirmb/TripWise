@@ -162,7 +162,7 @@ class PaymentController extends Controller
         $ret_sched_id = old('ret_sched_id', $request->input('ret_sched_id'));
         $ret_sched_type = old('ret_sched_type', $request->input('ret_sched_type'));
         $ret_sched_price = old('ret_sched_price', $request->input('ret_sched_price'));
-    
+        
         return view('booking.payment', compact(
             'trip_type',
             'origin',
@@ -178,10 +178,6 @@ class PaymentController extends Controller
             'ret_sched_price'
         ), ['contactPerson' => $contactPerson, 'passengers' => $passengers]);
     }
-    
-    
-    
-
 
     /**
      * Show the form for creating a new resource.

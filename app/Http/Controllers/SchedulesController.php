@@ -53,13 +53,13 @@ class SchedulesController extends Controller
             ->orderBy('departure_time', 'asc')
             ->get();
 
-        $return_data = null;
+        $return_schedule = null;
         
         if(!is_null($inputs['return_date'])){
 
             $ret_validated_date = \Carbon\Carbon::createFromFormat('d/m/Y', $inputs['return_date'])->format('Y-m-d');
 
-            $return_data = DB::table('schedules')
+            $return_schedule = DB::table('schedules')
             ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
             ->where('departure_port', '=', $inputs['destination'])
             ->where('arrival_port', '=', $inputs['origin'])
@@ -80,7 +80,7 @@ class SchedulesController extends Controller
             'return_date' => $inputs['return_date'],
             'passenger' => $inputs['passenger'],
             'depart_schedules' => $depart_schedule,
-            'return_schedules' => $return_data,
+            'return_schedules' => $return_schedule,
         ]);
     }
 

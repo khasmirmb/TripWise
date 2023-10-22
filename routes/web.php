@@ -57,17 +57,22 @@ Route::group(['middleware' => ['guest']], function() {
 // User Side Routes
 Route::middleware(['auth', 'user-access:user'])->group(function () {
 
+    // Show the schedule search
     Route::get('/booking/search', [BookingController::class, 'index'])->name('booking.search.show');
 
+    // Show the list of schedule
     Route::post('/booking/schedule', [SchedulesController::class, 'search'])->name('booking.schedule.show');
 
+    // Show a form for passenger and contact person
     Route::match(['get', 'post'], '/booking/passenger', [PassengerController::class, 'input'])->name('booking.passenger.show');
 
-
+    // Show the payment summary and trip summary
     Route::post('/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
 
+    // Get schedule information from DB
     Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);
 
+    // Get ferry information from DB
     Route::get('/get-ferry-info', [FerriesController::class, 'getFerryInfo']);
     
 });
