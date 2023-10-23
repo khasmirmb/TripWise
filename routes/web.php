@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
@@ -8,7 +7,6 @@ use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,9 +41,9 @@ Route::get('/', function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Fallback Errors Route
-Route::fallback(function () {
-    return view('partials.404');
-});
+//Route::fallback(function () {
+//   return view('partials.404');
+//});
 
 // Non-Login Routes
 Route::group(['middleware' => ['guest']], function() {
@@ -68,6 +66,10 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     // Show the payment summary and trip summary
     Route::post('/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
+
+    Route::post('/booking/process', [PaymentController::class, 'paymentProcess'])->name('booking.payment.process');
+
+    Route::get('/booking/success', [PaymentController::class, 'paymentSuccess'])->name('booking.success');
 
     // Get schedule information from DB
     Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);

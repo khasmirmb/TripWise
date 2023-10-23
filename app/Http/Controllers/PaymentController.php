@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Models\Schedules;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use thiagoalessio\TesseractOCR\TesseractOCR;
-use Illuminate\Support\Str;
+use Curl;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -179,6 +178,100 @@ class PaymentController extends Controller
         ), ['contactPerson' => $contactPerson, 'passengers' => $passengers]);
     }
 
+
+    /**
+     * Payment Process
+     */
+    public function paymentProcess(Request $request)
+    {
+        
+        $payment_method = $request->input('payment_method');
+        $dep_total = $request->input('dep_total');
+        $ret_total = $request->input('ret_total');
+        $totalDiscount = $request->input('totalDiscount');
+        
+        $total_amount = ($dep_total + $ret_total) - $totalDiscount;
+        
+        // Adjust the total based on the payment method
+        if ($payment_method === 'gcash') {
+            $total_amount += $total_amount * 0.025; // Increase by 2.5% for 'gcash'
+        } elseif ($payment_method === 'paymaya') {
+            $total_amount += $total_amount * 0.020; // Increase by 2.0% for 'paymaya'
+        } elseif ($payment_method === 'grab_pay') {
+            $total_amount += $total_amount * 0.022; // Increase by 2.2% for 'grab_pay'
+        } elseif ($payment_method === 'card') {
+            $total_amount += $total_amount * 0.035; // Increase by 3.5% for 'card'
+        }
+        
+        // Convert the adjusted total_amount to cents
+        $total = intval($total_amount * 100);
+
+        // If over the counter payment
+        if($payment_method == "counter"){
+            
+            return view('booking.complete');
+        }
+        // If its over the counter payment
+        else{
+
+            $data = [
+                'data' => [
+                    'attributes' => [
+                        'line_items' =>[
+    
+                            [
+                                'currency'      => 'PHP',
+                                'amount'        => $total,
+                                'name'          => 'TripWise Fare',
+                                'quantity'      => 1,
+                            ]
+                        
+                        ],
+                        'payment_method_types' => [
+                            $payment_method
+                        ],
+                        'success_url' => 'http://localhost:8000/booking/success',
+                        'cancel_url' => 'http://localhost:8000/booking/search',
+                        'description'   => 'TripWise Fare Booking',
+                        'send_email_receipt' => true,
+                        
+                    ],
+                    
+                ]
+            ];
+    
+            $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions')
+                            ->withHeader('Content-Type: application/json')
+                            ->withHeader('accept: application/json')
+                            ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
+                            ->withData($data)
+                            ->asJson()
+                            ->post();
+            
+            Session::put('session_id', $response->data->id);
+    
+            return redirect()->to($response->data->attributes->checkout_url);
+
+        }
+    }
+
+    /**
+     * Payment when it's successful
+     */
+    public function paymentSuccess()
+    {
+        $sessionId = Session::get('session_id');
+
+        $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions/'. $sessionId)
+                        ->withHeader('accept: application/json')
+                        ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
+                        ->asJson()
+                        ->get();
+        dd($response);
+    }
+    
+
+    
     /**
      * Show the form for creating a new resource.
      */

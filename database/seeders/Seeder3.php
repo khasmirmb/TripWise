@@ -28,7 +28,7 @@ class Seeder3 extends Seeder
         $startDate = Carbon::parse('2023-10-20');
         $endDate = Carbon::parse('2023-11-30');
 
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $ferry = $ferries->random();
             $departureDate = $faker->dateTimeBetween($startDate, $endDate)->format('Y-m-d');
             $arrivalDate = Carbon::parse($departureDate)->addDay()->format('Y-m-d');
