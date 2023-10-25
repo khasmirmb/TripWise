@@ -87,8 +87,6 @@
 
 @endforeach
 
-@endif
-
 <script type="module">
     // Schedule Show the Date Time for Return
     $(document).ready(function(){
@@ -150,24 +148,64 @@
 
                             $('#return_fare_price').html(scheduleResponse.price);
 
-                            $('input[name="ret_sched_id"]').val(scheduleId);
-
-                            $('input[name="ret_sched_type"]').val(scheduleResponse.type);
-
-                            $('input[name="ret_sched_price"]').val(scheduleResponse.price);
-
                             $("input[name='return_depart_valid']").val(scheduleResponse.departure_date);
 
+                            var scheduleType = scheduleResponse.type;
+                            var schedulePrice = scheduleResponse.price;
+
+                            // Send an AJAX request to your Laravel controller
+                            $.ajax({
+                                type: 'GET',
+                                url: '/store-round-info', // Replace with the actual URL
+                                data: {
+                                    scheduleId: scheduleId,
+                                    scheduleType: scheduleType,
+                                    schedulePrice: schedulePrice,
+                                },
+                                error: function(xhr, status, error) {
+                                    // Handle the error
+                                    console.error("Error: " + error);
+
+                                    // Show the error message with the custom HTML structure
+                                    var toastDanger = document.getElementById('toast-danger');
+                                    toastDanger.style.display = 'block';
+
+                                    // Set the error message in the custom structure
+                                    var errorMessage = document.querySelector('#toast-danger #error-message');
+                                    errorMessage.textContent = "There was an issue. Please try again";
+                                }
+                            });
+
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
+                            // Handle the error
                             console.error("Error: " + error);
+
+                            // Show the error message with the custom HTML structure
+                            var toastDanger = document.getElementById('toast-danger');
+                            toastDanger.style.display = 'block';
+
+                            // Set the error message in the custom structure
+                            var errorMessage = document.querySelector('#toast-danger #error-message');
+                            errorMessage.textContent = "There was an issue. Please try again";
                         }
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
+                    // Handle the error
                     console.error("Error: " + error);
+
+                    // Show the error message with the custom HTML structure
+                    var toastDanger = document.getElementById('toast-danger');
+                    toastDanger.style.display = 'block';
+
+                    // Set the error message in the custom structure
+                    var errorMessage = document.querySelector('#toast-danger #error-message');
+                    errorMessage.textContent = "There was an issue. Please try again";
                 }
             });
         });
     });
 </script>
+
+@endif

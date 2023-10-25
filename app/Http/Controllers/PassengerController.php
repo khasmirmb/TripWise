@@ -17,23 +17,33 @@ class PassengerController extends Controller
     }
 
     /**
-     * Shows the input contact and passenger page and collect all data.
+     * Shows the input contact and passenger page and collect all data and error handling
      */
     public function input(Request $request)
     {
-        // Use old() to retrieve old input data
-        $trip_type = old('trip_type', $request->input('trip_type'));
-        $origin = old('origin', $request->input('origin'));
-        $destination = old('destination', $request->input('destination'));
+
+        // Retrieve session variables
+        $trip_type = session('trip_type');
+        $origin = session('origin');
+        $destination = session('destination');
+        $passenger = session('passenger');
+
         $depart_date = old('depart_depart_valid', $request->input('depart_depart_valid'));
         $return_date = old('return_depart_valid', $request->input('return_depart_valid'));
-        $passenger = old('passenger', $request->input('passenger'));
-        $dep_sched_id = old('dep_sched_id', $request->input('dep_sched_id'));
-        $dep_sched_type = old('dep_sched_type', $request->input('dep_sched_type'));
-        $dep_sched_price = old('dep_sched_price', $request->input('dep_sched_price'));
-        $ret_sched_id = old('ret_sched_id', $request->input('ret_sched_id'));
-        $ret_sched_type = old('ret_sched_type', $request->input('ret_sched_type'));
-        $ret_sched_price = old('ret_sched_price', $request->input('ret_sched_price'));
+
+        session([
+            'depart_date' => $depart_date,
+            'return_date' => $return_date,
+        ]);
+        
+        $dep_sched_id = session('dep_sched_id');
+        $dep_sched_type = session('dep_sched_type');
+        $dep_sched_price = session('dep_sched_price');
+
+        $ret_sched_id = session('ret_sched_id');
+        $ret_sched_type = session('ret_sched_type');
+        $ret_sched_price = session('ret_sched_price');
+        
     
         return view('booking.passenger', compact(
             'trip_type',
@@ -49,6 +59,33 @@ class PassengerController extends Controller
             'ret_sched_type',
             'ret_sched_price'
         ));
+    }
+
+    public function storeOneInfo(Request $request)
+    {
+        $scheduleId = $request->input('scheduleId');
+        $scheduleType = $request->input('scheduleType');
+        $schedulePrice = $request->input('schedulePrice');
+
+        // Store the data in the session
+        session([
+            'dep_sched_id' => $scheduleId,
+            'dep_sched_type' => $scheduleType,
+            'dep_sched_price' => $schedulePrice,
+        ]);
+    }
+    public function storeRoundInfo(Request $request)
+    {
+        $scheduleId = $request->input('scheduleId');
+        $scheduleType = $request->input('scheduleType');
+        $schedulePrice = $request->input('schedulePrice');
+
+        // Store the data in the session
+        session([
+            'ret_sched_id' => $scheduleId,
+            'ret_sched_type' => $scheduleType,
+            'ret_sched_price' => $schedulePrice,
+        ]);
     }
     
 

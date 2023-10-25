@@ -118,6 +118,10 @@
                         ($seniorCount * ($dep_sched_price * 0.20));
         
                 $total = $depart_total + $return_total;
+                // Store the variables in the session
+                session(['ret_total' => $ret_total]);
+                session(['totalDiscount' => $totalDiscount]);
+                session(['dep_total' => $dep_total]);
 
             } else {
                 $count_passenger = count($passengers);
@@ -153,6 +157,10 @@
                     ($seniorCount * ($dep_sched_price * 0.20));
         
                 $total = $depart_total;
+                // Store the variables in the session
+                session(['ret_total' => 0]); // Set $ret_total to 0 when there's no return trip
+                session(['totalDiscount' => $totalDiscount]);
+                session(['dep_total' => $dep_total]);
             }
         @endphp
             <!-- Total -->
@@ -195,25 +203,6 @@
                 </p>
             </div>
             <div class="block">
-
-                <div hidden>
-                <input type="hidden" name="dep_sched_id" value="{{$dep_sched_id}}">
-
-                <input type="hidden" name="dep_sched_type" value="{{$dep_sched_type}}">
-
-                <input type="hidden" name="dep_total" value="{{ $dep_total }}">
-
-                <input type="hidden" name="totalDiscount" value="{{ $totalDiscount }}">
-
-                @if(!is_null($return_date))
-                <input type="hidden" name="ret_sched_id" value="{{$ret_sched_id}}">
-
-                <input type="hidden" name="ret_total" value="{{ $ret_total }}">
-            
-                <input type="hidden" name="ret_sched_type" value="{{$ret_sched_type}}">
-                @endif
-                </div>
-
                 <div class="w-full">
                     <button type="submit" class="w-full px-5 py-2.5 text-sm font-medium text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 rounded-lg text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Proceed to Payment</button>
                 </div>

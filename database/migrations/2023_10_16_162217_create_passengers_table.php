@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('booking_id')->constrained('bookings'); // Foreign key to relate 
             $table->string('first_name');
+            $table->string('middle_name')->nullable();;
             $table->string('last_name');
             $table->date('birthdate');
             $table->string('gender');

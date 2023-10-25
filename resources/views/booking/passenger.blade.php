@@ -49,22 +49,9 @@
                     
                     @include('layouts.passenger-info')
 
-                    <input type="hidden" name="passenger" value="{{$passenger}}" required>
-                    <input type="hidden" name="origin" value="{{$origin}}">
-                    <input type="hidden" name="trip_type" value="{{$trip_type}}">
-                    <input type="hidden" name="destination" value="{{$destination}}">
-
-                    <input type="hidden" name="dep_sched_id" value="{{$dep_sched_id}}" required>
-                    <input type="hidden" name="dep_sched_type" value="{{$dep_sched_type}}" required>
-                    <input type="hidden" name="dep_sched_price" value="{{$dep_sched_price}}" required>
                     <input type="hidden" name="depart_depart_valid" value="{{$depart_date}}" required>
+                    
                     <input type="hidden" name="return_depart_valid" value="{{$return_date}}">
-
-                    @if (!is_null($return_date))
-                    <input type="hidden" name="ret_sched_id" value="{{$ret_sched_id}}" required>
-                    <input type="hidden" name="ret_sched_type" value="{{$ret_sched_type}}" required>
-                    <input type="hidden" name="ret_sched_price" value="{{$ret_sched_price}}" required>
-                    @endif
                     
                     <div class="flex justify-between">
                         <button id="backButton" type="button" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-900 focus:outline-none bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">

@@ -8,21 +8,21 @@
     </div>
     <div class="w-full">
         <label for="firstname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name<span class="text-red-600">*</span></label>
-        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("firstname{$x}") }}" required>
+        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("firstname{$x}") }}" style="text-transform: capitalize;" required>
         @error("firstname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="middlename{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle Name</label>
-        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("middlename{$x}") }}">
+        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("middlename{$x}") }}" style="text-transform: capitalize;">
         @error("middlename{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="lastname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name<span class="text-red-600">*</span></label>
-        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("lastname{$x}") }}" required>
+        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("lastname{$x}") }}" style="text-transform: capitalize;" required>
         @error("lastname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror

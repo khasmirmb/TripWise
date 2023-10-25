@@ -2,7 +2,9 @@
 
     @include('components.navigation')
 
-    @include('layouts.progress-passenger')
+    @include('layouts.progress-complete')
+
+    
 
 
 @include('partials.footer')

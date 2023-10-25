@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\ContactPerson;
+use App\Models\Passenger;
 use App\Models\Payment;
 use App\Models\Schedules;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use thiagoalessio\TesseractOCR\TesseractOCR;
+use Illuminate\Support\Str;
 use Curl;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -34,7 +39,7 @@ class PaymentController extends Controller
             'address' => 'required|string',
         ];
     
-        $passengerCount = $request->input('passenger');
+        $passengerCount = session('passenger');
 
         $contactPerson = [
             'name' => $request->input('contact-person'),
@@ -148,19 +153,27 @@ class PaymentController extends Controller
             }
         }
 
-        // Use old() to retrieve old input data
-        $trip_type = old('trip_type', $request->input('trip_type'));
-        $origin = old('origin', $request->input('origin'));
-        $destination = old('destination', $request->input('destination'));
-        $depart_date = old('depart_depart_valid', $request->input('depart_depart_valid'));
-        $return_date = old('return_depart_valid', $request->input('return_depart_valid'));
-        $passenger = old('passenger', $request->input('passenger'));
-        $dep_sched_id = old('dep_sched_id', $request->input('dep_sched_id'));
-        $dep_sched_type = old('dep_sched_type', $request->input('dep_sched_type'));
-        $dep_sched_price = old('dep_sched_price', $request->input('dep_sched_price'));
-        $ret_sched_id = old('ret_sched_id', $request->input('ret_sched_id'));
-        $ret_sched_type = old('ret_sched_type', $request->input('ret_sched_type'));
-        $ret_sched_price = old('ret_sched_price', $request->input('ret_sched_price'));
+        // Store in a session Passenger and Contact Person
+        session(['passengers' => $passengers]);
+
+        session(['contactPerson' => $contactPerson]);
+
+        // Retrieve session variables
+        $trip_type = session('trip_type');
+        $origin = session('origin');
+        $destination = session('destination');
+        $passenger = session('passenger');
+
+        $depart_date = session('depart_date');
+        $return_date = session('return_date');
+        
+        $dep_sched_id = session('dep_sched_id');
+        $dep_sched_type = session('dep_sched_type');
+        $dep_sched_price = session('dep_sched_price');
+
+        $ret_sched_id = session('ret_sched_id');
+        $ret_sched_type = session('ret_sched_type');
+        $ret_sched_price = session('ret_sched_price');
         
         return view('booking.payment', compact(
             'trip_type',
@@ -186,9 +199,12 @@ class PaymentController extends Controller
     {
         
         $payment_method = $request->input('payment_method');
-        $dep_total = $request->input('dep_total');
-        $ret_total = $request->input('ret_total');
-        $totalDiscount = $request->input('totalDiscount');
+
+        $ret_total = session('ret_total');
+        $dep_total = session('dep_total');
+        $totalDiscount = session('totalDiscount');
+
+        session()->forget(['ret_total', 'totalDiscount', 'dep_total']);
         
         $total_amount = ($dep_total + $ret_total) - $totalDiscount;
         
@@ -208,8 +224,132 @@ class PaymentController extends Controller
 
         // If over the counter payment
         if($payment_method == "counter"){
+
+            $user = Auth::id();
+
+            $dep_sched_id = session('dep_sched_id');
+
+            $ret_sched_id = session('ret_sched_id');
+
+            $contactPersonData = session('contactPerson');
+
+            if (!empty($contactPersonData)) {
+                $contactPerson = new ContactPerson();
+                $contactPerson->name = $contactPersonData['name'];
+                $contactPerson->phone = $contactPersonData['phone'];
+                $contactPerson->email = $contactPersonData['email'];
+                $contactPerson->address = $contactPersonData['address'];
+
+                $contactPerson->save(); // Save the record to the database
+
+                $newContactPersonId = $contactPerson->id;
+            }
+
+            // Generate random 4 letters
+            $letters = Str::random(4);
+            // Generate random 10 numbers
+            $numbers = Str::random(11);
+
+            $referenceNumber = $letters . '-' . $numbers;
+
+            // Check for uniqueness
+            do {
+                $referenceNumber = $letters . '-' . $numbers;
+            } while (Booking::where('reference_number', $referenceNumber)->exists());
+
+            $booking = new Booking();
+            $booking->user_id = $user;
+            $booking->contact_person_id = $newContactPersonId;
+            $booking->schedule_id = $dep_sched_id;
+            $booking->payment_id = null;
+            $booking->status = 'Pending';
+            $booking->reference_number = $referenceNumber;
+
+            $booking->save(); // Save the record to the database
+
+            $newBookingId = $booking->id;
+
+            $passengers = session('passengers');
+
+            if (!empty($passengers)) {
+                foreach ($passengers as $passengerData) {
+                    $passenger = new Passenger();
+                    $passenger->first_name = $passengerData['firstname'];
+                    $passenger->middle_name = $passengerData['middlename'];
+                    $passenger->last_name = $passengerData['lastname'];
+                    $passenger->gender = $passengerData['gender'];
+                    $passenger->birthdate = $passengerData['birthday'];
+                    $passenger->discount_type = $passengerData['classification'];
+                    $passenger->booking_id = $newBookingId;
+                    
+                    // Save the passenger record to the database
+                    $passenger->save();
+                }
+            }
+
+
+            if ($ret_sched_id) {
+                // Generate random 4 letters
+                $letters = Str::random(4);
+                // Generate random 10 numbers
+                $numbers = Str::random(11);
+                
+                // Check for uniqueness
+                do {
+                    $referenceNumber = $letters . '-' . $numbers;
+                } while (Booking::where('reference_number', $referenceNumber)->exists());
             
-            return view('booking.complete');
+                $bookingReturn = new Booking();
+                $bookingReturn->user_id = $user;
+                $bookingReturn->contact_person_id = $newContactPersonId;
+                $bookingReturn->schedule_id = $ret_sched_id;
+                $bookingReturn->payment_id = null;
+                $bookingReturn->status = 'Pending';
+                $bookingReturn->reference_number = $referenceNumber;
+            
+                $bookingReturn->save(); // Save the record to the database
+
+                $newbookingReturnid = $bookingReturn->id;
+
+                if (!empty($passengers)) {
+                    foreach ($passengers as $passengerData) {
+                        $passenger = new Passenger();
+                        $passenger->first_name = $passengerData['firstname'];
+                        $passenger->middle_name = $passengerData['middlename'];
+                        $passenger->last_name = $passengerData['lastname'];
+                        $passenger->gender = $passengerData['gender'];
+                        $passenger->birthdate = $passengerData['birthday'];
+                        $passenger->discount_type = $passengerData['classification'];
+                        $passenger->booking_id = $newbookingReturnid;
+                        
+    
+                        // Save the passenger record to the database
+                        $passenger->save();
+                    }
+                }
+
+            }
+
+            $request->session()->forget('contactPerson');
+                /// Where I Stopped
+            $request->session()->forget('passengers');
+
+            $request->session()->forget([
+                'trip_type',
+                'origin',
+                'destination',
+                'passenger',
+                'depart_date',
+                'return_date',
+                'dep_sched_id',
+                'dep_sched_type',
+                'dep_sched_price',
+                'ret_sched_id',
+                'ret_sched_type',
+                'ret_sched_price'
+            ]);
+            
+            return redirect()->route('booking.otc');
         }
         // If its over the counter payment
         else{
@@ -234,7 +374,6 @@ class PaymentController extends Controller
                         'cancel_url' => 'http://localhost:8000/booking/search',
                         'description'   => 'TripWise Fare Booking',
                         'send_email_receipt' => true,
-                        
                     ],
                     
                 ]
@@ -256,6 +395,14 @@ class PaymentController extends Controller
     }
 
     /**
+     * Payment when it's a OTC
+     */
+    public function OTCBooking()
+    {
+        return view('booking.complete');
+    }
+
+    /**
      * Payment when it's successful
      */
     public function paymentSuccess()
@@ -269,8 +416,6 @@ class PaymentController extends Controller
                         ->get();
         dd($response);
     }
-    
-
     
     /**
      * Show the form for creating a new resource.

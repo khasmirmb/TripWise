@@ -147,22 +147,59 @@
 
                             $('#depart_fare_price').html(scheduleResponse.price);
 
-                            $('input[name="dep_sched_id"]').val(scheduleId);
-
-                            $('input[name="dep_sched_type"]').val(scheduleResponse.type);
-
-                            $('input[name="dep_sched_price"]').val(scheduleResponse.price);
-
                             $("input[name='depart_depart_valid']").val(scheduleResponse.departure_date);
 
+                            var scheduleType = scheduleResponse.type;
+                            var schedulePrice = scheduleResponse.price;
+
+                            // Send an AJAX request to your Laravel controller
+                            $.ajax({
+                                type: 'GET',
+                                url: '/store-one-info', // Replace with the actual URL
+                                data: {
+                                    scheduleId: scheduleId,
+                                    scheduleType: scheduleType,
+                                    schedulePrice: schedulePrice,
+                                },
+                                error: function(xhr, status, error) {
+                                    // Handle the error
+                                    console.error("Error: " + error);
+
+                                    // Show the error message with the custom HTML structure
+                                    var toastDanger = document.getElementById('toast-danger');
+                                    toastDanger.style.display = 'block';
+
+                                    // Set the error message in the custom structure
+                                    var errorMessage = document.querySelector('#toast-danger #error-message');
+                                    errorMessage.textContent = "There was an issue. Please try again";
+                                }
+                            });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
+                            // Handle the error
                             console.error("Error: " + error);
+
+                            // Show the error message with the custom HTML structure
+                            var toastDanger = document.getElementById('toast-danger');
+                            toastDanger.style.display = 'block';
+
+                            // Set the error message in the custom structure
+                            var errorMessage = document.querySelector('#toast-danger #error-message');
+                            errorMessage.textContent = "There was an issue. Please try again";
                         }
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
+                    // Handle the error
                     console.error("Error: " + error);
+
+                    // Show the error message with the custom HTML structure
+                    var toastDanger = document.getElementById('toast-danger');
+                    toastDanger.style.display = 'block';
+
+                    // Set the error message in the custom structure
+                    var errorMessage = document.querySelector('#toast-danger #error-message');
+                    errorMessage.textContent = "There was an issue. Please try again";
                 }
             });
         });

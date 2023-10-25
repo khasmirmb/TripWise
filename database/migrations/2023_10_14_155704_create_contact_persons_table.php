@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('contact_persons', function (Blueprint $table) {
             $table->id();
-            $table->string('fullname');
+            $table->string('name');
             $table->string('email');
-            $table->string('phone_number');
+            $table->string('phone');
+            $table->string('address');
             
             // Define the foreign key constraint
             $table->timestamps();

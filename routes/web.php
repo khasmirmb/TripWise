@@ -65,14 +65,22 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::match(['get', 'post'], '/booking/passenger', [PassengerController::class, 'input'])->name('booking.passenger.show');
 
     // Show the payment summary and trip summary
-    Route::post('/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
+    Route::match(['get', 'post'], '/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
 
     Route::post('/booking/process', [PaymentController::class, 'paymentProcess'])->name('booking.payment.process');
 
     Route::get('/booking/success', [PaymentController::class, 'paymentSuccess'])->name('booking.success');
 
+    Route::get('/booking/otc', [PaymentController::class, 'OTCBooking'])->name('booking.otc');
+
     // Get schedule information from DB
     Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);
+
+    // Get Trip information and store in a session
+    Route::get('/store-one-info', [PassengerController::class, 'storeOneInfo']);
+
+    // Get Trip information and store in a session
+    Route::get('/store-round-info', [PassengerController::class, 'storeRoundInfo']);
 
     // Get ferry information from DB
     Route::get('/get-ferry-info', [FerriesController::class, 'getFerryInfo']);
