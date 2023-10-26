@@ -5,6 +5,7 @@ use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
 use Illuminate\Support\Facades\Auth;
@@ -42,13 +43,13 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Fallback Errors Route
 //Route::fallback(function () {
-//   return view('partials.404');
+//  return view('partials.404');
 //});
 
 // Non-Login Routes
 Route::group(['middleware' => ['guest']], function() {
 
-    
+    Route::get('/generate-pdf', [PdfController::class, 'generate'])->name('generate.pdf');
 
 });
 
@@ -71,6 +72,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     Route::get('/booking/success', [PaymentController::class, 'paymentSuccess'])->name('booking.success');
 
+    // Over the Counter Pamyent
     Route::get('/booking/otc', [PaymentController::class, 'OTCBooking'])->name('booking.otc');
 
     // Get schedule information from DB

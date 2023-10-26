@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('birthdate');
             $table->string('gender');
-            $table->string('discount_type')->nullable(); // Discount type field
+            $table->string('accommodation');
+            $table->string('discount_type');
 
             $table->timestamps();
         });

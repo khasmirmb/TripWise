@@ -197,28 +197,30 @@ class PaymentController extends Controller
      */
     public function paymentProcess(Request $request)
     {
-        
         $payment_method = $request->input('payment_method');
-
         $ret_total = session('ret_total');
         $dep_total = session('dep_total');
         $totalDiscount = session('totalDiscount');
-
-        session()->forget(['ret_total', 'totalDiscount', 'dep_total']);
         
         $total_amount = ($dep_total + $ret_total) - $totalDiscount;
         
         // Adjust the total based on the payment method
+        $service_charge = 0; // Initializing the service charge
+
         if ($payment_method === 'gcash') {
-            $total_amount += $total_amount * 0.025; // Increase by 2.5% for 'gcash'
+            $service_charge = $total_amount * 0.025;
+            $total_amount += $service_charge; // Increase by 2.5% for 'gcash'
         } elseif ($payment_method === 'paymaya') {
-            $total_amount += $total_amount * 0.020; // Increase by 2.0% for 'paymaya'
+            $service_charge = $total_amount * 0.020;
+            $total_amount += $service_charge; // Increase by 2.0% for 'paymaya'
         } elseif ($payment_method === 'grab_pay') {
-            $total_amount += $total_amount * 0.022; // Increase by 2.2% for 'grab_pay'
+            $service_charge = $total_amount * 0.022;
+            $total_amount += $service_charge; // Increase by 2.2% for 'grab_pay'
         } elseif ($payment_method === 'card') {
-            $total_amount += $total_amount * 0.035; // Increase by 3.5% for 'card'
+            $service_charge = $total_amount * 0.035;
+            $total_amount += $service_charge; // Increase by 3.5% for 'card'
         }
-        
+
         // Convert the adjusted total_amount to cents
         $total = intval($total_amount * 100);
 
@@ -228,10 +230,27 @@ class PaymentController extends Controller
             $user = Auth::id();
 
             $dep_sched_id = session('dep_sched_id');
-
+            $dep_sched_type = session('dep_sched_type');
             $ret_sched_id = session('ret_sched_id');
+            $ret_sched_type = session('ret_sched_type');
 
             $contactPersonData = session('contactPerson');
+
+            $payment = new Payment();
+            $payment->payment_amount = $total_amount;
+            $payment->depart_total = $dep_total;
+            $payment->return_total = $ret_total;
+            $payment->discount_total = $totalDiscount;
+            $payment->service_total = $service_charge;
+            $payment->payment_date = null;
+            $payment->payment_method = 'OTC';
+            $payment->payment_status = 'Pending';
+
+            $payment->save(); // Save the record to the database
+
+            $paymentId = $payment->id;
+
+            session(['payment_id' => $paymentId]);
 
             if (!empty($contactPersonData)) {
                 $contactPerson = new ContactPerson();
@@ -243,6 +262,8 @@ class PaymentController extends Controller
                 $contactPerson->save(); // Save the record to the database
 
                 $newContactPersonId = $contactPerson->id;
+
+                session(['contact_person_id' => $newContactPersonId]);
             }
 
             // Generate random 4 letters
@@ -261,7 +282,7 @@ class PaymentController extends Controller
             $booking->user_id = $user;
             $booking->contact_person_id = $newContactPersonId;
             $booking->schedule_id = $dep_sched_id;
-            $booking->payment_id = null;
+            $booking->payment_id = $paymentId;
             $booking->status = 'Pending';
             $booking->reference_number = $referenceNumber;
 
@@ -269,7 +290,10 @@ class PaymentController extends Controller
 
             $newBookingId = $booking->id;
 
+            session(['depart_book_id' => $newBookingId]);
+
             $passengers = session('passengers');
+
 
             if (!empty($passengers)) {
                 foreach ($passengers as $passengerData) {
@@ -279,11 +303,13 @@ class PaymentController extends Controller
                     $passenger->last_name = $passengerData['lastname'];
                     $passenger->gender = $passengerData['gender'];
                     $passenger->birthdate = $passengerData['birthday'];
+                    $passenger->accommodation = $dep_sched_type;
                     $passenger->discount_type = $passengerData['classification'];
                     $passenger->booking_id = $newBookingId;
                     
                     // Save the passenger record to the database
                     $passenger->save();
+
                 }
             }
 
@@ -303,13 +329,15 @@ class PaymentController extends Controller
                 $bookingReturn->user_id = $user;
                 $bookingReturn->contact_person_id = $newContactPersonId;
                 $bookingReturn->schedule_id = $ret_sched_id;
-                $bookingReturn->payment_id = null;
+                $bookingReturn->payment_id = $paymentId;
                 $bookingReturn->status = 'Pending';
                 $bookingReturn->reference_number = $referenceNumber;
             
                 $bookingReturn->save(); // Save the record to the database
 
                 $newbookingReturnid = $bookingReturn->id;
+
+                session(['return_book_id' => $newbookingReturnid]);
 
                 if (!empty($passengers)) {
                     foreach ($passengers as $passengerData) {
@@ -319,35 +347,16 @@ class PaymentController extends Controller
                         $passenger->last_name = $passengerData['lastname'];
                         $passenger->gender = $passengerData['gender'];
                         $passenger->birthdate = $passengerData['birthday'];
+                        $passenger->accommodation = $ret_sched_type;
                         $passenger->discount_type = $passengerData['classification'];
                         $passenger->booking_id = $newbookingReturnid;
                         
-    
                         // Save the passenger record to the database
                         $passenger->save();
                     }
                 }
 
             }
-
-            $request->session()->forget('contactPerson');
-                /// Where I Stopped
-            $request->session()->forget('passengers');
-
-            $request->session()->forget([
-                'trip_type',
-                'origin',
-                'destination',
-                'passenger',
-                'depart_date',
-                'return_date',
-                'dep_sched_id',
-                'dep_sched_type',
-                'dep_sched_price',
-                'ret_sched_id',
-                'ret_sched_type',
-                'ret_sched_price'
-            ]);
             
             return redirect()->route('booking.otc');
         }
@@ -397,9 +406,91 @@ class PaymentController extends Controller
     /**
      * Payment when it's a OTC
      */
-    public function OTCBooking()
+    public function OTCBooking(Request $request)
     {
-        return view('booking.complete');
+        // Check for the presence of necessary data
+        if (!session('payment_id') || !session('contact_person_id') || !session('depart_book_id')) {
+            return view('partials.404');
+        }
+        // Payment Info ID
+        $paymentId = session('payment_id');
+
+        // Booking Contact Info ID
+        $contactPersonId = session('contact_person_id');
+
+        // Depart Booking Passenger and ID
+        $departBookId = session('depart_book_id');
+
+        // Return Booking Passenger and ID
+        $returnBookId = session('return_book_id');
+
+        // Remove all the session that is being use after completed
+        $request->session()->forget([
+            'payment_id',
+            'contact_person_id',
+            'depart_book_id',
+            'return_book_id',
+        ]);
+        $request->session()->forget(['ret_total', 'totalDiscount', 'dep_total']);
+        $request->session()->forget('contactPerson');
+        $request->session()->forget('passengers');
+        $request->session()->forget([
+            'trip_type',
+            'origin',
+            'destination',
+            'passenger',
+            'depart_date',
+            'return_date',
+            'dep_sched_id',
+            'dep_sched_type',
+            'dep_sched_price',
+            'ret_sched_id',
+            'ret_sched_type',
+            'ret_sched_price'
+        ]);
+
+        // Fetch the necessary data based on the IDs
+        // One way only
+        $payment = Payment::find($paymentId);
+
+        $contactPerson = ContactPerson::find($contactPersonId);
+
+        $departBooking = Booking::find($departBookId);
+        $departPassengers = Passenger::where('booking_id', $departBookId)->get();
+        
+        $depSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
+        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
+        ->select('bookings.*', 'schedules.*', 'ferries.*')
+        ->where('bookings.id', $departBookId)
+        ->first();
+
+        // If there's a round trip
+        if ($returnBookId) {
+            $returnBooking = Booking::find($returnBookId);
+            $returnPassengers = Passenger::where('booking_id', $returnBookId)->get();
+
+            $retSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
+            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
+            ->select('bookings.*', 'schedules.*', 'ferries.*')
+            ->where('bookings.id', $returnBookId)
+            ->first();
+
+        } else {
+            $retSchedData = null;
+            $returnBooking = null;
+            $returnPassengers = [];
+        }
+        
+        return view('booking.complete', compact(
+            'payment',
+            'contactPerson',
+            'departBooking',
+            'depSchedData',
+            'departPassengers',
+            'returnBooking',
+            'retSchedData',
+            'returnPassengers'
+        ));
     }
 
     /**

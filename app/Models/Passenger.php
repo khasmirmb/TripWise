@@ -11,5 +11,5 @@ class Passenger extends Model
 
     protected $table = 'passengers';
 
-    protected $fillable = ['booking_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'gender', 'discount_type'];
+    protected $fillable = ['booking_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'gender', 'accommodation', 'discount_type'];
 }
