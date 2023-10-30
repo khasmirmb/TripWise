@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->decimal('payment_amount', 10, 2);
             $table->decimal('depart_total', 10, 2);
             $table->decimal('return_total', 10, 2);
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('payment_date')->nullable();
             $table->string('payment_method');
             $table->string('payment_status'); // e.g., Successful, Pending, Failed
+            $table->string('paymongo_id')->nullable();
 
             $table->timestamps();
         });

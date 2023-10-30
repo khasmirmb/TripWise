@@ -40,7 +40,7 @@
     </div>
     <div class="w-full">
         <label for="birthday{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Birth<span class="text-red-600">*</span></label>
-        <input type="date" name="birthday{{$x}}" id="birthday{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("birthday{$x}") }}" max="{{ now()->toDateString() }}" required>
+        <input type="date" name="birthday{{$x}}" id="birthday{{$x}}" class="birthday-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("birthday{$x}") }}" max="{{ now()->toDateString() }}" required>
         @error("birthday{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
@@ -83,8 +83,6 @@
 </div>
 @endfor
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script type="module">
     $(document).ready(function () {
         @for ($x = 1; $x <= $passenger; $x++)
@@ -113,5 +111,8 @@
                 localStorage.setItem("discountToggleState{{$x}}", discountToggle{{$x}}.prop("checked"));
             });
         @endfor
+        
+        $('.birthday-input').val('2005-01-01');
+
     });
 </script>

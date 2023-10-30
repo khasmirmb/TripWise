@@ -19,7 +19,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Booking Date</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $departBooking->created_at->format('M d, Y H:i:s a') }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $departBooking->created_at->format('M d, Y H:i a') }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Vessel</label>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Full Name</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ $passenger->last_name }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ substr($passenger->middle_name, 0, 1) }} {{ $passenger->last_name }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Gender</label>
@@ -63,6 +63,9 @@
                 </div>
             </div>
             @endforeach
+            <div class="departure-pdf flex w-full justify-end">
+                <a href="{{ route('depart.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'departBookId' => $departBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800">Download</a>
+            </div>
             @endif
 
             @if ($returnBooking)
@@ -90,7 +93,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Full Name</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ $passenger->last_name }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ substr($passenger->middle_name, 0, 1) }} {{ $passenger->last_name }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Gender</label>
@@ -122,6 +125,9 @@
                 </div>
             </div>
             @endforeach
+            <div class="return-pdf flex w-full justify-end">
+                <a href="{{ route('return.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'returnBookId' => $returnBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800" target="_blank">Download</a>
+            </div>
             @endif
         </div>
     </section>

@@ -207,11 +207,24 @@
         </button>
     </div>
 
+    <input type="hidden" name="depart_schedule_id">
+
+    <input type="hidden" name="depart_fare_type">
+
+    <input type="hidden" name="return_schedule_id">
+
+    <input type="hidden" name="return_fare_type">
+
     <script type="module">
         $(document).ready(function () {
             $("#continueButton").click(function () {
                 var departureDate = $("input[name='depart_depart_valid']").val();
                 var returnDate = $("input[name='return_depart_valid']").val();
+                var departScheduleId = $("input[name='depart_schedule_id']").val();
+                var departFareType = $("input[name='depart_fare_type']").val();
+                var returnScheduleId = $("input[name='return_schedule_id']").val();
+                var returnFareType = $("input[name='return_fare_type']").val();
+                var passengerCount = {{$passenger}};
 
                 if (returnDate !== '' && new Date(departureDate) >= new Date(returnDate)) {
                     $('#error-container').show()
@@ -228,7 +241,65 @@
                 }
                 @endif
                  else {
-                    $("form").submit(); // Submit the form if the validation passes
+                    
+                    $.ajax({
+                        type: 'GET',
+                        url: '/depart-check-seat-availability', // Replace with the appropriate route
+                        data: {
+                            scheduleId: departScheduleId,
+                            fareType: departFareType,
+                            passengerCount: passengerCount, // Pass the passenger count
+                        },
+                        success: function (response) {
+                            // If the response indicates availability, submit the form
+                            if (response.available) {
+  
+                                @if (!is_null($return_date))
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/return-check-seat-availability', // Replace with the appropriate route
+                                    data: {
+                                        scheduleId: returnScheduleId,
+                                        fareType: returnFareType,
+                                        passengerCount: passengerCount, // Pass the passenger count
+                                    },
+                                    success: function (response) {
+                                        // If the response indicates availability, submit the form
+                                        if (response.available) {
+            
+                                            $("form").submit(); // Submit the form if the
+
+                                        } else {
+                                            // Show an error if the return date or accommodation is fully booked
+                                            $('#error-container').show()
+                                            $('#error-message').html(" The accommodation is fully booked. Please choose a different accommodation or return date.");
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Handle errors if necessary
+                                        console.error(xhr, status, error);
+                                    }
+                                });
+                                @else
+
+                                $("form").submit(); // Submit the form if the
+                                
+                                @endif
+                                
+
+                            } else {
+                                // Show an error if the depart date or accommodation is fully booked
+                                $('#error-container').show()
+                                $('#error-message').html(" The selected accommodation is fully booked. Please choose a different accommodation or depart date.");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle errors if necessary
+                            console.error(xhr, status, error);
+                        }
+                    });
+
+
                 }
             });
         });

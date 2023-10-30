@@ -48,7 +48,7 @@ class SchedulesController extends Controller
             ->where('departure_date', '>=', $validated_date)
             ->where('departure_date', '>=', $today)
             ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
-            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'route', 'image')
+            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'image')
             ->orderBy('departure_date', 'asc')
             ->orderBy('departure_time', 'asc')
             ->get();
@@ -65,7 +65,7 @@ class SchedulesController extends Controller
             ->where('arrival_port', '=', $inputs['origin'])
             ->where('departure_date', '>=', $ret_validated_date)
             ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
-            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'route', 'image')
+            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'image')
             ->orderBy('departure_date', 'asc')
             ->orderBy('departure_time', 'asc')
             ->get();

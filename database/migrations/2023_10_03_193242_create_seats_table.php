@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ferries', function (Blueprint $table) {
+        Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->integer('capacity');
-            $table->string('image')->nullable();
-            // Other ferry-related fields can be added here
-
+            $table->foreignId('ferry_id')->constrained('ferries');
+            $table->string('seat_number');
+            $table->string('class');
+            $table->string('seat_status');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ferries');
+        Schema::dropIfExists('seats');
     }
 };

@@ -25,7 +25,7 @@ class Seeder3 extends Seeder
             ['name' => 'Isabela'],
         ];
 
-        $startDate = Carbon::parse('2023-10-20');
+        $startDate = Carbon::parse('2023-10-28');
         $endDate = Carbon::parse('2023-11-30');
 
         for ($i = 0; $i < 50; $i++) {

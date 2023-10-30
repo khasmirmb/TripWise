@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('schedule_id')->constrained('schedules'); // Foreign key to relate 
             $table->foreignId('contact_person_id')->constrained('contact_persons'); // Foreign key to relate 
             $table->foreignId('payment_id')->constrained('payments'); // Foreign key to relate can be null because of OTC payment
-
+            $table->string('trip_type');
             $table->string('status'); // Status (e.g., Pending, Confirmed, Cancelled)
             $table->string('reference_number');
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
+use App\Http\Controllers\SeatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +50,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Non-Login Routes
 Route::group(['middleware' => ['guest']], function() {
 
-    Route::get('/generate-pdf', [PdfController::class, 'generate'])->name('generate.pdf');
+
 
 });
 
@@ -72,8 +73,15 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     Route::get('/booking/success', [PaymentController::class, 'paymentSuccess'])->name('booking.success');
 
+    // Online Pamyent
+    Route::get('/booking/online', [PaymentController::class, 'OnlinePaymentBooking'])->name('booking.online');
+
     // Over the Counter Pamyent
     Route::get('/booking/otc', [PaymentController::class, 'OTCBooking'])->name('booking.otc');
+
+    // Generate PDF
+    Route::get('/depart-generate-pdf', [PdfController::class, 'GenerateDepart'])->name('depart.generate.pdf');
+    Route::get('/return-generate-pdf', [PdfController::class, 'GenerateReturn'])->name('return.generate.pdf');
 
     // Get schedule information from DB
     Route::get('/get-schedule', [SchedulesController::class, 'getSchedule']);
@@ -86,6 +94,11 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     // Get ferry information from DB
     Route::get('/get-ferry-info', [FerriesController::class, 'getFerryInfo']);
+
+    // Check availability of schedule if full or not
+    Route::get('/depart-check-seat-availability', [SeatController::class, 'DepartCheckAvailability']);
+
+    Route::get('/return-check-seat-availability', [SeatController::class, 'ReturnCheckAvailability']);
     
 });
 

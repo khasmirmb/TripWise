@@ -131,6 +131,10 @@
                         data: { scheduleId: scheduleId },
                         success: function (ferryResponse) {
                             // Handle the response from the server for ferry information
+                            $("input[name='depart_schedule_id']").val(scheduleId);
+
+                            $("input[name='depart_fare_type']").val(scheduleResponse.type);
+
                             $('#depart_dep_port').html(scheduleResponse.departure_port);
 
                             $('#depart_ariv_port').html(scheduleResponse.arrival_port);
@@ -163,43 +167,37 @@
                                 },
                                 error: function(xhr, status, error) {
                                     // Handle the error
-                                    console.error("Error: " + error);
-
+                                    
                                     // Show the error message with the custom HTML structure
-                                    var toastDanger = document.getElementById('toast-danger');
+                                    var toastDanger = document.getElementById('toast-error');
                                     toastDanger.style.display = 'block';
 
                                     // Set the error message in the custom structure
-                                    var errorMessage = document.querySelector('#toast-danger #error-message');
-                                    errorMessage.textContent = "There was an issue. Please try again";
+                                    var errorMessage = document.querySelector('#toast-error #error-message');
+                                    errorMessage.textContent = error;
                                 }
                             });
                         },
                         error: function(xhr, status, error) {
                             // Handle the error
-                            console.error("Error: " + error);
-
                             // Show the error message with the custom HTML structure
-                            var toastDanger = document.getElementById('toast-danger');
+                            var toastDanger = document.getElementById('toast-error');
                             toastDanger.style.display = 'block';
 
                             // Set the error message in the custom structure
-                            var errorMessage = document.querySelector('#toast-danger #error-message');
-                            errorMessage.textContent = "There was an issue. Please try again";
+                            var errorMessage = document.querySelector('#toast-error #error-message');
+                            errorMessage.textContent = error;
                         }
                     });
                 },
                 error: function(xhr, status, error) {
-                    // Handle the error
-                    console.error("Error: " + error);
-
                     // Show the error message with the custom HTML structure
-                    var toastDanger = document.getElementById('toast-danger');
+                    var toastDanger = document.getElementById('toast-error');
                     toastDanger.style.display = 'block';
 
                     // Set the error message in the custom structure
-                    var errorMessage = document.querySelector('#toast-danger #error-message');
-                    errorMessage.textContent = "There was an issue. Please try again";
+                    var errorMessage = document.querySelector('#toast-error #error-message');
+                    errorMessage.textContent = error;
                 }
             });
         });
