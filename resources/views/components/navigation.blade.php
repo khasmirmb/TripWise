@@ -229,7 +229,7 @@
           </svg>Login</button>
 
           <!-- Login Modal -->
-          @include('auth.login')
+          @include('auth.login-modal')
 
       </div>
   </div>

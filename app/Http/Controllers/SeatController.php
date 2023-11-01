@@ -15,7 +15,9 @@ class SeatController extends Controller
      */
     public function index()
     {
-        //
+        $seats = Seat::all(); // Replace with your actual model and query
+        
+        return view('booking.seating', compact('seats'));
     }
 
     /**
@@ -82,6 +84,7 @@ class SeatController extends Controller
 
         // Calculate the number of seats already booked for the specific schedule and fare
         $bookedSeatsCount = Seat::where('ferry_id', $schedule->ferry_id)
+            ->where('schedule_id', $schedule->id)
             ->where('class', $fare->type)
             ->where('seat_status', 'booked')
             ->count();

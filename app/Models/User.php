@@ -19,8 +19,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $guarded = [
-
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'firstname',
+        'email',
+        'password',
+        'type'
     ];
 
     /**
@@ -46,7 +51,7 @@ class User extends Authenticatable
     protected function type(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["user", "admin"][$value],
+            get: fn ($value) =>  ["user", "admin", "staff"][$value],
         );
     }
 }

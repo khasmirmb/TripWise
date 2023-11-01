@@ -19,20 +19,39 @@ class Seeder4 extends Seeder
         $ferries = DB::table('ferries')->get();
 
         foreach ($ferries as $ferry) {
+            
+            $schedules = DB::table('schedules')->where('ferry_id', $ferry->id)->get();
+
             $capacity = $ferry->capacity;
 
-            // Determine the seat class based on the ferry's ID or other criteria
-            $class = $ferry->id % 2 === 0 ? 'Economy' : 'Aircon';
+            // Calculate the capacity for each class
+            $economyCapacity = $capacity / 2;
+            $airconCapacity = $capacity / 2;
 
-            // Generate seat numbers for the given class (e.g., 'Economy 1', 'Aircon2', ...)
-            for ($i = 1; $i <= $capacity; $i++) {
-                // Create a seat entry in the 'seats' table
-                DB::table('seats')->insert([
-                    'ferry_id' => $ferry->id,
-                    'seat_number' => $class . $i,
-                    'class' => $class,
-                    'seat_status' => 'available',
-                ]);
+            foreach ($schedules as $schedule) {
+                // Generate seat numbers for "Economy" class (e.g., 'Economy 1', 'Economy 2', ...)
+                for ($i = 1; $i <= $economyCapacity; $i++) {
+                    // Create a seat entry in the 'seats' table for "Economy" class
+                    DB::table('seats')->insert([
+                        'ferry_id' => $ferry->id,
+                        'schedule_id' => $schedule->id,
+                        'seat_number' => 'E' . $i,
+                        'class' => 'Economy',
+                        'seat_status' => 'available',
+                    ]);
+                }
+
+                // Generate seat numbers for "Aircon" class (e.g., 'Aircon 1', 'Aircon 2', ...)
+                for ($i = 1; $i <= $airconCapacity; $i++) {
+                    // Create a seat entry in the 'seats' table for "Aircon" class
+                    DB::table('seats')->insert([
+                        'ferry_id' => $ferry->id,
+                        'schedule_id' => $schedule->id,
+                        'seat_number' => 'A' . $i,
+                        'class' => 'Aircon',
+                        'seat_status' => 'available',
+                    ]);
+                }
             }
         }
     }

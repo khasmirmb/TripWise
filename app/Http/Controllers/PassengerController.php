@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Passenger;
 use App\Models\Schedules;
+use App\Models\Seat;
 use Illuminate\Http\Request;
 
 class PassengerController extends Controller
@@ -86,6 +87,31 @@ class PassengerController extends Controller
             'ret_sched_type' => $scheduleType,
             'ret_sched_price' => $schedulePrice,
         ]);
+    }
+
+    public function updateSeat(Request $request)
+    {
+        $passengerId = $request->input('passengerId');
+        $seatId = $request->input('selectedSeat');
+
+        $seat = Seat::find($seatId);
+
+        if ($seat) {
+            // Update the passenger's seat_number in the database
+            $passenger = Passenger::find($passengerId);
+            $passenger->seat_number = $seat->seat_number;
+            $passenger->save();
+        
+            // Update the seat_status to 'booked'
+            $seat->seat_status = 'booked';
+            $seat->save();
+        } else {
+            // Handle the case where the seat with the provided seatId was not found
+            return response()->json(['error' => 'Seat not found'], 404);
+        }
+
+        // You can return a success response
+        return response()->json(['message' => 'Seat updated successfully']);
     }
     
 

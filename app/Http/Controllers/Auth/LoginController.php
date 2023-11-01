@@ -52,6 +52,8 @@ class LoginController extends Controller
         {
             if (auth()->user()->type == 'admin') {
                 return redirect()->route('admin.home')->with('message', 'Welcome Back!');
+            }else if (auth()->user()->type == 'staff') {
+                return redirect()->route('staff.home')->with('message', 'Welcome Back!');
             }else{
                 return redirect()->route('home')->with('message', 'Welcome Back!');
             }

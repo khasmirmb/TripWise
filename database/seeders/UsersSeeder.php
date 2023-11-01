@@ -15,6 +15,13 @@ class UsersSeeder extends Seeder
     {
         $users = [
             [
+                'firstname'=>'Staff',
+                'lastname'=>'Staff',
+                'email'=>'staff@gmail.com',
+                'type'=>2,
+                'password'=> bcrypt('123'),
+            ],
+            [
                 'firstname'=>'Admin',
                 'lastname'=>'Admin',
                 'email'=>'admin@gmail.com',
