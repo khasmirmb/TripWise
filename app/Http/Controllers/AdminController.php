@@ -23,7 +23,8 @@ class AdminController extends Controller
      */
     public function staffIndex()
     {
-        return view('admin.users.staff');
+        $staffs = User::where('type', 2)->get();
+        return view('admin.users.staff', compact('staffs'));
     }
 
         /**
@@ -31,7 +32,8 @@ class AdminController extends Controller
      */
     public function adminIndex()
     {
-        return view('admin.users.admin');
+        $admins = User::where('type', 1)->get();
+        return view('admin.users.admin', compact('admins'));
     }
 
 
