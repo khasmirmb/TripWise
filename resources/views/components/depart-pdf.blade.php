@@ -95,7 +95,7 @@
 					</td>
 					<td class="row-cell">
 						<p class="text-sm">{{$departBooking->status}}</p>
-						<p class="text-sm">{{ $departBooking->created_at->format('M d, Y H:i a') }}</p>
+						<p class="text-sm">{{ $departBooking->created_at->format('M d, Y h:i A') }}</p>
 					</td>
 					<td class="row-cell">
 						<p class="text-sm">Payment Method:</p>

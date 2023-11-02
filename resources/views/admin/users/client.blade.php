@@ -4,36 +4,43 @@
 
     @include('admin.components.sidebar')
 
-      <main class="p-4 md:ml-64 pt-20 h-screen border-gray-300 dark:border-gray-600">
+      @include('admin.users.includes.sucess-message')
+
+      <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
         <div class="rounded-lg mb-4">
-          <div class="block overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800">
-              <div class="relative bg-white dark:bg-gray-800 sm:rounded-lg">
-                <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                  <div class="w-full md:w-1/2">
-                    <form class="flex items-center">
-                      <label for="simple-search" class="sr-only">Search</label>
-                      <div class="relative w-full">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                          </svg>
-                        </div>
-                        <input type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Search for a client">
-                      </div>
-                    </form>
-                  </div>
-                  <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                    <button type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800">
-                      <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+          <div class="relative bg-white dark:bg-gray-800 rounded-t-lg">
+            <div class="flex items-start justify-start p-4">
+              <p class="text-xl sm:text-3xl font-bold text-left text-gray-900 dark:text-white">
+                Client Users
+              </p>
+            </div>
+            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+              <div class="w-full md:w-1/2">
+                <form action="{{route('admin.client.search')}}" method="GET" class="flex items-center">
+                  <label for="simple-search" class="sr-only">Search</label>
+                  <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                       </svg>
-                      Add Client
-                    </button>
+                    </div>
+                    <input type="text" name="query" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Search for a client">
                   </div>
-                </div>
+                </form>
               </div>
+              <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                <a href="{{route('admin.user.add')}}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800">
+                  <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                  </svg>
+                  Add User
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="block overflow-x-auto shadow-md bg-white dark:bg-gray-800">
               <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 rounded-t-lg w-full">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 w-full">
                       <tr>
                           <th scope="col" class="p-4">
                             #
@@ -60,19 +67,23 @@
                       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                           <td class="w-4 p-4">
                               <div class="flex items-center">
-                                <div class="text-base font-semibold">{{ $loop->iteration }}</div>
+                                <div class="text-base font-semibold">{{ $clients->firstItem() + $loop->index }}</div>
                               </div>
                           </td>
                           <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                              <img class="w-10 h-10 rounded-full" src="location/{{ $client->image }}" alt="Client Image">
+                              @if ($client->image)
+                                <img class="w-10 h-10 rounded-full" src="{{asset('profile/' . $client->image)}}" alt="Client Image">
+                              @else
+                                <img class="w-10 h-10 rounded-full" src="{{asset('profile/default.png')}}" alt="Client Image">
+                              @endif
                               <div class="pl-3">
-                                <div class="text-base font-semibold">{{ $client->firstname . " " . $client->lastname }}</div>
+                                <div class="text-base font-semibold">{{ ucfirst($client->firstname) . " " . ucfirst($client->lastname) }}</div>
                                 <div class="font-normal text-gray-500">{{ $client->email }}</div>
                               </div>  
                           </th>
                           <td class="px-6 py-4">
-                            @if ($client->phone)
-                              {{ $client->phone }}
+                            @if ($client->phone_number)
+                              {{ $client->phone_number }}
                             @else
                               Null
                             @endif
@@ -108,7 +119,7 @@
                                     </svg>
                                     Edit
                                 </button>
-                                <button type="button" data-drawer-target="drawer-read-product-advanced" data-drawer-show="drawer-read-product-advanced" aria-controls="drawer-read-product-advanced" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                <button type="button" data-modal-target="client-preview{{$client->id}}" data-modal-toggle="client-preview{{$client->id}}" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-teal-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
                                         <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
@@ -124,12 +135,90 @@
                               </div>
                           </td>
                       </tr>
+
+                      @include('admin.users.includes.client-includes')
+
                       @endforeach
                   </tbody>
               </table>
           </div>
+          <div class="relative overflow-hidden bg-white rounded-b-lg shadow-md dark:bg-gray-800">
+              <nav class="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0" aria-label="Table navigation">
+                  <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                      Showing <span class="font-semibold text-gray-900 dark:text-white">{{ $clients->firstItem() }}-{{ $clients->lastItem() }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $clients->total() }}</span>
+                  </span>
+                  <ul class="inline-flex items-stretch -space-x-px">
+
+                      @php
+                          // Define how many pages to show on each side of the current page
+                          $pagesToShow = 2;
+                          $currentPage = $clients->currentPage();
+                          $lastPage = $clients->lastPage();
+                          $startPage = max($currentPage - $pagesToShow, 1);
+                          $endPage = min($currentPage + $pagesToShow, $lastPage);
+                      @endphp
+
+                      @if ($clients->onFirstPage())
+                          <li>
+                              <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-not-allowed">
+                                  <span class="sr-only">Previous</span>
+                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                  </svg>
+                              </a>
+                          </li>
+                      @else
+                          <li>
+                              <a href="{{ $clients->previousPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                  <span class="sr-only">Previous</span>
+                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                  </svg>
+                              </a>
+                          </li>
+                      @endif
+
+                      @foreach (range($startPage, $endPage) as $page)
+                          <li>
+                              <a href="{{ $clients->url($page) }}"
+                                @if ($page == $currentPage) aria-current="page"
+                                class="z-10 flex items-center justify-center px-3 py-2 text-sm leading-tight border text-teal-600 bg-teal-50 border-teal-300 hover:bg-teal-100 hover:text-teal-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                                @else
+                                class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                @endif >{{ $page }}</a>
+                          </li>
+                      @endforeach
+
+                      @if ($clients->hasMorePages())
+                          <li>
+                              <a href="{{ $clients->nextPageUrl() }}" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                  <span class="sr-only">Next</span>
+                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                          clip-rule="evenodd"></path>
+                                  </svg>
+                              </a>
+                          </li>
+                      @else
+                          <li>
+                              <a href="#" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 cursor-not-allowed">
+                                  <span class="sr-only">Next</span>
+                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd"></path>
+                                  </svg>
+                              </a>
+                          </li>
+                      @endif
+
+                  </ul>
+              </nav>
+          </div>
         </div>
       </main>
-
 
 @include('admin.partials.footer')

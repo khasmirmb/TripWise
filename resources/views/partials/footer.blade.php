@@ -1,6 +1,5 @@
         <!--Footer container-->
-        <footer
-        class="flex flex-col items-center bg-white text-center text-white dark:bg-gray-700">
+        <footer class="flex flex-col items-center bg-gray-100 text-center text-white dark:bg-gray-700 w-full mt-auto">
             <div class="container pt-9">
                 <div class="mb-9 flex justify-center">
                 <a href="#!" class="sm:mr-9 mr-4 text-neutral-800 dark:text-neutral-200">
@@ -70,7 +69,7 @@
 
             <!--Copyright section-->
             <div
-                class="w-full bg-neutral-100 p-4 text-center text-neutral-700 dark:bg-gray-800 dark:text-neutral-200">
+                class="w-full bg-white p-4 text-center text-neutral-700 dark:bg-gray-800 dark:text-neutral-200">
                 © 2023 Copyright:
                 <a
                 class="text-teal-800 dark:text-teal-400"

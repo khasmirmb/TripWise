@@ -30,4 +30,4 @@
         </script>
 
     </head>
-    <body>
+    <body class="bg-white dark:bg-gray-800 min-h-screen m-0 flex flex-col">

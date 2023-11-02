@@ -6,6 +6,7 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="shortcut icon" href="{{ asset('logo/tripwise.png') }}">
         <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,5 +28,5 @@
         </script>
 
     </head>
-    <body>
-        <div class="antialiased bg-gray-50 dark:bg-gray-900">
+    <body class="bg-gray-50 dark:bg-gray-900">
+        <div class="antialiased">

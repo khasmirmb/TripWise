@@ -19,7 +19,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Booking Date</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $departBooking->created_at->format('M d, Y H:i a') }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $departBooking->created_at->format('M d, Y h:i A') }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Vessel</label>

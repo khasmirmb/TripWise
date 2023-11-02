@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminSearchController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
@@ -123,8 +125,28 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin', [HomeController::class, 'adminHome'])->name('admin.home');
 
     // Admin Users
+    // Client List
     Route::get('/admin/users/client', [AdminController::class, 'clientIndex'])->name('admin.client');
-    Route::get('/admin/users/staff', [AdminController::class, 'staffIndex'])->name('admin.staff');
-    Route::get('/admin/users/admin', [AdminController::class, 'adminIndex'])->name('admin.admin');
+    // Search Client
+    Route::get('/admin/users/client/search', [AdminSearchController::class, 'clientSearch'])->name('admin.client.search');
 
+    // Staff List
+    Route::get('/admin/users/staff', [AdminController::class, 'staffIndex'])->name('admin.staff');
+    // Search Staff
+    Route::get('/admin/users/staff/search', [AdminSearchController::class, 'staffSearch'])->name('admin.staff.search');
+
+    // Admin List
+    Route::get('/admin/users/admin', [AdminController::class, 'adminIndex'])->name('admin.admin');
+    // Search Staff
+    Route::get('/admin/users/admin/search', [AdminSearchController::class, 'adminSearch'])->name('admin.admin.search');
+
+    // Add User Form
+    Route::get('/admin/users/add', [AdminUserController::class, 'addUserForm'])->name('admin.user.add');
+    // Add User Process
+    Route::post('/admin/users/add/process', [AdminUserController::class, 'createUser'])->name('admin.user.add-process');
+
+    // Admin Ferries
+    Route::get('/admin/ferries', [AdminController::class, 'ferryIndex'])->name('admin.ferry');
+    // Search Ferry
+    Route::get('/admin/ferries/search', [AdminSearchController::class, 'ferrySearch'])->name('admin.ferry.search');
 });
