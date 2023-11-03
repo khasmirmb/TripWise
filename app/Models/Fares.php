@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Fares extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['ferry_id', 'type', 'price', 'notes'];
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminFerryController;
 use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
@@ -149,4 +150,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/ferries', [AdminController::class, 'ferryIndex'])->name('admin.ferry');
     // Search Ferry
     Route::get('/admin/ferries/search', [AdminSearchController::class, 'ferrySearch'])->name('admin.ferry.search');
+    // CRUD for Fare
+    // Create
+    Route::post('/admin/ferries/add-fare', [AdminFerryController::class, 'addFare'])->name('ferry.addfare');
+    // Update
+    Route::post('admin/ferries/edit-fare', [AdminFerryController::class, 'fareEdit'])->name('ferry.editfare');
+    // Delete
+    Route::delete('admin/ferries/fares/{id}', [AdminFerryController::class, 'fareDelete'])->name('ferry.deletefare');
+    
 });

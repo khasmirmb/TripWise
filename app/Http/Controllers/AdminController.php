@@ -42,7 +42,8 @@ class AdminController extends Controller
      */
     public function ferryIndex()
     {
-        $ferries = Ferries::paginate(10);
+        $ferries = Ferries::with('fares')->paginate(10);
+        
         return view('admin.ferries.ferry', compact('ferries'));
     }
 
