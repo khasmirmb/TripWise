@@ -9,6 +9,8 @@ class Ferries extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'capacity', 'description', 'image'];
+    
     public function schedules()
     {
         return $this->hasMany(Schedule::class, 'ferry_id', 'id');

@@ -150,12 +150,19 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/ferries', [AdminController::class, 'ferryIndex'])->name('admin.ferry');
     // Search Ferry
     Route::get('/admin/ferries/search', [AdminSearchController::class, 'ferrySearch'])->name('admin.ferry.search');
+
+    // CRUD for Ferry
+    // ADD Form
+    Route::get('/admin/ferries/add', [AdminFerryController::class, 'addFerryForm'])->name('admin.ferry.add');
+    // Create Process
+    Route::post('/admin/ferries/add/process', [AdminFerryController::class, 'createFerry'])->name('admin.ferry.add-process');
+
     // CRUD for Fare
-    // Create
+    // Create Process
     Route::post('/admin/ferries/add-fare', [AdminFerryController::class, 'addFare'])->name('ferry.addfare');
-    // Update
+    // Update Process
     Route::post('admin/ferries/edit-fare', [AdminFerryController::class, 'fareEdit'])->name('ferry.editfare');
-    // Delete
+    // Delete Process
     Route::delete('admin/ferries/fares/{id}', [AdminFerryController::class, 'fareDelete'])->name('ferry.deletefare');
     
 });

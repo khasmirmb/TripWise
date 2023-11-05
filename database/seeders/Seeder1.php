@@ -46,13 +46,12 @@ class Seeder1 extends Seeder
 
             $description = $faker->sentence(20);
             $capacity = $faker->numberBetween(30, 50);
-            $image = 'Image Example';
 
             DB::table('ferries')->insert([
                 'name' => $ferryName,
                 'description' => $description,
                 'capacity' => $capacity,
-                'image' => $image,
+                'image' => null,
             ]);
         }
     }

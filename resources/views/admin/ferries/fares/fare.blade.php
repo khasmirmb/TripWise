@@ -20,17 +20,15 @@
                 <!-- Check if the ferry has fares -->
                 <div class="block">
                 @if ($ferry->fares->count() > 0)
-                    <div class="grid grid-cols-4 gap-2 font-semibold text-gray-700 bg-gray-200 dark:bg-gray-900 dark:text-gray-400">
+                    <div class="grid grid-cols-3 gap-2 font-semibold text-gray-700 bg-gray-200 dark:bg-gray-900 dark:text-gray-400">
                         <div class="text-xs sm:text-base py-2 px-4">Type</div>
-                        <div class="text-xs sm:text-base py-2 px-4">Notes</div>
                         <div class="text-xs sm:text-base py-2 px-4">Price</div>
                         <div class="text-xs sm:text-base py-2 px-4">Action</div>
                     </div>
             
                     @foreach ($ferry->fares as $fare)
-                        <div class="grid grid-cols-4 gap-2 py-2 bg-slate-100 dark:bg-gray-800 dark:text-white">
+                        <div class="grid grid-cols-3 gap-2 py-2 bg-slate-100 dark:bg-gray-800 dark:text-white">
                             <div class="text-xs sm:text-base py-2 px-4">{{ $fare->type }}</div>
-                            <div class="text-xs sm:text-base py-2 px-4">{{ $fare->notes ?? 'No Note' }}</div>
                             <div class="text-xs sm:text-base py-2 px-4">₱{{ number_format($fare->price, 2) }}</div>
                             <div class="text-xs sm:text-base py-2 px-4">
                                 <button id="fares-action{{$fare->id}}-button" data-dropdown-toggle="fares-action{{$fare->id}}" class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
@@ -127,10 +125,6 @@
                                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>
                                                 <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="₱500" required="" value="{{$fare->price}}">
                                             </div>
-                                            <div class="sm:col-span-2">
-                                                <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
-                                                <textarea id="notes" name="notes" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Write fare notes here">{{$fare->notes}}</textarea>                    
-                                            </div>
                                         </div>
                                         <button type="submit" class="text-white inline-flex items-center bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">
                                             <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -150,9 +144,17 @@
                         </button>
                     </div>
                 @else
-                    <div class="flex justify-center items-center text-center font-semibold text-lg">
-                        There are no fare for this ferry
-                    </div>
+                <div class="flex justify-center mb-5">
+                    <h5 class="text-sm sm:text-xl font-bold dark:text-white">There is no fare for this ferry</h5>
+                </div>
+                <div class="flex w-full md:space-x-3">
+                    <button type="button" class="flex w-full items-center justify-center px-4 py-2 text-sm font-medium text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-700 rounded-b-lg" id="add-fare{{$ferry->id}}Button" data-modal-toggle="add-fare{{$ferry->id}}">
+                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                    </svg>
+                    Add Fare
+                    </button>
+                </div>
                 @endif
                 </div>
             </div>
@@ -197,10 +199,6 @@
                     <div>
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>
                         <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="₱500" required="">
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
-                        <textarea id="notes" name="notes" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Write fare notes here"></textarea>                    
                     </div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">

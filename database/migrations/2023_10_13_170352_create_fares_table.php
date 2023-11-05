@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ferry_id')->constrained('ferries'); // Foreign key to relate fares to ferries
             $table->string('type');
-            $table->text('notes')->nullable();
             $table->decimal('price', 10, 2);
             // Other fare-related fields can be added here
 

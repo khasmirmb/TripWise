@@ -26,13 +26,11 @@ class Seeder2 extends Seeder
                 [
                     'ferry_id' => $ferry->id,
                     'type' => 'Economy',
-                    'notes' => 'Open Space',
                     'price' => $economyPrice,
                 ],
                 [
                     'ferry_id' => $ferry->id,
                     'type' => 'Aircon',
-                    'notes' => 'Open Space',
                     'price' => $airconPrice,
                 ],
             ]);
