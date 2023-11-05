@@ -23,4 +23,14 @@ class Schedules extends Model
         'passenger',
     ];
 
+    public function seats()
+    {
+        return $this->hasMany(Seat::class, 'schedule_id', 'id');
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'schedule_id', 'id');
+    }
+
 }

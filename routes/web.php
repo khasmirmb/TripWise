@@ -141,10 +141,15 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Search Staff
     Route::get('/admin/users/admin/search', [AdminSearchController::class, 'adminSearch'])->name('admin.admin.search');
 
+    // User CRUD
     // Add User Form
     Route::get('/admin/users/add', [AdminUserController::class, 'addUserForm'])->name('admin.user.add');
     // Add User Process
     Route::post('/admin/users/add/process', [AdminUserController::class, 'createUser'])->name('admin.user.add-process');
+    // Edit User Form
+    Route::get('/admin/users/edit/{user}', [AdminUserController::class, 'editUserForm'])->name('admin.user.edit');
+    // Update User Process
+    Route::post('/admin/users/edit/process/{user}/{type}', [AdminUserController::class, 'updateUser'])->name('admin.user.edit-process');
 
     // Admin Ferries
     Route::get('/admin/ferries', [AdminController::class, 'ferryIndex'])->name('admin.ferry');
@@ -156,6 +161,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/ferries/add', [AdminFerryController::class, 'addFerryForm'])->name('admin.ferry.add');
     // Create Process
     Route::post('/admin/ferries/add/process', [AdminFerryController::class, 'createFerry'])->name('admin.ferry.add-process');
+    // Edit Process
+    Route::post('/admin/ferries/edit/process', [AdminFerryController::class, 'updateFerry'])->name('admin.ferry.edit-process');
+    // Delete Ferry
+    Route::delete('ferries/{ferry}', [AdminFerryController::class, 'deleteFerry'])->name('admin.ferries.delete');
 
     // CRUD for Fare
     // Create Process

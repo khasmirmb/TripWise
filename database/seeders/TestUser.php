@@ -28,7 +28,7 @@ class TestUser extends Seeder
                 'email' => $faker->email,
                 'email_verified_at' => null,
                 'password' => Hash::make('password123'),
-                'type' => 2,
+                'type' => 0,
                 'remember_token' => null,
                 'created_at' => now(),
                 'updated_at' => now(),

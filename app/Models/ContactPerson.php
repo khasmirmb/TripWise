@@ -12,4 +12,9 @@ class ContactPerson extends Model
     protected $table = 'contact_persons';
 
     protected $fillable = ['name', 'phone', 'email', 'address'];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'contact_person_id', 'id');
+    }
 }

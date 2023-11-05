@@ -13,12 +13,17 @@ class Ferries extends Model
     
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'ferry_id', 'id');
+        return $this->hasMany(Schedules::class, 'ferry_id', 'id');
     }
 
     public function fares()
     {
         return $this->hasMany(Fares::class, 'ferry_id', 'id');
+    }
+
+    public function seats()
+    {
+        return $this->hasMany(Seat::class, 'ferry_id', 'id');
     }
 
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fares', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ferry_id')->constrained('ferries'); // Foreign key to relate fares to ferries
+            $table->foreignId('ferry_id')->constrained('ferries')->onDelete('restrict'); // Foreign key to relate fares to ferries
             $table->string('type');
             $table->decimal('price', 10, 2);
             // Other fare-related fields can be added here

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ferry_id')->constrained('ferries'); // Foreign key to relate schedules to ferries
+            $table->foreignId('ferry_id')->constrained('ferries')->onDelete('restrict'); // Foreign key to relate schedules to ferries
             $table->string('departure_port');
             $table->string('arrival_port');
             $table->date('departure_date');
