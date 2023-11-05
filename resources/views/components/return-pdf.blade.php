@@ -47,7 +47,7 @@
 
         .teal-border-table .tables-head {
             background-color: teal;
-            color: black;
+            color: white;
         }
 
 		.guidelines-table {
@@ -63,7 +63,7 @@
 
         .guidelines-table .guidelines-head {
             background-color: teal;
-            color: black;
+            color: white;
         }
 
 	</style>

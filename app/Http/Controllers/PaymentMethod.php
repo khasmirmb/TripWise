@@ -387,6 +387,10 @@ class PaymentMethod extends Controller
         }
 
         return view('booking.seating', compact(
+            'paymentId',
+            'contactPersonId',
+            'departBookId',
+            'returnBookId',
             'departPassengers',
             'departSeats',
             'returnPassengers',

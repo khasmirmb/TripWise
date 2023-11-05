@@ -4,33 +4,6 @@
 
 <section class="bg-white dark:bg-gray-800">
     <div class="py-8 px-4 mx-auto max-w-7xl lg:py-10">
-        <div class="my-2 ml-2">
-            <h3 class="text-3xl font-bold text-gray-800 dark:text-gray-300">Seat Selection</h3>
-        </div>
-        <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span class="sr-only">Info</span>
-            <div class="text-justify">
-                <span class="font-medium text-red-600">Important!</span> 
-                Once you have selected a seat, it cannot be changed. Please choose your seat carefully.
-            </div>
-        </div>
-        <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <span class="sr-only">Info</span>
-            <div class="text-justify">
-                <span class="font-medium text-red-600">Important!</span> 
-                Please be aware that seats highlighted in <span class="text-red-600 font-bold">RED</span> are currently reserved.
-            </div>
-        </div>
-
-        @include('layouts.seating-one-way')
-
-        @include('layouts.seating-round-trip')
 
         @php
             $departPassengersHaveSeats = true;
@@ -52,15 +25,49 @@
         @endphp
 
         @if ($departPassengersHaveSeats && $returnPassengersHaveSeats)
-            <div class="flex justify-center">
-                <a type="button" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">
-                    Manage Booking
-                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                  </svg>
-                </a>
+            <div class="my-5">
+                <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Thank you for Booking</span></h1>
+                <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">You can download your e-ticket below.</p>
+            </div>
+            @if ($departBookId)
+            <div class="departure-pdf flex w-full justify-start my-5">
+                <a href="{{ route('depart.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'departBookId' => $departBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800">Download Departing</a>
+            </div>
+            @endif
+            @if ($returnBookId)
+            <div class="return-pdf flex w-full justify-start my-5">
+                <a href="{{ route('return.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'returnBookId' => $returnBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800">Download Returning</a>
+            </div>
+            @endif
+        @else
+            <div class="my-2 ml-2">
+                <h3 class="text-3xl font-bold text-gray-800 dark:text-gray-300">Seat Selection</h3>
+            </div>
+            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="text-justify">
+                    <span class="font-medium text-red-600">Important!</span> 
+                    Once you have selected a seat, it cannot be changed. Please choose your seat carefully.
+                </div>
+            </div>
+            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="text-justify">
+                    <span class="font-medium text-red-600">Important!</span> 
+                    Please be aware that seats highlighted in <span class="text-red-600 font-bold">RED</span> are currently reserved.
+                </div>
             </div>
         @endif
+
+        @include('layouts.seating-one-way')
+
+        @include('layouts.seating-round-trip')
 
     </div>
 </section>

@@ -7,7 +7,11 @@
           </div>
           <div class="departure-summary px-3 sm:px-6 pb-3">
               <div class="flex flex-col sm:flex-row">
-              <img class="m-2 h-32 w-46 rounded-md border mx-auto object-cover object-center" src="https://psssonline.files.wordpress.com/2016/10/20102229429_674fe07fcf_z.jpg?w=640" alt="" />
+                @if ($depart_ferry->image)
+                <img class="m-2 h-32 w-46 rounded-md mx-auto object-cover object-center" src="{{asset('ferries/' . $depart_ferry->image)}}" alt="Ferry Image" />
+                @else
+                <img class="m-2 h-32 w-46 rounded-md mx-auto object-cover object-center" src="{{asset('ferries/default.png')}}" alt="Ferry Image" />
+                @endif
               <div class="flex w-full flex-col px-4 sm:py-9 pb-2 text-center">
                   <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Vessel</span>
                   <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{$depart_ferry->name}}</span>
@@ -50,7 +54,11 @@
           </div>
           <div class="return-summary px-3 sm:px-6 pb-3">
               <div class="flex flex-col sm:flex-row">
-              <img class="m-2 h-32 w-46 rounded-md border mx-auto object-cover object-center" src="https://psssonline.files.wordpress.com/2016/10/20102229429_674fe07fcf_z.jpg?w=640" alt="" />
+                @if ($return_ferry->image)
+                <img class="m-2 h-32 w-46 rounded-md mx-auto object-cover object-center" src="{{asset('ferries/' . $return_ferry->image)}}" alt="Ferry Image" />
+                @else
+                <img class="m-2 h-32 w-46 rounded-md mx-auto object-cover object-center" src="{{asset('ferries/default.png')}}" alt="Ferry Image" />
+                @endif
               <div class="flex w-full flex-col px-4 sm:py-9 pb-2 text-center">
                   <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Vessel</span>
                   <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{$return_ferry->name}}</span>
