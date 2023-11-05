@@ -380,6 +380,7 @@ class PaymentMethod extends Controller
             ->get();
 
         } else {
+            $returnFerry = null;
             $retSchedData = null;
             $returnBooking = null;
             $returnSeats = null;
@@ -389,6 +390,8 @@ class PaymentMethod extends Controller
         return view('booking.seating', compact(
             'paymentId',
             'contactPersonId',
+            'departFerry',
+            'returnFerry',
             'departBookId',
             'returnBookId',
             'departPassengers',

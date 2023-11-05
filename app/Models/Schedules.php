@@ -23,6 +23,7 @@ class Schedules extends Model
         'passenger',
     ];
 
+    // Relationship Has Many
     public function seats()
     {
         return $this->hasMany(Seat::class, 'schedule_id', 'id');
@@ -33,4 +34,9 @@ class Schedules extends Model
         return $this->hasMany(Booking::class, 'schedule_id', 'id');
     }
 
+    // Inverse Relationship
+    public function ferries()
+    {
+        return $this->belongsTo(Ferries::class);
+    }
 }

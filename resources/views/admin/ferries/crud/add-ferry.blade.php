@@ -71,8 +71,8 @@
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
-                                <div class="w-full flex justify-center items-center sm:col-span-2">
-                                    <div>
+                                <div class="w-full flex justify-center items-center">
+                                    <div class="w-full">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="image">Upload Image</label>
                                     <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="image_help" id="image" type="file" accept="image/*" onchange="loadFile(event)">
                                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image_help">PNG or JPG</p>
@@ -81,10 +81,58 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="w-full text-center sm:col-span-2">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Preview</label>
+                                <div class="w-full text-center">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ferry Image Preview</label>
                                     <div class="flex justify-center">
-                                        <img id="preview-image" class="rounded-lg w-80 h-72 border-2">
+                                        <img id="preview-image" class="rounded-lg w-60 h-52 border-2 object-cover">
+                                    </div>
+                                </div>
+                                <div class="w-full sm:col-span-2">
+                                    <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="upper">Upper Deck Image</label>
+                                    <input name="upper" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="upper_help" id="upper" type="file" accept="image/*" onchange="previewUpperImage(this)">
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="upper_help">PNG or JPG</p>
+                                    @error('upper')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                    </div>
+                                </div>
+                                <div class="w-full text-center sm:col-span-2">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upper Deck Image Preview</label>
+                                    <div class="flex justify-center">
+                                        <img id="upper-preview-image" class="rounded-lg w-full sm:h-96 h-40 object-fit" style="display: none;">
+                                    </div>
+                                </div>
+                                <div class="w-full sm:col-span-2">
+                                    <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="middle">Middle Deck Image</label>
+                                    <input name="middle" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="middle_help" id="middle" type="file" accept="image/*" onchange="previewMiddleImage(this)">
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="middle_help">PNG or JPG</p>
+                                    @error('middle')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                    </div>
+                                </div>
+                                <div class="w-full text-center sm:col-span-2">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle Deck Image Preview</label>
+                                    <div class="flex justify-center">
+                                        <img id="middle-preview-image" class="rounded-lg w-full sm:h-96 h-40 object-fit" style="display: none;">
+                                    </div>
+                                </div>
+                                <div class="w-full sm:col-span-2">
+                                    <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="lower">Lower Deck Image</label>
+                                    <input name="lower" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="lower_help" id="lower" type="file" accept="image/*" onchange="previewLowerImage(this)">
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="lower_help">PNG or JPG</p>
+                                    @error('lower')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                    </div>
+                                </div>
+                                <div class="w-full text-center sm:col-span-2">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lower Deck Image Preview</label>
+                                    <div class="flex justify-center">
+                                        <img id="lower-preview-image" class="rounded-lg w-full sm:h-96 h-40 object-fit" style="display: none;">
                                     </div>
                                 </div>
                             </div>
@@ -120,6 +168,51 @@
                 URL.revokeObjectURL(output.src) // free memory
               }
             };
+
+            function previewUpperImage(input) {
+                var preview = document.getElementById('upper-preview-image');
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block'; // Show the image preview
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none'; // Hide the preview
+                }
+            }
+
+            function previewMiddleImage(input) {
+                var preview = document.getElementById('middle-preview-image');
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block'; // Show the image preview
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none'; // Hide the preview
+                }
+            }
+
+            function previewLowerImage(input) {
+                var preview = document.getElementById('lower-preview-image');
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block'; // Show the image preview
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none'; // Hide the preview
+                }
+            }
         </script>
 
         <script type="module">

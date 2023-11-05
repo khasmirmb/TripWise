@@ -17,6 +17,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('capacity');
             $table->string('image')->nullable();
+            $table->string('upper')->nullable();
+            $table->string('middle')->nullable();
+            $table->string('lower')->nullable();
             // Other ferry-related fields can be added here
 
             $table->timestamps();

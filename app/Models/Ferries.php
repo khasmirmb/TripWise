@@ -11,6 +11,7 @@ class Ferries extends Model
 
     protected $fillable = ['name', 'capacity', 'description', 'image'];
     
+    // Relationship Has Many
     public function schedules()
     {
         return $this->hasMany(Schedules::class, 'ferry_id', 'id');

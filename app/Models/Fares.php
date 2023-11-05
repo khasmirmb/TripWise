@@ -11,4 +11,9 @@ class Fares extends Model
 
     protected $fillable = ['ferry_id', 'type', 'price', 'notes'];
     
+    // Inverse Relationship
+    public function ferries()
+    {
+        return $this->belongsTo(Ferries::class);
+    }
 }

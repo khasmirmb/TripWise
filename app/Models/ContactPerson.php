@@ -13,6 +13,7 @@ class ContactPerson extends Model
 
     protected $fillable = ['name', 'phone', 'email', 'address'];
 
+    // Relationship Has Many
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'contact_person_id', 'id');

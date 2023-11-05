@@ -12,4 +12,10 @@ class Passenger extends Model
     protected $table = 'passengers';
 
     protected $fillable = ['booking_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'gender', 'accommodation', 'discount_type'];
+
+    // Inverse Relationship
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }

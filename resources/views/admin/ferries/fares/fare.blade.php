@@ -16,7 +16,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="container">
+            <div>
                 <!-- Check if the ferry has fares -->
                 <div class="block">
                 @if ($ferry->fares->count() > 0)

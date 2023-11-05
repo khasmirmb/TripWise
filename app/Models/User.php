@@ -55,6 +55,7 @@ class User extends Authenticatable
         );
     }
 
+    // Relationship Has Many
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'user_id', 'id');

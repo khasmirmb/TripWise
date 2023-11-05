@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
@@ -135,5 +136,32 @@ class AdminUserController extends Controller
             // Validation failed, return to the form with errors
             return redirect()->back()->withInput()->withErrors($request->validated());
         }
+    }
+
+    public function deleteUser(User $user)
+    {
+        // Check if the user is the currently authenticated admin user
+        if (Auth::user()->id === $user->id) {
+            return back()->with('error', 'You currently logged in and cant delete yourself.');
+        }
+        // Check if the user has associated bookings
+        if ($user->bookings()->exists()) {
+            return back()->with('error', 'Cannot delete the user as they have associated bookings.');
+        }
+
+        // Delete the user's image if it exists
+        if ($user->image) {
+            $imagePath = public_path('profile') . '/' . $user->image;
+            
+            if (file_exists($imagePath)) {
+                unlink($imagePath); // Delete the image file
+            }
+        }
+
+        // If there are no associated bookings, safely delete the user
+        $user->delete();
+
+        // Redirect to a success page or return a success message
+        return back()->with('success', 'User deleted successfully.');
     }
 }
