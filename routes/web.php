@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminFerryController;
+use App\Http\Controllers\AdminPortController;
 use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
@@ -47,7 +48,6 @@ Route::get('/', function () {
 // Home Routes
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/seat', [SeatController::class, 'index'])->name('seat');
 
 // Fallback Errors Route
 //Route::fallback(function () {
@@ -157,7 +157,6 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/ferries', [AdminController::class, 'ferryIndex'])->name('admin.ferry');
     // Search Ferry
     Route::get('/admin/ferries/search', [AdminSearchController::class, 'ferrySearch'])->name('admin.ferry.search');
-
     // CRUD for Ferry
     // Add Ferry Form
     Route::get('/admin/ferries/add', [AdminFerryController::class, 'addFerryForm'])->name('admin.ferry.add');
@@ -168,14 +167,26 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Edit Process
     Route::post('/admin/ferries/edit/process/{ferry}', [AdminFerryController::class, 'updateFerry'])->name('admin.ferry.edit-process');
     // Delete Ferry
-    Route::delete('ferries/{ferry}', [AdminFerryController::class, 'deleteFerry'])->name('admin.ferries.delete');
+    Route::delete('/admin/ferries/delete/{ferry}', [AdminFerryController::class, 'deleteFerry'])->name('admin.ferry.delete');
 
     // CRUD for Fare
     // Create Process
     Route::post('/admin/ferries/add-fare', [AdminFerryController::class, 'addFare'])->name('ferry.addfare');
     // Update Process
-    Route::post('admin/ferries/edit-fare', [AdminFerryController::class, 'fareEdit'])->name('ferry.editfare');
+    Route::post('/admin/ferries/edit-fare', [AdminFerryController::class, 'fareEdit'])->name('ferry.editfare');
     // Delete Process
-    Route::delete('admin/ferries/fares/{id}', [AdminFerryController::class, 'fareDelete'])->name('ferry.deletefare');
+    Route::delete('/admin/ferries/fares/{id}', [AdminFerryController::class, 'fareDelete'])->name('ferry.deletefare');
+
+    // Admin Ports
+    Route::get('/admin/ports', [AdminController::class, 'portIndex'])->name('admin.port');
+    // Search Port
+    Route::get('/admin/ports/search', [AdminSearchController::class, 'portSearch'])->name('admin.port.search');
+    // CRUD for Port
+    // Create Process
+    Route::post('/admin/ports/add-port', [AdminPortController::class, 'addPort'])->name('admin.port.addport');
+    // Edit Process
+    Route::post('/admin/ports/edit-port', [AdminPortController::class, 'editPort'])->name('admin.port.editport');
+    // Delete Port
+    Route::delete('/admin/port/delete/{port}', [AdminPortController::class, 'deleteport'])->name('admin.port.delete');
     
 });

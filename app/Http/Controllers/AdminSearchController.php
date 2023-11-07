@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ferries;
+use App\Models\Ports;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -67,5 +68,19 @@ class AdminSearchController extends Controller
             ->paginate(10);
 
         return view('admin.ferries.ferry', compact('ferries'));
+    }
+
+    // Search for Port
+    public function portSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $ports = Ports::where(function($queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('name', 'like', "%$query%")
+                ->orWhere('location', 'like', "%$query%");
+        })
+        ->paginate(10);
+
+        return view('admin.ports.port', compact('ports'));
     }
 }

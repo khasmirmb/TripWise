@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ferries;
+use App\Models\Ports;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -45,6 +46,16 @@ class AdminController extends Controller
         $ferries = Ferries::with('fares')->paginate(10);
         
         return view('admin.ferries.ferry', compact('ferries'));
+    }
+
+    /**
+     * Display the list of ports.
+    */
+    public function portIndex()
+    {
+        $ports = Ports::paginate(10);
+        
+        return view('admin.ports.port', compact('ports'));
     }
 
 

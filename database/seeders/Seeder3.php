@@ -18,26 +18,21 @@ class Seeder3 extends Seeder
         $faker = Faker::create();
 
         $ferries = DB::table('ferries')->get();
-        $ports = [
-            ['name' => 'Zamboanga'],
-            ['name' => 'Lamitan'],
-            ['name' => 'Jolo, Sulu'],
-            ['name' => 'Isabela'],
-        ];
+        $ports = DB::table('ports')->select('name')->get();
 
-        $startDate = Carbon::parse('2023-10-28');
-        $endDate = Carbon::parse('2023-11-30');
+        $startDate = Carbon::parse('2023-11-07');
+        $endDate = Carbon::parse('2023-12-07');
 
         for ($i = 0; $i < 50; $i++) {
             $ferry = $ferries->random();
             $departureDate = $faker->dateTimeBetween($startDate, $endDate)->format('Y-m-d');
             $arrivalDate = Carbon::parse($departureDate)->addDay()->format('Y-m-d');
 
-            $departurePort = $ports[array_rand($ports)];
-            $arrivalPort = $ports[array_rand($ports)];
-
+            $departurePort = $ports->random();
+            $arrivalPort = $ports->random();
+    
             while ($departurePort == $arrivalPort) {
-                $arrivalPort = $ports[array_rand($ports)];
+                $arrivalPort = $ports->random();
             }
 
             // Generate a unique departure time for each date
@@ -48,8 +43,8 @@ class Seeder3 extends Seeder
 
             DB::table('schedules')->insert([
                 'ferry_id' => $ferry->id,
-                'departure_port' => $departurePort['name'],
-                'arrival_port' => $arrivalPort['name'],
+                'departure_port' => $departurePort->name,
+                'arrival_port' => $arrivalPort->name,
                 'departure_date' => $departureDate,
                 'arrival_date' => $arrivalDate,
                 'departure_time' => $departureTime->format('H:i'),

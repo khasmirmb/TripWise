@@ -15,9 +15,7 @@ class SeatController extends Controller
      */
     public function index()
     {
-        $seats = Seat::all(); // Replace with your actual model and query
-        
-        return view('booking.seating', compact('seats'));
+        //
     }
 
     /**
