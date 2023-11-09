@@ -18,7 +18,7 @@ class TestUser extends Seeder
 
         $faker = Faker::create();
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             DB::table('users')->insert([
                 'firstname' => $faker->firstNameFemale,
                 'lastname' => $faker->lastName,
@@ -28,7 +28,7 @@ class TestUser extends Seeder
                 'email' => $faker->email,
                 'email_verified_at' => null,
                 'password' => Hash::make('password123'),
-                'type' => 2,
+                'type' => 0,
                 'remember_token' => null,
                 'created_at' => now(),
                 'updated_at' => now(),

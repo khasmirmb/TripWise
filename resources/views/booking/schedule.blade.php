@@ -6,6 +6,8 @@
 
     @include('layouts.progress-schedule')
 
+    @include('components.error-message')
+
     <section class="bg-slate-50 dark:bg-gray-800">
         <!-- Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-5 bg-white dark:bg-gray-800 p-3">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('birthdate');
             $table->string('gender');
             $table->string('accommodation');
-            $table->string('seat_number')->nullable();
+            $table->foreignId('seat_id')->nullable()->constrained('seats')->onDelete('restrict'); // Foreign key to relate 
             $table->string('discount_type');
 
             $table->timestamps();

@@ -6,6 +6,8 @@
 
     @include('layouts.progress-passenger')
 
+    @include('components.error-message')
+
     <section class="bg-white dark:bg-gray-800">
         <div class="py-8 px-4 mx-auto max-w-5xl lg:py-16">
             <h2 class="mb-4 text-xl font-bold text-gray-700 dark:text-white"><svg class="flex-shrink-0 inline w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminFerryController;
 use App\Http\Controllers\AdminPortController;
+use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
@@ -188,5 +189,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/admin/ports/edit-port', [AdminPortController::class, 'editPort'])->name('admin.port.editport');
     // Delete Port
     Route::delete('/admin/port/delete/{port}', [AdminPortController::class, 'deleteport'])->name('admin.port.delete');
+
+    // Admin Schedules
+    Route::get('/admin/schedules', [AdminController::class, 'scheduleIndex'])->name('admin.schedule');
+    // Search Schedule
+    Route::get('/admin/schedules/search', [AdminSearchController::class, 'scheduleSearch'])->name('admin.schedule.search');
+    // CRUD for Schedule
+    // Add Form Schedule
+    Route::get('/admin/schedules/add', [AdminScheduleController::class, 'addScheduleForm'])->name('admin.schedule.add');
+
     
 });

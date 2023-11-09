@@ -16,6 +16,11 @@ class Passenger extends Model
     // Inverse Relationship
     public function booking()
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class, 'booking_id');
+    }
+    // Inverse Relationship
+    public function seat()
+    {
+        return $this->belongsTo(Seat::class, 'seat_id');
     }
 }

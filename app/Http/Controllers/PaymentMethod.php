@@ -6,12 +6,10 @@ use App\Models\Booking;
 use App\Models\ContactPerson;
 use App\Models\Passenger;
 use App\Models\Payment;
-use App\Models\Schedules;
 use App\Models\Seat;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use Curl;
+use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -113,10 +111,10 @@ class PaymentMethod extends Controller
         $sessionId = Session::get('session_id');
 
         $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions/'. $sessionId)
-                        ->withHeader('accept: application/json')
-                        ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
-                        ->asJson()
-                        ->get();
+        ->withHeader('accept: application/json')
+        ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
+        ->asJson()
+        ->get();
 
         $payments = $response->data->attributes->payments;
 

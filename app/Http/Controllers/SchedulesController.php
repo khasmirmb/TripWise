@@ -32,7 +32,7 @@ class SchedulesController extends Controller
             'destination' => 'required|different:origin',
             'depart_date' => 'required|date_format:d/m/Y',
             'return_date' => 'nullable|date_format:d/m/Y|after:depart_date',
-            'passenger' => 'required|integer',
+            'passenger' => 'required|integer|max:20|min:1',
         ]);
 
 

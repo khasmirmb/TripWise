@@ -3,6 +3,8 @@
 
     @include('components.navigation')
 
+    @include('components.error-message')
+
         <!-- Booking Search Section -->
         <section class="bg-center bg-slate-200 bg-no-repeat bg-blend-multiply dark:bg-gray-700" style="background-image: url('{{ asset('/images/bg-booking.jpg')}}'); background-size: cover;">
             <div class="px-4 mx-auto max-w-screen-xl text-center py-10 lg:py-40">

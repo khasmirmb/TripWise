@@ -70,9 +70,9 @@
         </div>
         <div class="block">
             <form class="flex items-center justify-between mt-3">
-                <select data-schedule-id="{{$depart_schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                <select data-schedule-id="{{$depart_schedule->id}}" id="fareSelection{{$depart_schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     @foreach ($fares as $fare)
-                        <option value="{{$fare->id}}">{{$fare->type}}</option>
+                        <option data-fare-price="{{$fare->price}}" value="{{$fare->id}}">{{$fare->type}}</option>
                     @endforeach
                 </select>
                 <button type="button" class="selectButton focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover-bg-green-700 dark:focus:ring-green-800">
@@ -82,6 +82,22 @@
         </div>
     </div>
 </div>
+
+<script type="module">
+    $(document).ready(function(){
+        $( "#fareSelection{{$depart_schedule->id}}" ).on( "change", function() {
+
+            var fare_type = $('#fareSelection{{$depart_schedule->id}}').find(":selected").text();
+
+            var fare_price = $('#fareSelection{{$depart_schedule->id}}').find(":selected").data('fare-price');
+
+            $('#depart_fare_type').html(fare_type);
+
+            $('#depart_fare_price').html(fare_price);
+
+        });
+    });
+</script>
 @endforeach
 
 <script type="module">
@@ -89,7 +105,7 @@
     $(document).ready(function(){
 
         var selectedButton = null;
-
+    
         $("#schedule_depart0").click();
         
         $('input[name="schedule_depart"]').click(function () {
@@ -202,5 +218,4 @@
             });
         });
     });
-
 </script>

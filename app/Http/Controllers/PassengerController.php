@@ -99,7 +99,7 @@ class PassengerController extends Controller
         if ($seat) {
             // Update the passenger's seat_number in the database
             $passenger = Passenger::find($passengerId);
-            $passenger->seat_number = $seat->seat_number;
+            $passenger->seat_id = $seat->id;
             $passenger->save();
         
             // Update the seat_status to 'booked'

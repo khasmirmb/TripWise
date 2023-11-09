@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use Illuminate\Support\Str;
-use Curl;
+use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -361,9 +361,16 @@ class PaymentController extends Controller
         // If its over the counter payment
         else{
 
+            $contactPersonData = session('contactPerson');
+
             $data = [
                 'data' => [
                     'attributes' => [
+                        'billing' => [
+                            'name' => $contactPersonData['name'],
+                            'email' => $contactPersonData['email'],
+                            'phone' => $contactPersonData['phone'],
+                        ],
                         'line_items' =>[
     
                             [
@@ -378,7 +385,7 @@ class PaymentController extends Controller
                             $payment_method
                         ],
                         'success_url' => 'http://localhost:8000/booking/success',
-                        'cancel_url' => 'http://localhost:8000/booking/search',
+                        'cancel_url' => 'http://localhost:8000/booking/payment',
                         'description'   => 'TripWise Fare Booking',
                         'send_email_receipt' => true,
                     ],
@@ -387,12 +394,12 @@ class PaymentController extends Controller
             ];
     
             $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions')
-                            ->withHeader('Content-Type: application/json')
-                            ->withHeader('accept: application/json')
-                            ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
-                            ->withData($data)
-                            ->asJson()
-                            ->post();
+            ->withHeader('Content-Type: application/json')
+            ->withHeader('accept: application/json')
+            ->withHeader('Authorization: Basic ' . env('PAYMONGO_SECRET_KEY'))
+            ->withData($data)
+            ->asJson()
+            ->post();
                             
             Session::put('session_id', $response->data->id);
     

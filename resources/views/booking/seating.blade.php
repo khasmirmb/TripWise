@@ -2,6 +2,8 @@
 
 @include('components.navigation')
 
+@include('components.error-message')
+
 <section class="bg-white dark:bg-gray-800">
     <div class="py-8 px-4 mx-auto max-w-7xl lg:py-10">
 
@@ -10,14 +12,14 @@
             $returnPassengersHaveSeats = true;
 
             foreach ($departPassengers as $passenger) {
-                if ($passenger->seat_number === null) {
+                if ($passenger->seat_id === null) {
                     $departPassengersHaveSeats = false;
                     break;
                 }
             }
 
             foreach ($returnPassengers as $passenger) {
-                if ($passenger->seat_number === null) {
+                if ($passenger->seat_id === null) {
                     $returnPassengersHaveSeats = false;
                     break;
                 }

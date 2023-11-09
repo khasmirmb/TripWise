@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ferries;
 use App\Models\Ports;
+use App\Models\Schedules;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -56,6 +57,16 @@ class AdminController extends Controller
         $ports = Ports::paginate(10);
         
         return view('admin.ports.port', compact('ports'));
+    }
+
+    /**
+     * Display the list of schedules.
+    */
+    public function scheduleIndex()
+    {
+        $schedules = Schedules::paginate(10);
+        
+        return view('admin.schedules.schedule', compact('schedules'));
     }
 
 

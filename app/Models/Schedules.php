@@ -37,6 +37,6 @@ class Schedules extends Model
     // Inverse Relationship
     public function ferries()
     {
-        return $this->belongsTo(Ferries::class);
+        return $this->belongsTo(Ferries::class, 'ferry_id');
     }
 }

@@ -131,7 +131,7 @@
 						<p>{{date('M d, Y', strtotime($depSchedData->arrival_date)) . " " . date("g:i a", strtotime($depSchedData->arrival_time))}}</p>
 					</td>
 					<td class="tables-data">{{$passenger->accommodation}}</td>
-					<td class="tables-data">{{$passenger->seat_number}}</td>
+					<td class="tables-data">{{$passenger->seat->seat_number}}</td>
 				</tr>
 			</table>
 			<div class="pl-3 pt-3">
