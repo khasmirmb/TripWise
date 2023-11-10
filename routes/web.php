@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminFerryController;
 use App\Http\Controllers\AdminPortController;
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\AdminSearchController;
+use App\Http\Controllers\AdminSeatController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FerriesController;
@@ -197,6 +198,13 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // CRUD for Schedule
     // Add Form Schedule
     Route::get('/admin/schedules/add', [AdminScheduleController::class, 'addScheduleForm'])->name('admin.schedule.add');
+    // Add Form Schedule - Get Ferry Info
+    Route::get('/admin/schedules/ferry-info', [AdminScheduleController::class, 'ferryInfo'])->name('admin.schedule.ferry-info');
+    // Add Process Schedule
+    Route::post('/admin/schedules/add/process', [AdminScheduleController::class, 'createSchedule'])->name('admin.schedule.add-process');
+
+    // Admin Schedules Seats
+    Route::get('/admin/schedules/{schedule}/seats', [AdminSeatController::class, 'seatList'])->name('admin.schedule.seats');
 
     
 });

@@ -8,28 +8,28 @@
     </div>
     <div class="w-full">
         <label for="firstname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name<span class="text-red-600">*</span></label>
-        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("firstname{$x}") }}" style="text-transform: capitalize;" required>
+        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("firstname{$x}") }}" style="text-transform: capitalize;" required>
         @error("firstname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="middlename{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle Name</label>
-        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("middlename{$x}") }}" style="text-transform: capitalize;">
+        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("middlename{$x}") }}" style="text-transform: capitalize;">
         @error("middlename{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="lastname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name<span class="text-red-600">*</span></label>
-        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("lastname{$x}") }}" style="text-transform: capitalize;" required>
+        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("lastname{$x}") }}" style="text-transform: capitalize;" required>
         @error("lastname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="gender{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender<span class="text-red-600">*</span></label>
-        <select id="gender{{$x}}" name="gender{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <select id="gender{{$x}}" name="gender{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
             <option selected="" {{ (old("gender{$x}") == '') ? 'selected' : '' }}>Select Gender</option>
             <option value="Male" {{ (old("gender{$x}") == 'Male') ? 'selected' : '' }}>Male</option>
             <option value="Female" {{ (old("gender{$x}") == 'Female') ? 'selected' : '' }}>Female</option>
@@ -40,7 +40,7 @@
     </div>
     <div class="w-full">
         <label for="birthday{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Birth<span class="text-red-600">*</span></label>
-        <input type="date" name="birthday{{$x}}" id="birthday{{$x}}" class="birthday-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{ old("birthday{$x}") }}" max="{{ now()->toDateString() }}" required>
+        <input type="date" name="birthday{{$x}}" id="birthday{{$x}}" class="birthday-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("birthday{$x}") }}" max="{{ now()->toDateString() }}" required>
         @error("birthday{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
@@ -55,7 +55,7 @@
     <div id="discountSection{{$x}}" class="w-full sm:col-span-3 grid gap-4 sm:grid-cols-3 sm:gap-6 rounded-lg" style="display: none;">
         <div class="w-full">
             <label for="dis_type{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
-            <select id="dis_type{{$x}}" name="dis_type{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <select id="dis_type{{$x}}" name="dis_type{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                 <option selected value="">Select Type</option>
                 <option value="Student">Student</option>
                 <option value="PWD">PWD</option>

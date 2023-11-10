@@ -17,7 +17,7 @@ class AdminController extends Controller
      */
     public function clientIndex()
     {
-        $clients = User::where('type', 0)->paginate(10);
+        $clients = User::where('type', 0)->orderBy('id', 'desc')->paginate(10);
         return view('admin.users.client', compact('clients'));
     }
 
@@ -26,7 +26,7 @@ class AdminController extends Controller
      */
     public function staffIndex()
     {
-        $staffs = User::where('type', 2)->paginate(10);
+        $staffs = User::where('type', 2)->orderBy('id', 'desc')->paginate(10);
         return view('admin.users.staff', compact('staffs'));
     }
 
@@ -35,7 +35,7 @@ class AdminController extends Controller
      */
     public function adminIndex()
     {
-        $admins = User::where('type', 1)->paginate(10);
+        $admins = User::where('type', 1)->orderBy('id', 'desc')->paginate(10);
         return view('admin.users.admin', compact('admins'));
     }
 
@@ -44,7 +44,7 @@ class AdminController extends Controller
      */
     public function ferryIndex()
     {
-        $ferries = Ferries::with('fares')->paginate(10);
+        $ferries = Ferries::with('fares')->orderBy('id', 'desc')->paginate(10);
         
         return view('admin.ferries.ferry', compact('ferries'));
     }
@@ -54,7 +54,7 @@ class AdminController extends Controller
     */
     public function portIndex()
     {
-        $ports = Ports::paginate(10);
+        $ports = Ports::orderBy('id', 'desc')->paginate(10);
         
         return view('admin.ports.port', compact('ports'));
     }
@@ -64,7 +64,7 @@ class AdminController extends Controller
     */
     public function scheduleIndex()
     {
-        $schedules = Schedules::paginate(10);
+        $schedules = Schedules::orderBy('id', 'desc')->paginate(10);
         
         return view('admin.schedules.schedule', compact('schedules'));
     }

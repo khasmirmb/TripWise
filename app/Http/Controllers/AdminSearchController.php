@@ -23,6 +23,7 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 0)
+        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.client', compact('clients', 'query'));
@@ -40,6 +41,7 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 2)
+        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.staff', compact('staffs', 'query'));
@@ -57,6 +59,7 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 1)
+        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.admin', compact('admins', 'query'));
@@ -68,6 +71,7 @@ class AdminSearchController extends Controller
         $query = $request->input('query');
         $ferries = Ferries::where('name', 'like', "%$query%")
             ->orWhere('capacity', 'like', "%$query%")
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('admin.ferries.ferry', compact('ferries', 'query'));
@@ -82,6 +86,7 @@ class AdminSearchController extends Controller
                 ->where('name', 'like', "%$query%")
                 ->orWhere('location', 'like', "%$query%");
         })
+        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.ports.port', compact('ports', 'query'));
@@ -96,25 +101,23 @@ class AdminSearchController extends Controller
         // Check if the input is a specific date or month
         if (strtotime($query) !== false) {
             $date = Carbon::parse($query);
-            $formattedDate = $date->format('Y-m-d');
             $formattedMonth = $date->format('m');
 
-            // Handle specific date format (e.g., November 7 or Nov 7)
-            $schedules->where('departure_date', 'like', "%$formattedDate%");
-
             // Handle specific month format (e.g., November or Nov)
-            $schedules->orWhere('departure_date', 'like', "%-$formattedMonth-%");
+            $schedules->orWhereRaw("MONTH(departure_date) = ?", [$formattedMonth]);
+        } else {
+            // If it's not a date, assume it's a vessel name or departure port
+            // Search in the related ferry's name
+            $schedules->whereHas('ferries', function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'like', "%$query%");
+            });
+
+            // Search in the departure port
+            $schedules->orWhere('departure_port', 'like', "%$query%");
         }
 
-        // Search in the related ferry's name
-        $schedules->whereHas('ferries', function ($queryBuilder) use ($query) {
-            $queryBuilder->where('name', 'like', "%$query%");
-        });
-
-        // Search in the departure port
-        $schedules->orWhere('departure_port', 'like', "%$query%");
-
-        $schedules = $schedules->paginate(10);
+        $schedules = $schedules->orderBy('id', 'desc')
+        ->paginate(10);
 
         return view('admin.schedules.schedule', compact('schedules', 'query'));
     }
