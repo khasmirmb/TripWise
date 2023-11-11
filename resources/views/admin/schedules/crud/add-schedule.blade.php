@@ -105,26 +105,6 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="frequency" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Frequency<span class="text-red-600">*</span></label>
-                                    <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center pl-3">
-                                                <input checked id="weekly" type="radio" value="weekly" name="frequency" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                <label for="weekly" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Weekly</label>
-                                            </div>
-                                        </li>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center pl-3">
-                                                <input id="monthly" type="radio" value="monthly" name="frequency" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                                <label for="monthly" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Monthly</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    @error('frequency')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
                                     <label for="day" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Day<span class="text-red-600">*</span></label>
                                     <select id="day" name="day" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option value="" {{ old('day') == '' ? 'selected' : '' }}>Select Day</option>
@@ -141,6 +121,18 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
+                                    <label for="vessel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vessel<span class="text-red-600">*</span></label>
+                                    <select id="vessel" name="vessel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                        <option selected value="">Select Vessel</option>
+                                        @foreach($ferries as $ferries)
+                                            <option value="{{ $ferries->id }}" {{ old('vessel') === $ferries->id ? 'selected' : '' }}>{{ $ferries->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('vessel')
+                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror 
+                                </div>
+                                <div class="w-full">
                                     <label for="departure_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Departure Time<span class="text-red-600">*</span></label>
                                     <input type="time" id="departure_time" name="departure_time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" required value="{{ old('departure_time') }}">
                                     @error('departure_time')
@@ -153,18 +145,6 @@
                                     @error('arrival_time')
                                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                                     @enderror
-                                </div>
-                                <div class="w-full">
-                                    <label for="vessel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vessel<span class="text-red-600">*</span></label>
-                                    <select id="vessel" name="vessel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                        <option selected value="">Select Vessel</option>
-                                        @foreach($ferries as $ferries)
-                                            <option value="{{ $ferries->id }}" {{ old('vessel') === $ferries->id ? 'selected' : '' }}>{{ $ferries->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('vessel')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                                    @enderror 
                                 </div>
                                 <div class="w-full">
                                     <div class="sm:mt-5" id="vessel-info">

@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
-class Seeder1 extends Seeder
+class Ferry extends Seeder
 {
     /**
      * Run the database seeds.
@@ -45,13 +45,33 @@ class Seeder1 extends Seeder
             $ferryName = "MV $girlName";
 
             $description = $faker->sentence(20);
-            $capacity = $faker->numberBetween(30, 50);
+            $capacity = $faker->numberBetween(200, 350);
 
             DB::table('ferries')->insert([
                 'name' => $ferryName,
                 'description' => $description,
                 'capacity' => $capacity,
                 'image' => null,
+            ]);
+        }
+
+        $ferries = DB::table('ferries')->get();
+
+        foreach ($ferries as $ferry) {
+            $economyPrice = $faker->numberBetween(250, 400);
+            $airconPrice = $faker->numberBetween(800, 1000);
+
+            DB::table('fares')->insert([
+                [
+                    'ferry_id' => $ferry->id,
+                    'type' => 'Economy',
+                    'price' => $economyPrice,
+                ],
+                [
+                    'ferry_id' => $ferry->id,
+                    'type' => 'Aircon',
+                    'price' => $airconPrice,
+                ],
             ]);
         }
     }

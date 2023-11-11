@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
 
-class Seeder3 extends Seeder
+class Sched extends Seeder
 {
     /**
      * Run the database seeds.

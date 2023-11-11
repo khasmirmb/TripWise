@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fares;
 use App\Models\Ferries;
 use App\Models\Ports;
 use App\Models\Schedules;
+use App\Models\Seat;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,7 +25,6 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 0)
-        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.client', compact('clients', 'query'));
@@ -41,7 +42,6 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 2)
-        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.staff', compact('staffs', 'query'));
@@ -59,7 +59,6 @@ class AdminSearchController extends Controller
                 ->orWhere('email', 'like', "%$query%");
         })
         ->where('type', 1)
-        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.users.admin', compact('admins', 'query'));
@@ -71,7 +70,6 @@ class AdminSearchController extends Controller
         $query = $request->input('query');
         $ferries = Ferries::where('name', 'like', "%$query%")
             ->orWhere('capacity', 'like', "%$query%")
-            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('admin.ferries.ferry', compact('ferries', 'query'));
@@ -86,7 +84,6 @@ class AdminSearchController extends Controller
                 ->where('name', 'like', "%$query%")
                 ->orWhere('location', 'like', "%$query%");
         })
-        ->orderBy('id', 'desc')
         ->paginate(10);
 
         return view('admin.ports.port', compact('ports', 'query'));
@@ -116,9 +113,33 @@ class AdminSearchController extends Controller
             $schedules->orWhere('departure_port', 'like', "%$query%");
         }
 
-        $schedules = $schedules->orderBy('id', 'desc')
-        ->paginate(10);
+        $schedules = $schedules->paginate(10);
 
         return view('admin.schedules.schedule', compact('schedules', 'query'));
+    }
+
+    public function seatSearch(Request $request, $scheduleId)
+    {
+        $query = $request->input('query');
+    
+        $schedules = Schedules::find($scheduleId);
+    
+        $seats = Seat::where('schedule_id', $scheduleId)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('seat_number', 'like', "%$query%")
+                    ->orWhere('seat_status', 'like', "%$query%")
+                    ->orWhere('class', 'like', "%$query%");
+            })
+            ->orderBy('class', 'asc')
+            ->paginate(10);
+
+        $ferryId = $schedules->ferry_id;
+
+        $seatCount = Seat::where('schedule_id', $scheduleId)->count();
+
+        // Retrieve all fares based on the ferry_id
+        $fares = Fares::where('ferry_id', $ferryId)->get();
+    
+        return view('admin.schedules.seats.seat', compact('seats', 'schedules', 'query', 'seatCount', 'fares'));
     }
 }
