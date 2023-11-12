@@ -87,13 +87,34 @@
     $(document).ready(function(){
         $( "#fareSelection{{$depart_schedule->id}}" ).on( "change", function() {
 
+            var fare_id = $('#fareSelection{{$depart_schedule->id}}').find(":selected").val();
             var fare_type = $('#fareSelection{{$depart_schedule->id}}').find(":selected").text();
-
             var fare_price = $('#fareSelection{{$depart_schedule->id}}').find(":selected").data('fare-price');
 
             $('#depart_fare_type').html(fare_type);
-
             $('#depart_fare_price').html(fare_price);
+
+            // Send an AJAX request to your Laravel controller
+            $.ajax({
+                type: 'GET',
+                url: '/store-one-info', // Replace with the actual URL
+                data: {
+                    scheduleId: fare_id,
+                    scheduleType: fare_type,
+                    schedulePrice: fare_price,
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error
+                    
+                    // Show the error message with the custom HTML structure
+                    var toastDanger = document.getElementById('toast-error');
+                    toastDanger.style.display = 'block';
+
+                    // Set the error message in the custom structure
+                    var errorMessage = document.querySelector('#toast-error #error-message');
+                    errorMessage.textContent = error;
+                }
+            });
 
         });
     });
