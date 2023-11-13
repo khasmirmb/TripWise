@@ -77,8 +77,11 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     // Show the payment summary and trip summary
     Route::match(['get', 'post'], '/booking/payment', [PaymentController::class, 'payment'])->name('booking.payment.show');
-
+    // Process the payment whether otc or online payment
     Route::post('/booking/process', [PaymentController::class, 'paymentProcess'])->name('booking.payment.process');
+
+    // Webhook for payment (Require Deployment)
+    Route::post('/webhook/paymongo', [PaymentMethod::class, 'handleWebhook'])->name('booking.webhook');
 
     // Process the payment if its sucess
     Route::get('/booking/success', [PaymentMethod::class, 'paymentSuccess'])->name('booking.success');

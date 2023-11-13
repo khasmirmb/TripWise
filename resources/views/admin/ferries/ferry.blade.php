@@ -97,6 +97,7 @@
                             </td>
                             <td class="text-center px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                 {{ $ferry->name }}
+                            </td>
                             <td class="text-center px-6 py-3">
                                 {{ $ferry->capacity }}
                             </td>

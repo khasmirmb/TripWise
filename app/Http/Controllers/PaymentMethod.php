@@ -104,6 +104,16 @@ class PaymentMethod extends Controller
     }
 
     /**
+     * WebHook (Not Done) -Need Deployment-
+     */
+    public function handleWebhook(Request $request)
+    {
+        $data = $request->json()->all();
+
+        dd($data);
+    }
+
+    /**
      * Online Payment when it's successful
      */
     public function paymentSuccess()

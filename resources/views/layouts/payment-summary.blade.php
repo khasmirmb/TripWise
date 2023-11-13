@@ -97,7 +97,7 @@
       @endif
       <div class="mt-4 space-y-1 rounded-lg bg-slate-100 dark:bg-gray-700">
           <div class="bg-teal-600 rounded-t-lg p-3">
-              <p class="text-xl font-medium text-white text-center">Passenger Summary</p>
+              <p class="text-xl font-medium text-white text-center">Passenger & Contact Summary</p>
           </div>
           <div class="passenger-summary px-3 sm:px-6 pb-3">
               <div class="contact-person border-b border-gray-300">
@@ -134,7 +134,7 @@
                   </div>
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Birthday:</span>
-                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{date("j F Y", strtotime($passenger['birthday']))}}</span>
+                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{date("M d, Y", strtotime($passenger['birthday']))}}</span>
                   </div>
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Classification:</span>

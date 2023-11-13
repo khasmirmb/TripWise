@@ -300,8 +300,6 @@
                             console.error(xhr, status, error);
                         }
                     });
-
-
                 }
             });
         });

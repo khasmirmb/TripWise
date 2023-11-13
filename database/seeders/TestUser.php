@@ -18,7 +18,7 @@ class TestUser extends Seeder
 
         $faker = Faker::create();
 
-        for ($i = 0; $i < 40; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             DB::table('users')->insert([
                 'firstname' => $faker->firstNameFemale,
                 'lastname' => $faker->lastName,

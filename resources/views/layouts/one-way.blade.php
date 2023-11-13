@@ -69,7 +69,7 @@
             @endforeach
         </div>
         <div class="block">
-            <form class="flex items-center justify-between mt-3">
+            <div class="flex items-center justify-between mt-3">
                 <select data-schedule-id="{{$depart_schedule->id}}" id="fareSelection{{$depart_schedule->id}}" class="fareSelect bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                     @foreach ($fares as $fare)
                         <option data-fare-price="{{$fare->price}}" value="{{$fare->id}}">{{$fare->type}}</option>
@@ -78,47 +78,10 @@
                 <button type="button" class="selectButton focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover-bg-green-700 dark:focus:ring-green-800">
                     Select
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-
-<script type="module">
-    $(document).ready(function(){
-        $( "#fareSelection{{$depart_schedule->id}}" ).on( "change", function() {
-
-            var fare_id = $('#fareSelection{{$depart_schedule->id}}').find(":selected").val();
-            var fare_type = $('#fareSelection{{$depart_schedule->id}}').find(":selected").text();
-            var fare_price = $('#fareSelection{{$depart_schedule->id}}').find(":selected").data('fare-price');
-
-            $('#depart_fare_type').html(fare_type);
-            $('#depart_fare_price').html(fare_price);
-
-            // Send an AJAX request to your Laravel controller
-            $.ajax({
-                type: 'GET',
-                url: '/store-one-info', // Replace with the actual URL
-                data: {
-                    scheduleId: fare_id,
-                    scheduleType: fare_type,
-                    schedulePrice: fare_price,
-                },
-                error: function(xhr, status, error) {
-                    // Handle the error
-                    
-                    // Show the error message with the custom HTML structure
-                    var toastDanger = document.getElementById('toast-error');
-                    toastDanger.style.display = 'block';
-
-                    // Set the error message in the custom structure
-                    var errorMessage = document.querySelector('#toast-error #error-message');
-                    errorMessage.textContent = error;
-                }
-            });
-
-        });
-    });
-</script>
 @endforeach
 
 <script type="module">
@@ -126,94 +89,128 @@
     $(document).ready(function(){
 
         var selectedButton = null;
-    
-        $("#schedule_depart0").click();
+        // Automatically click the first radio button when the page loads
+        $('input[name="schedule_depart"]:first').click();
         
         $('input[name="schedule_depart"]').click(function () {
             var inputValue = $(this).attr("value");
             var targetBox = $("." + inputValue);
             $(".depart_box").not(targetBox).hide();
             $(targetBox).show();
-        });
 
-        // Automatically click the first radio button when the page loads
-        $('input[name="schedule_depart"]:first').click();
+            $(".selectButton").click(function () {
+                var scheduleId = $(this).siblings('.fareSelect').data('schedule-id');
+                var fareId = $(this).siblings('.fareSelect').val();
+                $("#depart_summary").show();
+                $("#no-departure").hide();
+                $("#iti_dep_date").hide();
 
-        $(".selectButton").click(function () {
-            var scheduleId = $(this).siblings('.fareSelect').data('schedule-id');
-            var fareId = $(this).siblings('.fareSelect').val();
-            $("#depart_summary").show();
-            $("#no-departure").hide();
-            $("#iti_dep_date").hide();
+                // Check if a button was previously selected
+                if (selectedButton) {
+                    selectedButton.html("Select");
+                }
+                // Set the text of the clicked button to "Selected"
+                $(this).html("Selected");
+                selectedButton = $(this);
 
-            // Check if a button was previously selected
-            if (selectedButton) {
-                selectedButton.html("Select");
-            }
-            // Set the text of the clicked button to "Selected"
-            $(this).html("Selected");
-            selectedButton = $(this);
+                // Send an Ajax request to get schedule information
+                $.ajax({
+                    type: "GET",
+                    url: "/get-schedule",
+                    data: { scheduleId: scheduleId, fareId: fareId },
+                    success: function (scheduleResponse) {
+                        // Handle the response from the server for schedule information
+                        // Now, send another Ajax request to get ferry information based on the schedule
+                        $.ajax({
+                            type: "GET",
+                            url: "/get-ferry-info",
+                            data: { scheduleId: scheduleId },
+                            success: function (ferryResponse) {
+                                // Handle the response from the server for ferry information
+                                $("input[name='depart_schedule_id']").val(scheduleId);
 
-            // Send an Ajax request to get schedule information
-            $.ajax({
-                type: "GET",
-                url: "/get-schedule",
-                data: { scheduleId: scheduleId, fareId: fareId },
-                success: function (scheduleResponse) {
-                    // Handle the response from the server for schedule information
-                    // Now, send another Ajax request to get ferry information based on the schedule
+                                $("input[name='depart_fare_type']").val(scheduleResponse.type);
+
+                                $('#depart_dep_port').html(scheduleResponse.departure_port);
+
+                                $('#depart_ariv_port').html(scheduleResponse.arrival_port);
+
+                                $('#depart_dep_date').html(scheduleResponse.departure_date);
+
+                                $('#new_dep_date').html(scheduleResponse.departure_date);
+
+                                $('#depart_dep_time').html(scheduleResponse.departure_time);
+
+                                $('#depart_ferry_name').html(ferryResponse.ferry_name);
+
+                                $('#depart_fare_type').html(scheduleResponse.type);
+
+                                $('#depart_fare_price').html(scheduleResponse.price);
+
+                                $("input[name='depart_depart_valid']").val(scheduleResponse.departure_date);
+
+                                var scheduleType = scheduleResponse.type;
+                                var schedulePrice = scheduleResponse.price;
+
+                                // Send an AJAX request to your Laravel controller
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/store-one-info', // Replace with the actual URL
+                                    data: {
+                                        scheduleId: scheduleId,
+                                        scheduleType: scheduleType,
+                                        schedulePrice: schedulePrice,
+                                    },
+                                    error: function(xhr, status, error) {
+                                        // Handle the error
+                                        
+                                        // Show the error message with the custom HTML structure
+                                        var toastDanger = document.getElementById('toast-error');
+                                        toastDanger.style.display = 'block';
+
+                                        // Set the error message in the custom structure
+                                        var errorMessage = document.querySelector('#toast-error #error-message');
+                                        errorMessage.textContent = error;
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle the error
+                                // Show the error message with the custom HTML structure
+                                var toastDanger = document.getElementById('toast-error');
+                                toastDanger.style.display = 'block';
+
+                                // Set the error message in the custom structure
+                                var errorMessage = document.querySelector('#toast-error #error-message');
+                                errorMessage.textContent = error;
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Show the error message with the custom HTML structure
+                        var toastDanger = document.getElementById('toast-error');
+                        toastDanger.style.display = 'block';
+
+                        // Set the error message in the custom structure
+                        var errorMessage = document.querySelector('#toast-error #error-message');
+                        errorMessage.textContent = error;
+                    }
+                });
+
+                $("#fareSelection" + scheduleId ).on( "change", function() {
+                    var fare_type = $(this).find(":selected").text();
+                    var fare_price = $(this).find(":selected").data('fare-price');
+
+                    $('#depart_fare_type').html(fare_type);
+                    $('#depart_fare_price').html(fare_price);
+                    // Send an AJAX request to your Laravel controller
                     $.ajax({
-                        type: "GET",
-                        url: "/get-ferry-info",
-                        data: { scheduleId: scheduleId },
-                        success: function (ferryResponse) {
-                            // Handle the response from the server for ferry information
-                            $("input[name='depart_schedule_id']").val(scheduleId);
-
-                            $("input[name='depart_fare_type']").val(scheduleResponse.type);
-
-                            $('#depart_dep_port').html(scheduleResponse.departure_port);
-
-                            $('#depart_ariv_port').html(scheduleResponse.arrival_port);
-
-                            $('#depart_dep_date').html(scheduleResponse.departure_date);
-
-                            $('#new_dep_date').html(scheduleResponse.departure_date);
-
-                            $('#depart_dep_time').html(scheduleResponse.departure_time);
-
-                            $('#depart_ferry_name').html(ferryResponse.ferry_name);
-
-                            $('#depart_fare_type').html(scheduleResponse.type);
-
-                            $('#depart_fare_price').html(scheduleResponse.price);
-
-                            $("input[name='depart_depart_valid']").val(scheduleResponse.departure_date);
-
-                            var scheduleType = scheduleResponse.type;
-                            var schedulePrice = scheduleResponse.price;
-
-                            // Send an AJAX request to your Laravel controller
-                            $.ajax({
-                                type: 'GET',
-                                url: '/store-one-info', // Replace with the actual URL
-                                data: {
-                                    scheduleId: scheduleId,
-                                    scheduleType: scheduleType,
-                                    schedulePrice: schedulePrice,
-                                },
-                                error: function(xhr, status, error) {
-                                    // Handle the error
-                                    
-                                    // Show the error message with the custom HTML structure
-                                    var toastDanger = document.getElementById('toast-error');
-                                    toastDanger.style.display = 'block';
-
-                                    // Set the error message in the custom structure
-                                    var errorMessage = document.querySelector('#toast-error #error-message');
-                                    errorMessage.textContent = error;
-                                }
-                            });
+                        type: 'GET',
+                        url: '/store-one-info', // Replace with the actual URL
+                        data: {
+                            scheduleId: scheduleId,
+                            scheduleType: fare_type,
+                            schedulePrice: fare_price,
                         },
                         error: function(xhr, status, error) {
                             // Handle the error
@@ -226,17 +223,9 @@
                             errorMessage.textContent = error;
                         }
                     });
-                },
-                error: function(xhr, status, error) {
-                    // Show the error message with the custom HTML structure
-                    var toastDanger = document.getElementById('toast-error');
-                    toastDanger.style.display = 'block';
-
-                    // Set the error message in the custom structure
-                    var errorMessage = document.querySelector('#toast-error #error-message');
-                    errorMessage.textContent = error;
-                }
+                });
             });
         });
+
     });
 </script>

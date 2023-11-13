@@ -96,17 +96,18 @@
                             </td>
                             <td class="text-center px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                 {{ $schedule->ferries->name }}
+                            </td>
                             <td class="text-center px-6 py-3">
                                 {{ $schedule->departure_port }}
                             </td>
                             <td class="text-center px-6 py-3">
                                 {{ $schedule->arrival_port }}
                             </td>
-                            <td class="text-center px-6 py-3">
-                                {{ \Carbon\Carbon::parse($schedule->departure_date . ' ' . $schedule->departure_time)->format('M d, Y g:i a') }}
+                            <td class="text-center px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                {{ \Carbon\Carbon::parse($schedule->departure_date . ' ' . $schedule->departure_time)->format('D, M d, Y g:i a') }}
                             </td>
-                            <td class="text-center px-6 py-3">
-                                {{ \Carbon\Carbon::parse($schedule->arrival_date . ' ' . $schedule->arrival_time)->format('M d, Y g:i a') }}
+                            <td class="text-center px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                {{ \Carbon\Carbon::parse($schedule->arrival_date . ' ' . $schedule->arrival_time)->format('D, M d, Y g:i a') }}
                             </td>
                             <td class="px-6 py-3 text-center">
                                 <div class="flex justify-center space-x-3">
