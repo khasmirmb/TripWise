@@ -89,9 +89,8 @@
     $(document).ready(function(){
 
         var selectedButton = null;
-        // Automatically click the first radio button when the page loads
-        $('input[name="schedule_depart"]:first').click();
         
+        // Clicking the date schedule
         $('input[name="schedule_depart"]').click(function () {
             var inputValue = $(this).attr("value");
             var targetBox = $("." + inputValue);
@@ -226,6 +225,9 @@
                 });
             });
         });
-
+        
+        // Automatically click the first radio button when the page loads
+        $('input[name="schedule_depart"]:first').click();
+        
     });
 </script>

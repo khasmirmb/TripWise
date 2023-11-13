@@ -25,13 +25,21 @@
                     <img src="{{asset('ferries/default.png')}}" class="rounded-lg w-60 h-52">
                     @endif
                 </div>
-                <div class="w-full sm:text-center">
-                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Description</dt>
-                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{$ferry->description}}</dd>
+                <div class="w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
+                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                        Description
+                    </h5>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">
+                        {{$ferry->description}}
+                    </p>
                 </div>
-                <div class="w-full sm:text-center">
-                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Capacity</dt>
-                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{$ferry->capacity}}</dd>
+                <div class="w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
+                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                        Capacity
+                    </h5>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">
+                        {{$ferry->capacity}}
+                    </p>
                 </div>
                 <div class="w-full flex justify-center items-center text-center sm:col-span-2">
                     <div id="custom-controls-gallery" class="relative w-full" data-carousel="static">
@@ -86,7 +94,6 @@
                     </div>
                 </div>
             </dl>
-
             <div class="flex justify-between items-center mt-5">
                 <div class="flex items-center space-x-3 sm:space-x-4">
                     <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" data-modal-toggle="read-ferry{{$ferry->id}}">Done</button>

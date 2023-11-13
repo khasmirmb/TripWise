@@ -205,6 +205,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/schedules/ferry-info', [AdminScheduleController::class, 'ferryInfo'])->name('admin.schedule.ferry-info');
     // Add Process Schedule
     Route::post('/admin/schedules/add/process', [AdminScheduleController::class, 'createSchedule'])->name('admin.schedule.add-process');
+    // Edit Form Schedule
+    Route::get('/admin/schedules/edit/{schedule}', [AdminScheduleController::class, 'editScheduleForm'])->name('admin.schedule.edit');
+    // Add Process Schedule
+    Route::post('/admin/schedules/edit/{schedule}/process', [AdminScheduleController::class, 'updateSchedule'])->name('admin.schedule.edit-process');
 
     // Admin Schedule Seats
     Route::get('/admin/schedules/{schedule}/seats', [AdminSeatController::class, 'seatList'])->name('admin.schedule.seats');

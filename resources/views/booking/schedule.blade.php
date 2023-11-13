@@ -171,8 +171,12 @@
                         @endphp
 
                         <input type="hidden" name="depart_depart_valid" required>
-
                         <input type="hidden" name="return_depart_valid">
+                        
+                        <input type="hidden" name="depart_schedule_id">
+                        <input type="hidden" name="depart_fare_type">
+                        <input type="hidden" name="return_schedule_id">
+                        <input type="hidden" name="return_fare_type">
 
                         <button id="continueButton" type="button" class="w-full px-5 py-3 text-lg font-medium text-center text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Continue</button>
                     </form>
@@ -208,14 +212,6 @@
             </svg>
         </button>
     </div>
-
-    <input type="hidden" name="depart_schedule_id">
-
-    <input type="hidden" name="depart_fare_type">
-
-    <input type="hidden" name="return_schedule_id">
-
-    <input type="hidden" name="return_fare_type">
 
     <script type="module">
         $(document).ready(function () {
