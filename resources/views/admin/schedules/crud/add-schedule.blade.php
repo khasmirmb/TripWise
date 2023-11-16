@@ -171,7 +171,7 @@
                                 <div class="w-full">
                                     <label for="vessel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vessel<span class="text-red-600">*</span></label>
                                     <select id="vessel" name="vessel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                        <option value="" {{ old('vessel') === '' ? 'selected' : '' }}>Select Vessel</option>
+                                        <option value="" {{ old('vessel') == '' ? 'selected' : '' }}>Select Vessel</option>
                                         @foreach($ferries as $ferry)
                                             <option value="{{ $ferry->id }}" {{ old('vessel') == $ferry->id ? 'selected' : '' }}>{{ $ferry->name }}</option>
                                         @endforeach
