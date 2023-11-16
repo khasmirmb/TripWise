@@ -34,7 +34,7 @@ class AdminScheduleController extends Controller
         return response()->json(['ferry' => $ferry, 'fares' => $fares]);
     }
 
-    // Add Schedule By Week
+    // Add Schedule By Day Per Week
     public function createSchedule(Request $request)
     {
         $validate = $request->validate([
@@ -42,13 +42,13 @@ class AdminScheduleController extends Controller
             'destination' => 'required|different:origin',
             'start_date' => 'required|date_format:m/d/Y',
             'end_date' => 'required|date_format:m/d/Y|after:start_date',
-            'day' => 'required|in:mo,tu,we,th,fr,sa,su',
             'departure_time' => 'required|date_format:H:i',
             'arrival_time' => 'required|date_format:H:i',
             'vessel' => 'required|exists:ferries,id',
-            'seats.*' => 'required|integer|min:1',
+            'days' => 'required|array|min:1',
+            'days.*' => 'in:mo,tu,we,th,fr,sa,su',
         ]);
-
+        
 
         if($validate){
 
@@ -56,118 +56,137 @@ class AdminScheduleController extends Controller
             $destination = $request->input('destination');
             $start_date = $request->input('start_date');
             $end_date = $request->input('end_date');
-            $day = $request->input('day');
             $departure_time = $request->input('departure_time');
             $arrival_time = $request->input('arrival_time');
             $vessel = $request->input('vessel');
-            $seats = $request->input('seats');
+            $days = $request->input('days');
 
             $ferry = Ferries::find($vessel);
 
             if (!$ferry) {
                 return redirect()->back()->withInput()->with('error', 'Ferry not found.');
             }
-    
-            $totalseat = 0;
-            $seatings = [];
-    
-            $capacity = $ferry->capacity;
-            
-            foreach ($seats as $fareType => $seatCount) {
-                // Perform your validation or other logic here if needed
-                $totalseat += $seatCount;
-                $seatings[$fareType] = [
-                    'count' => $seatCount,
-                    'type' => $fareType,
-                ];
+
+            $fares = $ferry->fares;
+
+            if (!$ferry) {
+                return redirect()->back()->withInput()->with('error', 'Fares not found.');
             }
     
-            if($totalseat > $capacity){
-                return redirect()->back()->withInput()->with('error', 'Total seat is greater than capacity!');
-            }
-    
-            $r = new When();
-            $r->RFC5545_COMPLIANT = When::IGNORE;
-            $r->startDate(new DateTime($start_date))
-            ->until(new DateTime($end_date))
-            ->freq('weekly')
-            ->byday($day)
-            ->generateOccurrences();
+            // Loop through each selected day
+            foreach ($days as $selectedDay) {
+                $r = new When();
+                $r->RFC5545_COMPLIANT = When::IGNORE;
+                $r->startDate(new DateTime($start_date))
+                ->until(new DateTime($end_date))
+                ->freq('weekly')
+                ->byday($selectedDay)
+                ->generateOccurrences();
 
-            $occurrences = $r->occurrences;
+                $occurrences = $r->occurrences;
 
-            foreach ($occurrences as $date) {
-                $date = $date->format('Y-m-d');
-            
-                $schedule = new Schedules();
-                $schedule->ferry_id = $vessel;
-                $schedule->departure_port = $origin;
-                $schedule->arrival_port = $destination;
-                $schedule->departure_date = $date;
-            
-                // Convert departure and arrival times to Carbon instances
-                $departureTime = Carbon::createFromFormat('H:i', $departure_time);
-                $arrivalTime = Carbon::createFromFormat('H:i', $arrival_time);
-            
-                // If arrival time is earlier than departure time, add 1 day to arrival date
-                if ($arrivalTime->lt($departureTime)) {
-                    $schedule->arrival_date = Carbon::parse($date)->addDay()->format('Y-m-d');
-                } else {
-                    $schedule->arrival_date = $date;
-                }
-            
-                $schedule->departure_time = $departure_time;
-                $schedule->arrival_time = $arrival_time;
-                $schedule->save(); // Save the schedule to the database
-            
-                $scheduleId = $schedule->id;
-            
-                $seatsToInsert = [];
-            
-                foreach ($seatings as $seating) {
-                    // Retrieve the last seat for the current class and schedule
-                    $lastSeat = Seat::where('schedule_id', $scheduleId)
-                        ->where('class', $seating['type'])
-                        ->orderBy('id', 'desc')
+                foreach ($occurrences as $date) {
+                    $date = $date->format('Y-m-d');
+
+                    // Check if a schedule already exists for the same ferry, date, origin, and destination
+                    $existingSchedule = Schedules::where('ferry_id', $vessel)
+                        ->where('departure_date', $date)
+                        ->where('departure_port', $origin)
+                        ->where('arrival_port', $destination)
                         ->first();
-            
-                    // If there is a last seat, extract the seat number and continue from the next one
-                    if ($lastSeat) {
-                        $lastSeatNumber = $lastSeat->seat_number;
-                        preg_match('/([A-Za-z]+)(\d+)/', $lastSeatNumber, $matches);
-                        $prefix = $matches[1];
-                        $lastNumber = (int)$matches[2];
-            
-                        // Continue the loop from the next seat number
-                        for ($i = 1; $i <= $seating['count']; $i++) {
-                            $nextSeatNumber = $prefix . ($lastNumber + $i);
-                            $seatsToInsert[] = [
-                                'ferry_id' => $vessel,
-                                'schedule_id' => $scheduleId,
-                                'seat_number' => $nextSeatNumber,
-                                'class' => $seating['type'],
-                                'seat_status' => 'available',
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
+
+                    if ($existingSchedule) {
+                        return redirect()->back()->withInput()->with('error', 'Schedule already exists for the selected ferry, date, origin, and destination');
+                    }
+
+                    // Check for overlapping time range with existing schedules
+                    $overlappingSchedules = Schedules::where('ferry_id', $vessel)
+                        ->where('departure_date', '<=', $date)
+                        ->where('arrival_date', '>=', $date)
+                        ->where(function ($query) use ($departure_time, $arrival_time) {
+                            $query->whereBetween('departure_time', [$departure_time, $arrival_time])
+                                ->orWhereBetween('arrival_time', [$departure_time, $arrival_time])
+                                ->orWhere(function ($query) use ($departure_time, $arrival_time) {
+                                    $query->where('departure_time', '<=', $departure_time)
+                                        ->where('arrival_time', '>=', $arrival_time);
+                                });
+                        })
+                        ->exists();
+
+                    if ($overlappingSchedules) {
+                        return redirect()->back()->withInput()->with('error', 'Overlapping schedule found for the selected ferry, date and time range');
+                    }
+                
+                    $schedule = new Schedules();
+                    $schedule->ferry_id = $vessel;
+                    $schedule->departure_port = $origin;
+                    $schedule->arrival_port = $destination;
+                    $schedule->departure_date = $date;
+                
+                    // Convert departure and arrival times to Carbon instances
+                    $departureTime = Carbon::createFromFormat('H:i', $departure_time);
+                    $arrivalTime = Carbon::createFromFormat('H:i', $arrival_time);
+                
+                    // If arrival time is earlier than departure time, add 1 day to arrival date
+                    if ($arrivalTime->lt($departureTime)) {
+                        $schedule->arrival_date = Carbon::parse($date)->addDay()->format('Y-m-d');
                     } else {
-                        // If no last seat, start from the beginning
-                        for ($i = 1; $i <= $seating['count']; $i++) {
-                            $seatsToInsert[] = [
-                                'ferry_id' => $vessel,
-                                'schedule_id' => $scheduleId,
-                                'seat_number' => $seating['type'][0] . $i,
-                                'class' => $seating['type'],
-                                'seat_status' => 'available',
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
+                        $schedule->arrival_date = $date;
+                    }
+                
+                    $schedule->departure_time = $departure_time;
+                    $schedule->arrival_time = $arrival_time;
+                    $schedule->save(); // Save the schedule to the database
+                
+                    $scheduleId = $schedule->id;
+                
+                    $seatsToInsert = [];
+                
+                    foreach ($fares as $fare) {
+                        // Retrieve the last seat for the current class and schedule
+                        $lastSeat = Seat::where('schedule_id', $scheduleId)
+                            ->where('class', $fare->type)
+                            ->orderBy('id', 'desc')
+                            ->first();
+                
+                        // If there is a last seat, extract the seat number and continue from the next one
+                        if ($lastSeat) {
+                            $lastSeatNumber = $lastSeat->seat_number;
+                            preg_match('/([A-Za-z]+)(\d+)/', $lastSeatNumber, $matches);
+                            $prefix = $matches[1];
+                            $lastNumber = (int)$matches[2];
+                
+                            // Continue the loop from the next seat number
+                            for ($i = 1; $i <= $fare->seats; $i++) {
+                                $nextSeatNumber = $prefix . ($lastNumber + $i);
+                                $seatsToInsert[] = [
+                                    'ferry_id' => $vessel,
+                                    'schedule_id' => $scheduleId,
+                                    'seat_number' => $nextSeatNumber,
+                                    'class' => $fare->type,
+                                    'seat_status' => 'available',
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ];
+                            }
+                        } else {
+                            // If no last seat, start from the beginning
+                            for ($i = 1; $i <= $fare->seats; $i++) {
+                                $seatsToInsert[] = [
+                                    'ferry_id' => $vessel,
+                                    'schedule_id' => $scheduleId,
+                                    'seat_number' => $fare->type[0] . $i,
+                                    'class' => $fare->type,
+                                    'seat_status' => 'available',
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ];
+                            }
                         }
                     }
+                    // Save seat to the database by batch processing
+                    Seat::insert($seatsToInsert);
                 }
-                // Save seat to the database by batch processing
-                Seat::insert($seatsToInsert);
             }
 
             return redirect()->route('admin.schedule')->with('success', 'Schedule created successfully');
@@ -200,7 +219,7 @@ class AdminScheduleController extends Controller
         ));
     }
 
-    // Add Schedule By Week
+    // Update Schedule By Day Per Week
     public function updateSchedule(Request $request, $scheduleId)
     {
         $validate = $request->validate([
@@ -210,7 +229,6 @@ class AdminScheduleController extends Controller
             'departure_time' => 'required|date_format:H:i',
             'arrival_time' => 'required|date_format:H:i',
             'vessel' => 'required|exists:ferries,id',
-            'seats.*' => 'required|integer',
         ]);
 
         if($validate){
@@ -221,42 +239,11 @@ class AdminScheduleController extends Controller
             $departure_time = $request->input('departure_time');
             $arrival_time = $request->input('arrival_time');
             $vessel = $request->input('vessel');
-            $seats = $request->input('seats');
 
             $ferry = Ferries::find($vessel);
 
             if (!$ferry) {
                 return redirect()->back()->withInput()->with('error', 'Ferry not found.');
-            }
-
-            $seatingCounts = Seat::where('schedule_id', $scheduleId)->count();
-
-            if($seatingCounts > $ferry->capacity){
-                return redirect()->back()->with('error', 'The selected vessel (' . $ferry->name . ') does not have ' . $seatingCounts . ' capacity');
-            }
-
-            $totalseat = 0;
-            $seatings = [];
-    
-            $capacity = $ferry->capacity;
-            
-            foreach ($seats as $fareType => $seatCount) {
-                // Perform your validation or other logic here if needed
-                $totalseat += $seatCount;
-                $seatings[$fareType] = [
-                    'count' => $seatCount,
-                    'type' => $fareType,
-                ];
-            }
-
-            $total_counts = $seatingCounts + $totalseat;
-
-            if($total_counts > $capacity){
-                return redirect()->back()->withInput()->with('error', 'Total seat is greater than capacity!');
-            }
-    
-            if($totalseat > $capacity){
-                return redirect()->back()->withInput()->with('error', 'Total seat is greater than capacity!');
             }
 
             // Convert departure and arrival times to Carbon instances
@@ -283,13 +270,18 @@ class AdminScheduleController extends Controller
             $schedule->departure_time = $departure_time;
             $schedule->arrival_time = $arrival_time;
             $schedule->save(); // Save the schedule to the database
+
+            // Delete all seats with the specified schedule_id
+            Seat::where('schedule_id', $scheduleId)->delete();
         
             $seatsToInsert = [];
 
-            foreach ($seatings as $seating) {
+            $fares = $ferry->fares;
+
+            foreach ($fares as $fare) {
                 // Retrieve the last seat for the current class and schedule
                 $lastSeat = Seat::where('schedule_id', $scheduleId)
-                    ->where('class', $seating['type'])
+                    ->where('class', $fare->type)
                     ->orderBy('id', 'desc')
                     ->first();
         
@@ -301,13 +293,13 @@ class AdminScheduleController extends Controller
                     $lastNumber = (int)$matches[2];
         
                     // Continue the loop from the next seat number
-                    for ($i = 1; $i <= $seating['count']; $i++) {
+                    for ($i = 1; $i <= $fare->seats; $i++) {
                         $nextSeatNumber = $prefix . ($lastNumber + $i);
                         $seatsToInsert[] = [
                             'ferry_id' => $vessel,
                             'schedule_id' => $scheduleId,
                             'seat_number' => $nextSeatNumber,
-                            'class' => $seating['type'],
+                            'class' => $fare->type,
                             'seat_status' => 'available',
                             'created_at' => now(),
                             'updated_at' => now(),
@@ -315,12 +307,12 @@ class AdminScheduleController extends Controller
                     }
                 } else {
                     // If no last seat, start from the beginning
-                    for ($i = 1; $i <= $seating['count']; $i++) {
+                    for ($i = 1; $i <= $fare->seats; $i++) {
                         $seatsToInsert[] = [
                             'ferry_id' => $vessel,
                             'schedule_id' => $scheduleId,
-                            'seat_number' => $seating['type'][0] . $i,
-                            'class' => $seating['type'],
+                            'seat_number' => $fare->type[0] . $i,
+                            'class' => $fare->type,
                             'seat_status' => 'available',
                             'created_at' => now(),
                             'updated_at' => now(),

@@ -217,12 +217,9 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Schedule Seats CRUD
     // Admin Schedule Delete All
     Route::get('/admin/schedules/{schedule}/seats/delete-all', [AdminSeatController::class, 'seatDeleteAll'])->name('admin.schedule.seats-deleteall');
-    // Schedule Seats Add Form
-    Route::get('/admin/schedules/{schedule}/seats/add', [AdminSeatController::class, 'seatAddForm'])->name('admin.schedule.seats.add');
-    // Schedule Seats Add Bulk Process
-    Route::post('/admin/schedules/{schedule}/seats/add/bulk', [AdminSeatController::class, 'createSeats'])->name('admin.schedule.seats.addbulk-process');
-    // Schedule Seats Delete
-    Route::delete('/admin/schedules/seats/delete/{seat}', [AdminSeatController::class, 'deleteSeat'])->name('admin.schedule.seats.delete');
+    // Schedule Seats Add All
+    Route::get('/admin/schedules/{schedule}/seats/add', [AdminSeatController::class, 'createAllSeats'])->name('admin.schedule.seats.add-process');
+    // Schedule Seats Edit
     Route::get('/admin/schedules/seats/edit/{seat}', [AdminSeatController::class, 'editSeat'])->name('admin.schedule.seats.edit');
     
 });

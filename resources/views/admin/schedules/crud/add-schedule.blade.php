@@ -45,7 +45,7 @@
                         </svg>
                         <span class="sr-only">Info</span>
                         <div class="text-justify">
-                            Fields with red asterisks (<span class="text-red-600">*</span>) are required. Ensure that the total number of seats entered for fares matches the vessel's overall capacity.
+                            Fields with red asterisks (<span class="text-red-600">*</span>) are required.
                         </div>
                     </div>
                     <div class="px-4 py-2 mx-auto">
@@ -105,34 +105,6 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="day" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Day<span class="text-red-600">*</span></label>
-                                    <select id="day" name="day" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option value="" {{ old('day') == '' ? 'selected' : '' }}>Select Day</option>
-                                        <option value="mo" {{ old('day') == 'mo' ? 'selected' : '' }}>Monday</option>
-                                        <option value="tu" {{ old('day') == 'tu' ? 'selected' : '' }}>Tuesday</option>
-                                        <option value="we" {{ old('day') == 'we' ? 'selected' : '' }}>Wednesday</option>
-                                        <option value="th" {{ old('day') == 'th' ? 'selected' : '' }}>Thursday</option>
-                                        <option value="fr" {{ old('day') == 'fr' ? 'selected' : '' }}>Friday</option>
-                                        <option value="sa" {{ old('day') == 'sa' ? 'selected' : '' }}>Saturday</option>
-                                        <option value="su" {{ old('day') == 'su' ? 'selected' : '' }}>Sunday</option>
-                                    </select>
-                                    @error('day')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
-                                    <label for="vessel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vessel<span class="text-red-600">*</span></label>
-                                    <select id="vessel" name="vessel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                        <option selected value="">Select Vessel</option>
-                                        @foreach($ferries as $ferries)
-                                            <option value="{{ $ferries->id }}" {{ old('vessel') === $ferries->id ? 'selected' : '' }}>{{ $ferries->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('vessel')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                                    @enderror 
-                                </div>
-                                <div class="w-full">
                                     <label for="departure_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Departure Time<span class="text-red-600">*</span></label>
                                     <input type="time" id="departure_time" name="departure_time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" required value="{{ old('departure_time') }}">
                                     @error('departure_time')
@@ -147,14 +119,66 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <div class="sm:mt-5" id="vessel-info">
-                                        <!-- Ferry Infomation -->
-                                    </div>
+                                    <label for="days" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Days<span class="text-red-600">*</span></label>
+                                    <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="monday" name="days[]" type="checkbox" value="mo" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('mo', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="monday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Monday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="tuesday" name="days[]"  type="checkbox" value="tu" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('tu', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="tuesday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Tuesday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="wednesday" name="days[]" type="checkbox" value="we" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('we', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="wednesday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Wednesday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="thursday" name="days[]" type="checkbox" value="th" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('th', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="thursday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Thursday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="friday" type="checkbox" name="days[]" value="fr" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('fr', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="friday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Friday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="saturday" name="days[]" type="checkbox" value="sa" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('sa', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="saturday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Saturday</label>
+                                            </div>
+                                        </li>
+                                        <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                            <div class="flex items-center ps-3">
+                                                <input id="sunday" type="checkbox" name="days[]" value="su" class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" {{ in_array('su', old('days', [])) ? 'checked' : '' }}>
+                                                <label for="sunday" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Every Sunday</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    @error('days')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror 
                                 </div>
                                 <div class="w-full">
-                                    <div id="seat_input" class="w-full">
-    
-                                    </div>
+                                    <label for="vessel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Vessel<span class="text-red-600">*</span></label>
+                                    <select id="vessel" name="vessel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                        <option value="" {{ old('vessel') === '' ? 'selected' : '' }}>Select Vessel</option>
+                                        @foreach($ferries as $ferry)
+                                            <option value="{{ $ferry->id }}" {{ old('vessel') == $ferry->id ? 'selected' : '' }}>{{ $ferry->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('vessel')
+                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror 
                                 </div>
                             </div>
                             <div class="flex justify-end items-end">
@@ -197,41 +221,7 @@
                         $dropdown2.find('option[value="' + selectedItem + '"]').remove();
                     }
                 });
-        
-                $('#vessel').change(function() {
-                    var ferry_id = $(this).val();
-        
-                    // Make Ajax call to Laravel controller
-                    $.ajax({
-                        url: '/admin/schedules/ferry-info', // Replace with your actual route
-                        type: 'GET',
-                        data: { ferry_id: ferry_id },
-                        success: function(response) {
-                            // Clear existing content before appending new information
-                            $('#vessel-info').empty();
 
-                            $('#seat_input').empty();
-        
-                            // Ferry Capacity
-                            $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">Capacity: <span class="mb-2 text-gray-500 dark:text-gray-400">' + response.ferry.capacity + '</span></p>');
-        
-                            // Ferry Fares
-                            response.fares.forEach(function(fare) {
-                                $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ': <span class="mb-2 text-gray-500 dark:text-gray-400">₱' + fare.price + '</span></p>');
-
-                                $('#seat_input').append(
-                                    '<label for="' + fare.type + '" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ' Seats<span class="text-red-600">*</span></label>' +
-                                    '<input type="number" id="' + fare.type + '" name="seats[' + fare.type + ']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="50" required>'
-                                );
-                            });
-                        },
-                        error: function(error) {
-                            console.log(error);
-        
-                            $('#error-schedule').show();
-                        }
-                    });
-                });
             });
         </script>
                

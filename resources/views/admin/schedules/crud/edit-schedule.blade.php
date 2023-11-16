@@ -45,16 +45,16 @@
                         </svg>
                         <span class="sr-only">Info</span>
                         <div class="text-justify">
-                            Fields with red asterisks (<span class="text-red-600">*</span>) are required. Ensure that the total number of seats entered for fares matches the vessel's overall capacity.
+                            Fields with red asterisks (<span class="text-red-600">*</span>) are required.
                         </div>
                     </div>
-                    <div class="flex items-center p-4 mb-4 text-base text-blue-800 bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
+                    <div class="flex items-center p-4 text-base text-blue-800 bg-blue-50 dark:bg-blue-900 dark:text-blue-400" role="alert">
                         <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                         </svg>
                         <span class="sr-only">Info</span>
                         <div class="text-justify">
-                            Seat: <strong class="text-red-600">{{$seatCount}}</strong> seats out of current capacity of <strong class="text-red-600">{{$schedule->ferries->capacity}}</strong>. Prior to <strong class="font-bold text-green-500">selecting a new vessel</strong> with different seats, ensure the <strong class="text-red-600">deletion</strong> of all existing seats to prevent conflicts.
+                            Trip Information: <strong>{{$schedule->departure_port}}</strong> to <strong>{{$schedule->arrival_port}}</strong> using <strong>{{$schedule->ferries->name}}</strong>.
                         </div>
                     </div>
                     <div class="px-4 py-2 mx-auto">
@@ -174,74 +174,6 @@
                     }
                 });
 
-                var ferry_id = {{$schedule->ferry_id}};
-        
-                // Make Ajax call to Laravel controller
-                $.ajax({
-                    url: '/admin/schedules/ferry-info', // Replace with your actual route
-                    type: 'GET',
-                    data: { ferry_id: ferry_id },
-                    success: function(response) {
-                        // Clear existing content before appending new information
-                        $('#vessel-info').empty();
-
-                        $('#seat_input').empty();
-
-                        // Ferry Capacity
-                        $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">Capacity: <span class="mb-2 text-gray-500 dark:text-gray-400">' + response.ferry.capacity + '</span></p>');
-
-                        // Ferry Fares
-                        response.fares.forEach(function(fare) {
-                            $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ': <span class="mb-2 text-gray-500 dark:text-gray-400">₱' + fare.price + '</span></p>');
-
-                            $('#seat_input').append(
-                                '<label for="' + fare.type + '" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ' Seats<span class="text-red-600">*</span></label>' +
-                                '<input type="number" id="' + fare.type + '" name="seats[' + fare.type + ']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="50" value="0" required>'
-                            );
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error);
-
-                        $('#error-schedule').show();
-                    }
-                });
-                
-        
-                $('#vessel').change(function() {
-                    var ferry_id = $(this).val();
-        
-                    // Make Ajax call to Laravel controller
-                    $.ajax({
-                        url: '/admin/schedules/ferry-info', // Replace with your actual route
-                        type: 'GET',
-                        data: { ferry_id: ferry_id },
-                        success: function(response) {
-                            // Clear existing content before appending new information
-                            $('#vessel-info').empty();
-
-                            $('#seat_input').empty();
-        
-                            // Ferry Capacity
-                            $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">Capacity: <span class="mb-2 text-gray-500 dark:text-gray-400">' + response.ferry.capacity + '</span></p>');
-        
-                            // Ferry Fares
-                            response.fares.forEach(function(fare) {
-                                $('#vessel-info').append('<p class="block text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ': <span class="mb-2 text-gray-500 dark:text-gray-400">₱' + fare.price + '</span></p>');
-
-                                $('#seat_input').append(
-                                    '<label for="' + fare.type + '" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">' + fare.type + ' Seats<span class="text-red-600">*</span></label>' +
-                                    '<input type="number" id="' + fare.type + '" name="seats[' + fare.type + ']" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="50" value="0" required>'
-                                );
-                            });
-                        },
-                        error: function(error) {
-                            console.log(error);
-        
-                            $('#error-schedule').show();
-                        }
-                    });
-                });
             });
         </script>
                

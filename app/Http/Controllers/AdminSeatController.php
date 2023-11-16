@@ -64,7 +64,7 @@ class AdminSeatController extends Controller
         return redirect()->back()->with('success', 'All seats for the schedule have been deleted.');
     }
 
-    public function seatAddForm($scheduleId)
+    public function createAllSeats($scheduleId)
     {
         // Retrieve the schedule by ID
         $schedules = Schedules::find($scheduleId);
@@ -73,7 +73,7 @@ class AdminSeatController extends Controller
         if (!$schedules) {
             return redirect()->back()->with('error', 'No schedule was found.');
         }
-
+        
         $seatCount = Seat::where('schedule_id', $scheduleId)->count();
 
         if($seatCount >= $schedules->ferries->capacity){
@@ -83,125 +83,58 @@ class AdminSeatController extends Controller
         // Get the ferry_id from the schedule
         $ferryId = $schedules->ferry_id;
 
-        // Retrieve all fares based on the ferry_id
-        $fares = Fares::where('ferry_id', $ferryId)->get();
+        $seatsToInsert = [];
+
+        $fares = $schedules->ferries->fares;
+
+        foreach ($fares as $fare) {
+            // Retrieve the last seat for the current class and schedule
+            $lastSeat = Seat::where('schedule_id', $scheduleId)
+                ->where('class', $fare->type)
+                ->orderBy('id', 'desc')
+                ->first();
+    
+            // If there is a last seat, extract the seat number and continue from the next one
+            if ($lastSeat) {
+                $lastSeatNumber = $lastSeat->seat_number;
+                preg_match('/([A-Za-z]+)(\d+)/', $lastSeatNumber, $matches);
+                $prefix = $matches[1];
+                $lastNumber = (int)$matches[2];
+    
+                // Continue the loop from the next seat number
+                for ($i = 1; $i <= $fare->seats; $i++) {
+                    $nextSeatNumber = $prefix . ($lastNumber + $i);
+                    $seatsToInsert[] = [
+                        'ferry_id' => $ferryId,
+                        'schedule_id' => $scheduleId,
+                        'seat_number' => $nextSeatNumber,
+                        'class' => $fare->type,
+                        'seat_status' => 'available',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            } else {
+                // If no last seat, start from the beginning
+                for ($i = 1; $i <= $fare->seats; $i++) {
+                    $seatsToInsert[] = [
+                        'ferry_id' => $ferryId,
+                        'schedule_id' => $scheduleId,
+                        'seat_number' => $fare->type[0] . $i,
+                        'class' => $fare->type,
+                        'seat_status' => 'available',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+        }
+
+        // Save seat to the database by batch processing
+        Seat::insert($seatsToInsert);
 
         // Pass the seats and schedule to the view
-        return view('admin.schedules.seats.crud.add-seat', compact('schedules', 'fares', 'seatCount'));
-    }
-
-    public function createSeats(Request $request, $scheduleId)
-    {
-        $validate = $request->validate([
-            'seats.*' => 'required|integer',
-            'seatCount' => 'required|integer',
-        ]);
-
-        if($validate){
-            $seats = $request->input('seats');
-            $seatingCounts = $request->input('seatCount');
-    
-            // Retrieve the schedule by ID
-            $schedule = Schedules::find($scheduleId);
-    
-            // Check if the schedule exists
-            if (!$schedule) {
-                return redirect()->back()->with('error', 'No schedule was found.');
-            }
-    
-            $ferry = Ferries::find($schedule->ferry_id);
-    
-            if (!$ferry) {
-                return redirect()->back()->with('error', 'Ferry not found.');
-            }
-    
-            $totalseat = 0;
-            $seatings = [];
-    
-            $capacity = $ferry->capacity;
-            
-            foreach ($seats as $fareType => $seatCount) {
-                // Perform your validation or other logic here if needed
-                $totalseat += $seatCount;
-                $seatings[$fareType] = [
-                    'count' => $seatCount,
-                    'type' => $fareType,
-                ];
-            }
-
-            $total_counts = $seatingCounts + $totalseat;
-
-            if($total_counts > $capacity){
-                return redirect()->back()->with('error', 'Total seat is greater than capacity!');
-            }
-    
-            if($totalseat > $capacity){
-                return redirect()->back()->with('error', 'Total seat is greater than capacity!');
-            }
-    
-                $seatsToInsert = [];
-    
-                foreach ($seatings as $seating) {
-                    // Retrieve the last seat for the current class and schedule
-                    $lastSeat = Seat::where('schedule_id', $scheduleId)
-                        ->where('class', $seating['type'])
-                        ->orderBy('id', 'desc')
-                        ->first();
-            
-                    // If there is a last seat, extract the seat number and continue from the next one
-                    if ($lastSeat) {
-                        $lastSeatNumber = $lastSeat->seat_number;
-                        preg_match('/([A-Za-z]+)(\d+)/', $lastSeatNumber, $matches);
-                        $prefix = $matches[1];
-                        $lastNumber = (int)$matches[2];
-            
-                        // Continue the loop from the next seat number
-                        for ($i = 1; $i <= $seating['count']; $i++) {
-                            $nextSeatNumber = $prefix . ($lastNumber + $i);
-                            $seatsToInsert[] = [
-                                'ferry_id' => $ferry->id,
-                                'schedule_id' => $scheduleId,
-                                'seat_number' => $nextSeatNumber,
-                                'class' => $seating['type'],
-                                'seat_status' => 'available',
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                    } else {
-                        // If no last seat, start from the beginning
-                        for ($i = 1; $i <= $seating['count']; $i++) {
-                            $seatsToInsert[] = [
-                                'ferry_id' => $ferry->id,
-                                'schedule_id' => $scheduleId,
-                                'seat_number' => $seating['type'][0] . $i,
-                                'class' => $seating['type'],
-                                'seat_status' => 'available',
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                    }
-                }
-        
-                // Save seat to the database by batch processing
-                Seat::insert($seatsToInsert);
-        
-                return redirect()->route('admin.schedule.seats', compact('schedule'))->with('success', 'Seats created successfully');
-
-        } else{
-             // Validation failed, return to the form with errors
-             return redirect()->back()->withInput()->withErrors($request->validated());
-        }
-    }
-
-    public function deleteSeat(Seat $seat)
-    {
-        // Delete the seat
-        $seat->delete();
-    
-        // Redirect to a success page or return a success message
-        return back()->with('success', 'Seat deleted successfully.');
+        return redirect()->back()->with('success', 'Seat added successfully');
     }
 
     public function editSeat(Request $request, $seatId)
