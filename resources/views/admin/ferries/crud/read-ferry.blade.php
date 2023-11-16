@@ -17,7 +17,7 @@
                     </button>
                 </div>
             </div>
-            <dl class="grid sm:grid-cols-2 w-full sm:gap-6 gap-2">
+            <div class="grid sm:grid-cols-2 w-full sm:gap-6 gap-2 mb-2 sm:mb-4">
                 <div class="flex justify-center sm:col-span-2">
                     @if ($ferry->image)
                     <img src="{{asset('ferries/' . $ferry->image)}}" class="rounded-lg w-60 h-52">
@@ -41,6 +41,25 @@
                         {{$ferry->capacity}}
                     </p>
                 </div>
+            </div>
+
+            <div class="grid sm:grid-cols-{{count($ferry->fares)}} w-full sm:gap-6 gap-2 mb-2 sm:mb-4">
+                @foreach ($ferry->fares as $fare)
+                <div class="w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
+                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                        {{$fare->type}}
+                    </h5>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">
+                        {{"₱" .$fare->price}}
+                    </p>
+                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                        Seats: <span class="font-normal text-gray-700 dark:text-gray-400">{{$fare->seats}}</span>
+                    </h5>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="grid sm:grid-cols-2 w-full sm:gap-6 gap-2">
                 <div class="w-full flex justify-center items-center text-center sm:col-span-2">
                     <div id="custom-controls-gallery" class="relative w-full" data-carousel="static">
                         <!-- Carousel wrapper -->
@@ -93,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-            </dl>
+            </div>
             <div class="flex justify-between items-center mt-5">
                 <div class="flex items-center space-x-3 sm:space-x-4">
                     <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" data-modal-toggle="read-ferry{{$ferry->id}}">Done</button>

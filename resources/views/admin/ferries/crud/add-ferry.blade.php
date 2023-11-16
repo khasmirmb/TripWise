@@ -4,6 +4,8 @@
 
     @include('admin.components.sidebar')
 
+    @include('admin.components.error-message')
+
         <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
             <div class="rounded-lg mb-4">
                 <div class="relative bg-white dark:bg-gray-800 rounded-lg py-2">
@@ -58,12 +60,39 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="capacity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacity<span class="text-red-600">*</span></label>
-                                    <input type="number" name="capacity" id="capacity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="350" required="" value="{{old('capacity')}}">
-                                    @error('capacity')
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="image">Upload Image</label>
+                                    <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="image_help" id="image" type="file" accept="image/*" onchange="loadFile(event)">
+                                    @error('image')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
+                                <div class="w-full sm:col-span-2">
+                                    <div class="w-full">
+                                        <button type="button" id="add-fare" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                            </svg>
+                                            Add Fare<span class="text-red-600">*</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-6 mb-3" id="fare-container">
+                                <!-- Dynamic Fare Input -->
+                                @foreach(old('type', []) as $index => $value)
+                                    <div class="w-full">
+                                        <label for="type[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
+                                        <input type="text" name="type[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Economy" required value="{{ old('type.' . $index) }}">
+
+                                        <label for="price[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>
+                                        <input type="number" name="price[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="500" required value="{{ old('price.' . $index) }}">
+
+                                        <label for="seats[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
+                                        <input type="number" name="seats[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="30" required value="{{ old('seats.' . $index) }}">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 mb-3">
                                 <div class="sm:col-span-2">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                     <textarea id="description" name="description" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Ferry Description">{{old('description')}}</textarea>
@@ -71,17 +100,7 @@
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
-                                <div class="w-full flex justify-center items-center">
-                                    <div class="w-full">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="image">Upload Image</label>
-                                    <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="image_help" id="image" type="file" accept="image/*" onchange="loadFile(event)">
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image_help">PNG or JPG</p>
-                                    @error('image')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                                    @enderror
-                                    </div>
-                                </div>
-                                <div class="w-full text-center">
+                                <div class="w-full text-center sm:col-span-2">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ferry Image Preview</label>
                                     <div class="flex justify-center">
                                         <img id="preview-image" class="rounded-lg w-60 h-52 border-2 object-cover">
@@ -134,19 +153,6 @@
                                     <div class="flex justify-center">
                                         <img id="lower-preview-image" class="rounded-lg w-full sm:h-96 h-40 object-fit" style="display: none;">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-6" id="fare-container">
-                                <!-- Dynamic Fare Input -->
-                            </div>
-                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-6 mb-4">
-                                <div class="w-full sm:col-span-3">
-                                    <button type="button" id="add-fare" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
-                                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                        </svg>
-                                        Add Fare
-                                    </button>
                                 </div>
                             </div>
                             <div class="flex justify-end items-end">
@@ -229,10 +235,13 @@
                     const newFareInput = `
                         <div class="w-full">
                             <label for="type[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
-                            <input type="text" name="type[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Economy">
+                            <input type="text" name="type[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Economy" required>
                             
                             <label for="price[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>
-                            <input type="number" name="price[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="500">
+                            <input type="number" name="price[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="500" required>
+
+                            <label for="seats[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
+                            <input type="number" name="seats[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="30" required>
                             
                             <button type="button" class="remove-fare-button text-red-700 hover:text-red-800 focus:ring-4 focus:ring-red-300 font-medium text-sm mt-2">Remove</button>
                         </div>

@@ -16,17 +16,31 @@ class AdminFerryController extends Controller
             'ferry_id' => 'required|numeric',
             'type' => 'required|string',
             'price' => 'required|numeric',
+            'seats' => 'required|numeric',
         ]);
+
     
         if ($validatedData) {
+
+            $ferry = Ferries::find($request->ferry_id);
+
             // Create a new Fare record
             $fare = new Fares();
             $fare->ferry_id = $request->ferry_id;
             $fare->type = $request->type;
             $fare->price = $request->price;
+            $fare->seats = $request->seats;
     
             // Save the fare to the database
             $fare->save();
+
+            // Update the ferry's capacity based on the sum of all seats for that ferry
+            $ferry = Ferries::find($request->ferry_id);
+            if ($ferry) {
+                $newCapacity = Fares::where('ferry_id', $request->ferry_id)->sum('seats');
+                $ferry->capacity = $newCapacity;
+                $ferry->save();
+            }
     
             return redirect()->back()->with('success', 'Fare added successfully');
         } else {
@@ -40,11 +54,14 @@ class AdminFerryController extends Controller
         // Validate the form data
         $validatedData = $request->validate([
             'id' => 'required|numeric',
+            'ferry_id' => 'required|numeric',
             'type' => 'required|string',
             'price' => 'required|numeric',
+            'seats' => 'required|numeric',
         ]);
 
         if ($validatedData) {
+
             // Retrieve the fare based on the ferry_id
             $fare = Fares::where('id', $request->id)->first();
 
@@ -52,13 +69,24 @@ class AdminFerryController extends Controller
                 // Update the fare record
                 $fare->type = $request->type;
                 $fare->price = $request->price;
-
+                $fare->seats = $request->seats;
                 // Save the changes
                 $fare->save();
 
+                // Update the ferry's capacity
+                $ferry = Ferries::find($request->ferry_id);
+                if ($ferry) {
+                    // Calculate the new capacity based on the sum of all seats for the ferry
+                    $newCapacity = Fares::where('ferry_id', $request->ferry_id)->sum('seats');
+                    $ferry->capacity = $newCapacity;
+
+                    // Save the changes to the ferry
+                    $ferry->save();
+                }
+
                 return redirect()->back()->with('success', 'Fare updated successfully');
             } else {
-                return redirect()->back()->with('error', 'Fare not found');
+                return redirect()->back()->withInput()->with('error', 'Fare not found');
             }
         } else {
             return redirect()->back()->withErrors($validatedData)->withInput();
@@ -73,9 +101,23 @@ class AdminFerryController extends Controller
         if (!$fare) {
             return redirect()->back()->with('error', 'Fare not found.');
         }
-
+    
+        // Get the ferry associated with the fare
+        $ferry = Ferries::find($fare->ferry_id);
+    
+        if (!$ferry) {
+            return redirect()->back()->withInput()->with('error', 'Ferry not found for the specified fare.');
+        }
+    
+        // Subtract the number of seats from the ferry's capacity
+        $ferry->capacity = max(0, $ferry->capacity - $fare->seats);
+    
+        // Save the changes to the ferry's capacity
+        $ferry->save();
+    
+        // Delete the fare
         $fare->delete();
-
+    
         return redirect()->back()->with('success', 'Fare deleted successfully.');
     }
 
@@ -90,15 +132,21 @@ class AdminFerryController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required|string|max:255',
-            'capacity' => 'required|integer',
+            'type.*' => 'required|string|max:255',
+            'price.*' => 'required|numeric',
+            'seats.*' => 'required|integer',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
             'upper' => 'nullable|image|mimes:jpeg,png,jpg',
             'middle' => 'nullable|image|mimes:jpeg,png,jpg',
             'lower' => 'nullable|image|mimes:jpeg,png,jpg',
-            'type.*' => 'nullable|string|max:255',
-            'price.*' => 'nullable|numeric',
         ]);
+
+        if (empty($request->input('type')) || empty($request->input('price')) || empty($request->input('seats'))) {
+            return redirect()->back()->withInput()->with('error', 'Please provide at least one fare details for the ferry capacity.');
+        }
+
+        $capacity = array_sum($request->input('seats'));
 
         if ($validate) {
 
@@ -140,7 +188,7 @@ class AdminFerryController extends Controller
             // Create a new Ferry instance and populate it with the form data
             $ferry = new Ferries();
             $ferry->name = $request->input('name');
-            $ferry->capacity = $request->input('capacity');
+            $ferry->capacity = $capacity;
             $ferry->description = $request->input('description');
             $ferry->image = $imageName; // Store the image file name
             $ferry->upper = $upperName; // Store the image file name
@@ -154,11 +202,13 @@ class AdminFerryController extends Controller
             // Access the dynamically added fare inputs as arrays
             $types = $request->input('type', []);
             $prices = $request->input('price', []);
+            $seats = $request->input('seats', []);
 
             // Loop through the arrays and process the fare inputs
             for ($i = 0; $i < count($types); $i++) {
                 $type = $types[$i];
                 $price = $prices[$i];
+                $seat = $seats[$i];
 
                 // Check if fare inputs were provided
                 if (!empty($type) && !empty($price)) {
@@ -167,6 +217,7 @@ class AdminFerryController extends Controller
                     $fare->ferry_id = $newFerryId;
                     $fare->type = $type;
                     $fare->price = $price;
+                    $fare->seats = $seat;
                     $fare->save();
                 }
             }
@@ -196,7 +247,6 @@ class AdminFerryController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required|string|max:255',
-            'capacity' => 'required|integer',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
             'upper' => 'nullable|image|mimes:jpeg,png,jpg',
@@ -291,10 +341,14 @@ class AdminFerryController extends Controller
 
     public function deleteFerry(Ferries $ferry)
     {
-        // Check if the ferry has associated schedules, fares, and seats
-        if ($ferry->schedules()->exists() || $ferry->fares()->exists() || $ferry->seats()->exists()) {
+        // Check if the ferry has associated schedules
+        if ($ferry->schedules()->exists()) {
             // Notify that the ferry cannot be deleted
-            return back()->with('error', 'Cannot delete the ferry as it still has associated schedules, fares, or seats.');
+            return back()->with('error', 'Cannot delete the ferry as it still has associated schedules');
+        }
+
+        if($ferry->fares()->exists()){
+            $ferry->fares()->delete();
         }
 
         // Delete the ferry's image if it exists

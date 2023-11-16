@@ -171,8 +171,8 @@ id="drawer-navigation">
         href="#"
         class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
       >
-        @include('admin.icons.documents')
-        <span class="ml-3">Docs</span>
+        @include('admin.icons.captain')
+        <span class="ml-3">Captains</span>
       </a>
     </li>
     <li>
