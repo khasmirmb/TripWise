@@ -2,8 +2,6 @@
 
 @include('components.navigation')
 
-@include('components.error-message')
-
 <section class="bg-white dark:bg-gray-800">
     <div class="py-8 px-4 mx-auto max-w-7xl lg:py-10">
 

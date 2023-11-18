@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Ports;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -20,11 +21,21 @@ class BookingController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * View all the booking of the user.
      */
-    public function create()
+    public function manageBooking($user)
     {
-        //
+        // Retrieve the user with their bookings
+        $user = User::with('bookings')->find($user);
+
+        if (!$user) {
+            // Handle the case where the user is not found
+            return back()->with('error', 'User not found.');
+        }
+
+        $bookings = $user->bookings()->latest()->paginate(10);
+
+        return view('manage.index', compact('user', 'bookings'));
     }
 
     /**

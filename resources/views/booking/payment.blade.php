@@ -6,8 +6,6 @@
 
     @include('layouts.progress-payment')
 
-    @include('components.error-message')
-
     @php
         use App\Models\Schedules;
         use App\Models\Ferries;

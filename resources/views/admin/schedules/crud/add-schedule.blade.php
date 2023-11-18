@@ -4,8 +4,6 @@
 
     @include('admin.components.sidebar')
 
-    @include('admin.components.error-message')
-
         <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
             <div class="rounded-lg mb-4">
                 <div class="relative bg-white dark:bg-gray-800 rounded-lg py-2">

@@ -121,6 +121,7 @@
 				<tr class="text-sm">
 					<td class="tables-data">
 						<p>{{$depSchedData->name}}</p>
+						<p class="text-xs">{{$depSchedData->schedule_number}}</p>
 					</td>
 					<td class="tables-data">
 						<p>{{$depSchedData->departure_port}}</p>

@@ -4,12 +4,8 @@
 
     @include('admin.components.sidebar')
 
-    @include('admin.components.success-message')
-
-    @include('admin.components.error-message')
-
     <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
-        <div class="rounded-lg mb-4">
+        <div class="rounded-lg mb-4 shadow-md">
             <div class="relative bg-white dark:bg-gray-800 rounded-t-lg">
                 <div class="flex items-start justify-start p-4">
                     <nav class="flex" aria-label="Breadcrumb">
@@ -57,7 +53,7 @@
                 </div>
                 </div>
             </div>
-            <div class="block overflow-x-auto shadow-md bg-white dark:bg-gray-800">
+            <div class="block overflow-x-auto bg-white dark:bg-gray-800">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 w-full">
                         <tr>
@@ -211,7 +207,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="relative overflow-hidden bg-white rounded-b-lg shadow-md dark:bg-gray-800">
+            <div class="relative overflow-hidden bg-white rounded-b-lg dark:bg-gray-800">
                 <nav class="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0" aria-label="Table navigation">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                         Showing <span class="font-semibold text-gray-900 dark:text-white">{{ $bookings->firstItem() }}-{{ $bookings->lastItem() }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $bookings->total() }}</span>

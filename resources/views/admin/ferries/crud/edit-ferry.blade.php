@@ -3,10 +3,6 @@
     @include('admin.components.navigation')
 
     @include('admin.components.sidebar')
-
-    @include('admin.components.error-message')
-
-    @include('admin.components.success-message')
     
         <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
             <div class="rounded-lg mb-4">
