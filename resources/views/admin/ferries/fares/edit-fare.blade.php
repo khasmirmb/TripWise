@@ -29,8 +29,15 @@
                 </div>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
-                        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fare Type<span class="text-red-600">*</span></label>
-                        <input type="text" name="type" id="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Economy" required="" value="{{$fare->type}}">
+                        <label for="type" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
+                        <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                            <option value="Economy" {{ $fare->type == 'Economy' ? 'selected' : '' }}>Economy</option>
+                            <option value="Aircon" {{ $fare->type == 'Aircon' ? 'selected' : '' }}>Aircon</option>
+                            <option value="Tourist" {{ $fare->type == 'Tourist' ? 'selected' : '' }}>Tourist</option>
+                            <option value="Business" {{ $fare->type == 'Business' ? 'selected' : '' }}>Business</option>
+                            <option value="Cabin" {{ $fare->type == 'Cabin' ? 'selected' : '' }}>Cabin</option>
+                            <option value="Suite" {{ $fare->type == 'Suite' ? 'selected' : '' }}>Suite</option>
+                        </select>
                     </div>
                     <div>
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Ferries;
 use App\Models\Ports;
 use App\Models\Schedules;
@@ -64,9 +65,20 @@ class AdminController extends Controller
     */
     public function scheduleIndex()
     {
-        $schedules = Schedules::orderBy('id', 'desc')->paginate(10);
+        
+        $schedules = Schedules::orderBy('departure_date')->paginate(10);
         
         return view('admin.schedules.schedule', compact('schedules'));
+    }
+
+    /**
+     * Display the list of bookings.
+    */
+    public function bookingIndex()
+    {
+        $bookings = Booking::orderBy('id', 'desc')->paginate(10);
+        
+        return view('admin.bookings.booking', compact('bookings'));
     }
 
 

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('arrival_date');
             $table->time('departure_time');
             $table->time('arrival_time');
+            $table->string('schedule_number');
+            $table->string('schedule_status')->default('In Progress');
             // Other schedule-related fields can be added here
             
             $table->timestamps();

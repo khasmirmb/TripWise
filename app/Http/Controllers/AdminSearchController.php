@@ -10,6 +10,7 @@ use App\Models\Seat;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminSearchController extends Controller
 {
@@ -95,29 +96,39 @@ class AdminSearchController extends Controller
         $query = $request->input('query');
         $schedules = Schedules::query();
 
-        // Check if the input is a specific date or month
-        if (strtotime($query) !== false) {
-            $date = Carbon::parse($query);
-            $formattedMonth = $date->format('m');
+        // Search in the related ferry's name
+        $schedules->whereHas('ferries', function ($queryBuilder) use ($query) {
+            $queryBuilder->where('name', 'like', "%$query%");
+        });
 
-            // Handle specific month format (e.g., November or Nov)
-            $schedules->orWhereRaw("MONTH(departure_date) = ?", [$formattedMonth]);
-        } else {
-            // If it's not a date, assume it's a vessel name or departure port
-            // Search in the related ferry's name
-            $schedules->whereHas('ferries', function ($queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'like', "%$query%");
-            });
+        // Search in the departure port
+        $schedules->orWhere('departure_port', 'like', "%$query%");
 
-            // Search in the departure port
-            $schedules->orWhere('departure_port', 'like', "%$query%");
-        }
+        // Search in the schedule_status
+        $schedules->orWhere('schedule_status', 'like', "%$query%");
 
-        $schedules = $schedules->paginate(10);
+        // Search in the schedule_status
+        $schedules->orWhere('schedule_number', 'like', "%$query%");
+
+        $schedules = $schedules->orderBy('departure_date')->paginate(10);
 
         return view('admin.schedules.schedule', compact('schedules', 'query'));
     }
 
+    // Filter for Schedule
+    public function scheduleFilter(Request $request)
+    {
+        $selectedMonths = $request->input('months', []);
+
+        // Fetch schedules based on selected months
+        $schedules = Schedules::when(count($selectedMonths) > 0, function ($query) use ($selectedMonths) {
+            $query->whereIn(DB::raw('MONTH(departure_date)'), $selectedMonths);
+        })->orderBy('departure_date')->paginate(10);
+
+        return view('admin.schedules.schedule', compact('schedules'));
+    }
+
+    // Seat Search
     public function seatSearch(Request $request, $scheduleId)
     {
         $query = $request->input('query');

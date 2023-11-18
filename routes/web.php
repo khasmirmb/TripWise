@@ -198,6 +198,9 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/schedules', [AdminController::class, 'scheduleIndex'])->name('admin.schedule');
     // Search Schedule
     Route::get('/admin/schedules/search', [AdminSearchController::class, 'scheduleSearch'])->name('admin.schedule.search');
+    // Filter Schedule
+    Route::get('/admin/schedules/filter', [AdminSearchController::class, 'scheduleFilter'])->name('admin.schedule.filter');
+    
     // CRUD for Schedule
     // Add Form Schedule
     Route::get('/admin/schedules/add', [AdminScheduleController::class, 'addScheduleForm'])->name('admin.schedule.add');
@@ -209,10 +212,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/schedules/edit/{schedule}', [AdminScheduleController::class, 'editScheduleForm'])->name('admin.schedule.edit');
     // Add Process Schedule
     Route::post('/admin/schedules/edit/{schedule}/process', [AdminScheduleController::class, 'updateSchedule'])->name('admin.schedule.edit-process');
+    // Delete Schedule
+    Route::delete('/admin/schedules/delete/{schedule}', [AdminScheduleController::class, 'deleteSchedule'])->name('admin.schedule.delete');
 
     // Admin Schedule Seats
     Route::get('/admin/schedules/{schedule}/seats', [AdminSeatController::class, 'seatList'])->name('admin.schedule.seats');
-    // Search Schedule
+    // Search Schedule Seats
     Route::get('/admin/schedules/{schedule}/seats/search', [AdminSearchController::class, 'seatSearch'])->name('admin.schedule.seats.search');
     // Schedule Seats CRUD
     // Admin Schedule Delete All
@@ -221,5 +226,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/schedules/{schedule}/seats/add', [AdminSeatController::class, 'createAllSeats'])->name('admin.schedule.seats.add-process');
     // Schedule Seats Edit
     Route::get('/admin/schedules/seats/edit/{seat}', [AdminSeatController::class, 'editSeat'])->name('admin.schedule.seats.edit');
+
+    // Admin Booking
+    Route::get('/admin/bookings', [AdminController::class, 'bookingIndex'])->name('admin.booking');
     
 });

@@ -123,15 +123,22 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <div class="sm:mt-5" id="vessel-info">
-                                        <!-- Ferry Infomation -->
+                                    <label for="arrival_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Schedule Status<span class="text-red-600">*</span></label>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center me-4">
+                                            <input id="in-progress" type="radio" value="In Progress" name="schedule_status" class="w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" {{ $schedule->schedule_status === 'In Progress' ? 'checked' : '' }}>
+                                            <label for="in-progress" class="ms-2 text-sm font-bold text-yellow-700 dark:text-yellow-300">In Progress</label>
+                                        </div>
+                                        <div class="flex items-center me-4">
+                                            <input id="canceled" type="radio" value="Canceled" name="schedule_status" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" {{ $schedule->schedule_status === 'Canceled' ? 'checked' : '' }}>
+                                            <label for="canceled" class="ms-2 text-sm font-bold text-red-700 dark:text-red-400">Canceled</label>
+                                        </div>
+                                        <div class="flex items-center me-4">
+                                            <input id="completed" type="radio" value="Completed" name="schedule_status" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" {{ $schedule->schedule_status === 'Completed' ? 'checked' : '' }}>
+                                            <label for="completed" class="ms-2 text-sm font-bold text-green-700 dark:text-green-400">Completed</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="w-full">
-                                    <div id="seat_input" class="w-full">
-    
-                                    </div>
-                                </div>
+                                </div>                                
                             </div>
                             <div class="flex justify-end items-end">
                                 <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">

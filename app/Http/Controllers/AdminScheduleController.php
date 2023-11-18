@@ -116,12 +116,25 @@ class AdminScheduleController extends Controller
                     if ($overlappingSchedules) {
                         return redirect()->back()->withInput()->with('error', 'Overlapping schedule found for the selected ferry, date and time range');
                     }
+
+                    // Generate a unique and not very long schedule number
+                    $schedule_number = 'S-' . mt_rand(100000, 999999);
+
+                    // Check if a schedule already exists for the same schedule number
+                    $existingSchedule = Schedules::where('schedule_number', $schedule_number)->first();
+
+                    // Loop until a unique schedule number is generated
+                    while ($existingSchedule) {
+                        $schedule_number = 'S-' . mt_rand(100000, 999999);
+                        $existingSchedule = Schedules::where('schedule_number', $schedule_number)->first();
+                    }
                 
                     $schedule = new Schedules();
                     $schedule->ferry_id = $vessel;
                     $schedule->departure_port = $origin;
                     $schedule->arrival_port = $destination;
                     $schedule->departure_date = $date;
+                    $schedule->schedule_number = $schedule_number;
                 
                     // Convert departure and arrival times to Carbon instances
                     $departureTime = Carbon::createFromFormat('H:i', $departure_time);
@@ -229,6 +242,7 @@ class AdminScheduleController extends Controller
             'departure_time' => 'required|date_format:H:i',
             'arrival_time' => 'required|date_format:H:i',
             'vessel' => 'required|exists:ferries,id',
+            'schedule_status' => 'required|in:In Progress,Canceled,Completed',
         ]);
 
         if($validate){
@@ -239,6 +253,7 @@ class AdminScheduleController extends Controller
             $departure_time = $request->input('departure_time');
             $arrival_time = $request->input('arrival_time');
             $vessel = $request->input('vessel');
+            $schedule_status = $request->input('schedule_status');
 
             $ferry = Ferries::find($vessel);
 
@@ -246,14 +261,31 @@ class AdminScheduleController extends Controller
                 return redirect()->back()->withInput()->with('error', 'Ferry not found.');
             }
 
+            $schedule = Schedules::find($scheduleId);
+
+            // Check if there are booked seats
+            $bookedSeatsCount = Seat::where('schedule_id', $scheduleId)->where('seat_status', 'booked')->count();
+
+            if ($bookedSeatsCount > 0) {
+                // If there are booked seats, you can only modify schedule_status
+                if ($request->filled('schedule_status') && $request->input('schedule_status') != $schedule->schedule_status) {
+                    // Update schedule_status if it's different
+                    $schedule->schedule_status = $request->input('schedule_status');
+                    $schedule->save();
+                    return redirect()->route('admin.schedule')->with('success', 'Schedule status updated successfully.');
+                } else {
+                    return redirect()->back()->withInput()->with('error', 'Cannot modify other data for a schedule with booked seats.');
+                }
+            }
+
             // Convert departure and arrival times to Carbon instances
             $departureTime = Carbon::createFromFormat('H:i', $departure_time);
             $arrivalTime = Carbon::createFromFormat('H:i', $arrival_time);
 
-            $schedule = Schedules::find($scheduleId);
             $schedule->ferry_id = $vessel;
             $schedule->departure_port = $origin;
             $schedule->arrival_port = $destination;
+            $schedule->schedule_status = $schedule_status;
             $schedule->departure_date = Carbon::createFromFormat('m/d/Y', $departure_date);
 
             // Convert departure and arrival times to Carbon instances
@@ -270,6 +302,7 @@ class AdminScheduleController extends Controller
             $schedule->departure_time = $departure_time;
             $schedule->arrival_time = $arrival_time;
             $schedule->save(); // Save the schedule to the database
+
 
             // Delete all seats with the specified schedule_id
             Seat::where('schedule_id', $scheduleId)->delete();
@@ -331,4 +364,30 @@ class AdminScheduleController extends Controller
             return redirect()->back()->withInput()->withErrors($request->validated());
         }
     }
+
+    // Delete Schedule
+    public function deleteSchedule(Schedules $schedule)
+    {
+        // Check if the schedule exists
+        if (!$schedule) {
+            return redirect()->back()->with('error', 'No schedule was found.');
+        }
+    
+        // Check if there are booked seats for the schedule
+        $bookedSeatsCount = Seat::where('schedule_id', $schedule->id)->where('seat_status', 'booked')->count();
+    
+        if ($bookedSeatsCount > 0) {
+            return redirect()->back()->with('error', 'Cannot delete schedule. There are booked seats for the schedule.');
+        }
+    
+        // Delete all seats with the specified schedule_id
+        Seat::where('schedule_id', $schedule->id)->delete();
+    
+        // Now, delete the schedule
+        $schedule->delete();
+    
+        // Redirect to a success page or return a success message
+        return back()->with('success', 'Schedule deleted successfully.');
+    }
+    
 }

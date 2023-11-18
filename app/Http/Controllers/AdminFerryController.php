@@ -14,11 +14,19 @@ class AdminFerryController extends Controller
         // Validate the form data
         $validatedData = $request->validate([
             'ferry_id' => 'required|numeric',
-            'type' => 'required|string',
+            'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
         ]);
 
+        // Check if a fare with the same type already exists for the ferry
+        $existingFare = Fares::where('ferry_id', $request->ferry_id)
+                            ->where('type', $request->type)
+                            ->first();
+
+        if ($existingFare) {
+            return redirect()->back()->withInput()->with('error', 'A fare with the same type already exists for this ferry.');
+        }
     
         if ($validatedData) {
 
@@ -55,10 +63,19 @@ class AdminFerryController extends Controller
         $validatedData = $request->validate([
             'id' => 'required|numeric',
             'ferry_id' => 'required|numeric',
-            'type' => 'required|string',
+            'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
         ]);
+
+        // Check if a fare with the same type already exists for the ferry
+        $existingFare = Fares::where('ferry_id', $request->ferry_id)
+                            ->where('type', $request->type)
+                            ->first();
+
+        if ($existingFare) {
+            return redirect()->back()->withInput()->with('error', 'A fare with the same type already exists for this ferry.');
+        }
 
         if ($validatedData) {
 
@@ -132,7 +149,7 @@ class AdminFerryController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required|string|max:255',
-            'type.*' => 'required|string|max:255',
+            'type.*' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price.*' => 'required|numeric',
             'seats.*' => 'required|integer',
             'description' => 'nullable|string',
@@ -147,6 +164,13 @@ class AdminFerryController extends Controller
         }
 
         $capacity = array_sum($request->input('seats'));
+
+        // Check if there are duplicate type values
+        $duplicateTypes = array_diff_assoc($request->type, array_unique($request->type));
+
+        if (!empty($duplicateTypes)) {
+            return redirect()->back()->withInput()->with('error', 'Ferry types must be unique.');
+        }
 
         if ($validate) {
 
