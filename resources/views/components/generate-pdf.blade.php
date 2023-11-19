@@ -69,7 +69,7 @@
 	</style>
 
 	<body>
-		@foreach ($departPassengers as $passenger)
+		@foreach ($passengers as $passenger)
 		<div class="h-full w-full">
 			<table class="w-full">
 				<tr>
@@ -79,7 +79,7 @@
 					</td>
 					<td class="text-right">
 						<img src="data:image/png;base64,{{ $data['qrcode'] }}" class="pr-12">
-						<p class="text-base pt-1">Reference Number: <span class="font-bold">{{$departBooking->reference_number}}</span></p>
+						<p class="text-base pt-1">Reference Number: <span class="font-bold">{{$booking->reference_number}}</span></p>
 					</td>
 				</tr>
 			</table>
@@ -94,8 +94,8 @@
 						<p class="text-sm">Booking Date:</p>
 					</td>
 					<td class="row-cell">
-						<p class="text-sm">{{$departBooking->status}}</p>
-						<p class="text-sm">{{ $departBooking->created_at->format('M d, Y h:i A') }}</p>
+						<p class="text-sm">{{$booking->status}}</p>
+						<p class="text-sm">{{ $booking->created_at->format('M d, Y h:i A') }}</p>
 					</td>
 					<td class="row-cell">
 						<p class="text-sm">Payment Method:</p>
@@ -103,7 +103,7 @@
 					</td>
 					<td class="row-cell">
 						<p class="text-sm">{{$payment->payment_method}}</p>
-						<p class="text-sm">{{$departBooking->trip_type}}</p>
+						<p class="text-sm">{{$booking->trip_type}}</p>
 					</td>
 				</tr>
 			</table>
@@ -120,19 +120,19 @@
 				</tr>
 				<tr class="text-sm">
 					<td class="tables-data">
-						<p>{{$depSchedData->name}}</p>
-						<p class="text-xs">{{$depSchedData->schedule_number}}</p>
+						<p>{{$schedule->name}}</p>
+						<p class="text-xs">{{$schedule->schedule_number}}</p>
 					</td>
 					<td class="tables-data">
-						<p>{{$depSchedData->departure_port}}</p>
-						<p>{{date('M d, Y', strtotime($depSchedData->departure_date)) . " " . date("g:i a", strtotime($depSchedData->departure_time))}}</p>
+						<p>{{$schedule->departure_port}}</p>
+						<p>{{date('M d, Y', strtotime($schedule->departure_date)) . " " . date("g:i a", strtotime($schedule->departure_time))}}</p>
 					</td>
 					<td class="tables-data">
-						<p>{{$depSchedData->arrival_port}}</p>
-						<p>{{date('M d, Y', strtotime($depSchedData->arrival_date)) . " " . date("g:i a", strtotime($depSchedData->arrival_time))}}</p>
+						<p>{{$schedule->arrival_port}}</p>
+						<p>{{date('M d, Y', strtotime($schedule->arrival_date)) . " " . date("g:i a", strtotime($schedule->arrival_time))}}</p>
 					</td>
 					<td class="tables-data">{{$passenger->accommodation}}</td>
-					<td class="tables-data">{{$passenger->seat->seat_number}}</td>
+					<td class="tables-data">{{ $passenger->seat->seat_number ?? '' }}</td>
 				</tr>
 			</table>
 			<div class="pl-3 pt-3">

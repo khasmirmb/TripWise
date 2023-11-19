@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Ports;
+use App\Models\Seat;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -39,11 +40,48 @@ class BookingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Seating of the selected paid book.
      */
-    public function store(Request $request)
+    public function bookingSeat($user, $booking)
     {
-        //
+        // Retrieve the user with their bookings
+        $user = User::with('bookings')->find($user);
+
+        if (!$user) {
+            // Handle the case where the user is not found
+            return back()->with('error', 'User not found.');
+        }
+
+        $booking = Booking::find($booking);
+
+        if (!$booking) {
+            // Handle the case where the user is not found
+            return back()->with('error', 'Booking not found.');
+        }
+
+        $payment = $booking->payment;
+
+        $contact = $booking->contactPerson;
+
+        $passengers = $booking->passengers;
+
+        $schedule = $booking->schedule;
+
+        $ferry = $schedule->ferries;
+
+        $return_accommodation = [];
+
+        foreach ($passengers as $passenger) {
+            $return_accommodation[] = $passenger->accommodation;
+        }
+
+        $seats = Seat::where('ferry_id', $ferry->id)
+        ->where('schedule_id', $schedule->id)
+        ->where('class', $return_accommodation)
+        ->get();
+
+        return view('manage.seat', compact('user', 'booking', 'payment', 'contact', 'passengers', 'schedule', 'ferry', 'seats'));
+
     }
 
     /**

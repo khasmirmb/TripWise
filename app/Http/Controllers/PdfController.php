@@ -13,89 +13,46 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PdfController extends Controller
 {
-    public function GenerateDepart(Request $request)
+    public function GeneratePDF(Request $request)
     {
         // Check for the presence of necessary data
-        if (!$request->input('paymentId') || !$request->input('contactPersonId') || !$request->input('departBookId')) {
+        if (!$request->input('payment') || !$request->input('contact') || !$request->input('booking')) {
             return view('partials.404');
         }
-
-        // Retrieve the data from the request's query parameters
-        $paymentId = $request->input('paymentId');
-        $contactPersonId = $request->input('contactPersonId');
-        $departBookId = $request->input('departBookId');
-
-        $payment = Payment::find($paymentId);
-
-        $contactPerson = ContactPerson::find($contactPersonId);
-
-        $departBooking = Booking::find($departBookId);
-        $departPassengers = Passenger::where('booking_id', $departBookId)->get();
         
-        $depSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
+        // Retrieve the data from the request's query parameters
+        $payment_id = $request->input('payment');
+        $contact_id = $request->input('contact');
+        $booking_id = $request->input('booking');
+
+        $payment = Payment::find($payment_id);
+
+        $contactPerson = ContactPerson::find($contact_id);
+
+        $booking = Booking::find($booking_id);
+        $passengers = Passenger::where('booking_id', $booking_id)->get();
+
+        $schedule = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
         ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
         ->select('bookings.*', 'schedules.*', 'ferries.*')
-        ->where('bookings.id', $departBookId)
+        ->where('bookings.id', $booking_id)
         ->first();
 
-        $qrcode = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($departBooking->reference_number));
+        $qrcode = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($booking->reference_number));
 
         $data = [
             'title' => 'TripWise',
             'qrcode' => $qrcode
         ];
 
-        $pdf = Pdf::loadView('components.depart-pdf', compact(
+        $pdf = Pdf::loadView('components.generate-pdf', compact(
             'data',
             'payment',
             'contactPerson',
-            'departBooking',
-            'depSchedData',
-            'departPassengers'
+            'booking',
+            'schedule',
+            'passengers'
         ));
-        return $pdf->download('E-Ticket Departure.pdf');
-    }
-
-    public function GenerateReturn(Request $request)
-    {
-        // Check for the presence of necessary data
-        if (!$request->input('paymentId') || !$request->input('contactPersonId') || !$request->input('returnBookId')) {
-            return view('partials.404');
-        }
-        
-        // Retrieve the data from the request's query parameters
-        $paymentId = $request->input('paymentId');
-        $contactPersonId = $request->input('contactPersonId');
-        $returnBookId = $request->input('returnBookId');
-
-        $payment = Payment::find($paymentId);
-
-        $contactPerson = ContactPerson::find($contactPersonId);
-
-        $returnBooking = Booking::find($returnBookId);
-        $returnPassengers = Passenger::where('booking_id', $returnBookId)->get();
-
-        $retSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-        ->select('bookings.*', 'schedules.*', 'ferries.*')
-        ->where('bookings.id', $returnBookId)
-        ->first();
-
-        $qrcode = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate($returnBooking->reference_number));
-
-        $data = [
-            'title' => 'TripWise',
-            'qrcode' => $qrcode
-        ];
-
-        $pdf = Pdf::loadView('components.return-pdf', compact(
-            'data',
-            'payment',
-            'contactPerson',
-            'returnBooking',
-            'retSchedData',
-            'returnPassengers'
-        ));
-        return $pdf->download('E-Ticket Returning.pdf');
+        return $pdf->download('TripWise E-Ticket.pdf');
     }
 }

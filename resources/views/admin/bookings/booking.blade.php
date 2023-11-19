@@ -67,7 +67,7 @@
                                 Payment
                             </th>
                             <th scope="col" class="text-center px-6 py-3">
-                                Schedule Number
+                                Schedule
                             </th>
                             <th scope="col" class="text-center px-6 py-3">
                                 Contact

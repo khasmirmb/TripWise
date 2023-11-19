@@ -31,12 +31,12 @@
             </div>
             @if ($departBookId)
             <div class="departure-pdf flex w-full justify-start my-5">
-                <a href="{{ route('depart.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'departBookId' => $departBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800" id="departure-download">Download Departing</a>
+                <a href="{{ route('generate.pdf', ['payment' => $paymentId, 'contact' => $contactPersonId, 'booking' => $departBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800" id="departure-download">Download Depart E-Ticket</a>
             </div>
             @endif
             @if ($returnBookId)
             <div class="return-pdf flex w-full justify-start my-5">
-                <a href="{{ route('return.generate.pdf', ['paymentId' => $paymentId, 'contactPersonId' => $contactPersonId, 'returnBookId' => $returnBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800" id="return-download">Download Returning</a>
+                <a href="{{ route('generate.pdf', ['payment' => $paymentId, 'contact' => $contactPersonId, 'booking' => $returnBookId]) }}" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-teal-600 dark:hover-bg-teal-700 focus:outline-none dark:focus:ring-teal-800" id="return-download">Download Return E-Ticket</a>
             </div>
             @endif
         @else

@@ -98,11 +98,9 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     // Updating Seat when User Select
     Route::get('/update-seat', [PassengerController::class, 'updateSeat']);
 
-    // PDF Generation
-    // Departure PDF
-    Route::get('/depart-generate-pdf', [PdfController::class, 'GenerateDepart'])->name('depart.generate.pdf');
-    // Returning PDF
-    Route::get('/return-generate-pdf', [PdfController::class, 'GenerateReturn'])->name('return.generate.pdf');
+    
+    // Generate PDF
+    Route::get('/generate-pdf', [PdfController::class, 'GeneratePDF'])->name('generate.pdf');
 
     // AJAX
     // Get schedule information from DB
@@ -122,7 +120,10 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     // Booking End
 
     // Manage Booking Start
+    // Booking List by User
     Route::get('/booking/manage/{user}', [BookingController::class, 'manageBooking'])->name('booking.manage.show');
+    // Booking Seat Selection
+    Route::get('/booking/manage/{user}/seat/{booking}', [BookingController::class, 'bookingSeat'])->name('booking.seats');
 
     // Manage Booking End
     
