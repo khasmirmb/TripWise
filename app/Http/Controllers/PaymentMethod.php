@@ -108,9 +108,7 @@ class PaymentMethod extends Controller
      */
     public function handleWebhook(Request $request)
     {
-        $data = $request->json()->all();
-
-        dd($data);
+        dd($request->all());
     }
 
     /**
@@ -137,7 +135,6 @@ class PaymentMethod extends Controller
             $payment_timestamp = $attributes->paid_at;
         }
         
-        $user = Auth::id();
         $trip_type = session('trip_type');
         $dep_sched_id = session('dep_sched_id');
         $dep_sched_type = session('dep_sched_type');
@@ -201,7 +198,6 @@ class PaymentMethod extends Controller
         } while (Booking::where('reference_number', $referenceNumber)->exists());
 
         $booking = new Booking();
-        $booking->user_id = $user;
         $booking->contact_person_id = $newContactPersonId;
         $booking->schedule_id = $dep_sched_id;
         $booking->payment_id = $paymentId;
@@ -248,7 +244,6 @@ class PaymentMethod extends Controller
             } while (Booking::where('reference_number', $referenceNumber)->exists());
         
             $bookingReturn = new Booking();
-            $bookingReturn->user_id = $user;
             $bookingReturn->contact_person_id = $newContactPersonId;
             $bookingReturn->schedule_id = $ret_sched_id;
             $bookingReturn->payment_id = $paymentId;

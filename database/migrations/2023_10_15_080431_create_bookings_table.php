@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('restrict'); // Foreign key to relate 
             $table->foreignId('schedule_id')->constrained('schedules')->onDelete('restrict'); // Foreign key to relate 
             $table->foreignId('contact_person_id')->constrained('contact_persons')->onDelete('restrict'); // Foreign key to relate 
             $table->foreignId('payment_id')->constrained('payments')->onDelete('restrict'); // Foreign key to relate can be null because of OTC payment

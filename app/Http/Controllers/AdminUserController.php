@@ -22,7 +22,7 @@ class AdminUserController extends Controller
             'email' => 'required|email|unique:users|max:255',
             'phone' => 'nullable|regex:/^09\d{9}$/',
             'password' => 'required|min:8|confirmed',
-            'type' => 'required|in:0,1,2',
+            'type' => 'required|in:0,1',
             'address' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
@@ -51,10 +51,8 @@ class AdminUserController extends Controller
             // Redirect or return a response indicating success
             if ($user->type === 1) {
                 return redirect()->route('admin.admin')->with('success', 'User created successfully');
-            } elseif ($user->type === 2) {
-                return redirect()->route('admin.staff')->with('success', 'User created successfully');
             } else {
-                return redirect()->route('admin.client')->with('success', 'User created successfully');
+                return redirect()->route('admin.staff')->with('success', 'User created successfully');
             }
 
         } else {

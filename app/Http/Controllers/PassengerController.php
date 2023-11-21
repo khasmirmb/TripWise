@@ -44,22 +44,28 @@ class PassengerController extends Controller
         $ret_sched_id = session('ret_sched_id');
         $ret_sched_type = session('ret_sched_type');
         $ret_sched_price = session('ret_sched_price');
-        
+
+        if($depart_date){
+
+            return view('booking.passenger', compact(
+                'trip_type',
+                'origin',
+                'destination',
+                'depart_date',
+                'return_date',
+                'passenger',
+                'dep_sched_id',
+                'dep_sched_type',
+                'dep_sched_price',
+                'ret_sched_id',
+                'ret_sched_type',
+                'ret_sched_price'
+            ));
+            
+        } else {
+            return view('partials.404');
+        }
     
-        return view('booking.passenger', compact(
-            'trip_type',
-            'origin',
-            'destination',
-            'depart_date',
-            'return_date',
-            'passenger',
-            'dep_sched_id',
-            'dep_sched_type',
-            'dep_sched_price',
-            'ret_sched_id',
-            'ret_sched_type',
-            'ret_sched_price'
-        ));
     }
 
     public function storeOneInfo(Request $request)

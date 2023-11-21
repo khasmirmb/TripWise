@@ -52,10 +52,8 @@ class LoginController extends Controller
         {
             if (auth()->user()->type == 'admin') {
                 return redirect()->route('admin.home')->with('message', 'Welcome Back!');
-            }else if (auth()->user()->type == 'staff') {
+            }else {
                 return redirect()->route('staff.home')->with('message', 'Welcome Back!');
-            }else{
-                return redirect()->route('home')->with('message', 'Welcome Back!');
             }
         }else{
             return back()->withErrors(['email' => 'The provided credentials do not match our records.'])->onlyInput('email');

@@ -285,7 +285,6 @@ class AdminFerryController extends Controller
 
             // Update ferry properties with the validated data
             $ferry->name = $validate['name'];
-            $ferry->capacity = $validate['capacity'];
             $ferry->description = $validate['description'];
 
             // Handle image upload (if an image is provided)

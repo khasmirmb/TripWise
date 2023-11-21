@@ -42,13 +42,6 @@ id="drawer-navigation">
       <ul id="dropdown-users" class="hidden py-2 space-y-2">
         <li>
           <a
-            href="{{route('admin.client')}}"
-            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-            >Clients</a
-          >
-        </li>
-        <li>
-          <a
             href="{{route('admin.staff')}}"
             class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >Staffs</a

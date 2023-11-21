@@ -1,69 +1,15 @@
 @include('partials.header')
 
-    <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-            <a href="/" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white mt-10">
-                <img class="w-12 h-12 mr-3" src="{{ asset('logo/tripwise.png')}}" alt="Logo">
-                {{ config('app.name', 'Laravel') }}    
-            </a>
-            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 mb-10">
-                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Create your account
-                    </h1>
-                    <form class="space-y-2 md:space-y-3" method="POST" action="{{ route('register') }}">
-                        @csrf
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="name@gmail.com" value="{{old('email')}}">
-                            @error('email')
-                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Firstname</label>
-                            <input type="text" name="firstname" id="firstname" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Firstname" value="{{old('firstname')}}" style="text-transform: capitalize;">
-                            @error('firstname')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname</label>
-                            <input type="text" name="lastname" id="lastname" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Lastname" value="{{old('lastname')}}" style="text-transform: capitalize;">
-                            @error('lastname')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" autocomplete="new-password">
-                            @error('password')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" autocomplete="new-password">
-                            @error('password_confirmation')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                            @enderror
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                            <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-teal-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-teal-600 dark:ring-offset-gray-800" required>
-                            </div>
-                            <div class="ml-3 text-sm">
-                            <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a class="font-medium text-teal-600 hover:underline dark:text-teal-500" href="#">Terms and Conditions</a></label>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Create an account</button>
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Already have an account? <a href="/" class="font-medium text-teal-600 hover:underline dark:text-teal-500">Login here</a>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="bg-white dark:bg-gray-900 h-screen">
+    <div class="flex items-center font-semibold py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+        <div class="mx-auto max-w-screen-sm text-center">
+            <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-teal-600 dark:text-teal-500">404</h1>
+            <p class="mb-4 text-2xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">Something's missing.</p>
+            <p class="mb-4 text-2lg font-light text-gray-500 dark:text-gray-400">Sorry, we can't find that page. You'll find lots to explore on the home page. </p>
+            <a href="/" class="inline-flex text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-teal-900 my-4">Back to Homepage</a>
+        </div>   
+    </div>
+</section>
 
-@include('partials.footer')
+</body>
+</html>

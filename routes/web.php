@@ -47,24 +47,16 @@ Route::get('/', function () {
 });
 
 
-// Home Routes
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-
 // Fallback Errors Route
 //Route::fallback(function () {
 //  return view('partials.404');
 //});
 
-// Non-Login Routes
+// User Side Routes
 Route::group(['middleware' => ['guest']], function() {
 
-
-
-});
-
-// User Side Routes
-Route::middleware(['auth', 'user-access:user'])->group(function () {
+    // Home Routes
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Booking Start
     // Searching Schedule
@@ -120,10 +112,10 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     // Booking End
 
     // Manage Booking Start
-    // Booking List by User
-    Route::get('/booking/manage/{user}', [BookingController::class, 'manageBooking'])->name('booking.manage.show');
-    // Booking Seat Selection
-    Route::get('/booking/manage/{user}/seat/{booking}', [BookingController::class, 'bookingSeat'])->name('booking.seats');
+    // Manage Booking Page
+    Route::get('/booking/manage', [BookingController::class, 'manageBooking'])->name('booking.manage.show');
+    // Find Booking
+    Route::post('/booking/manage/find', [BookingController::class, 'findBooking'])->name('booking.manage.find');
 
     // Manage Booking End
     
@@ -142,11 +134,6 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin', [HomeController::class, 'adminHome'])->name('admin.home');
 
     // Admin Users
-    // Client List
-    Route::get('/admin/users/client', [AdminController::class, 'clientIndex'])->name('admin.client');
-    // Search Client
-    Route::get('/admin/users/client/search', [AdminSearchController::class, 'clientSearch'])->name('admin.client.search');
-
     // Staff List
     Route::get('/admin/users/staff', [AdminController::class, 'staffIndex'])->name('admin.staff');
     // Search Staff
@@ -240,5 +227,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     // Admin Booking
     Route::get('/admin/bookings', [AdminController::class, 'bookingIndex'])->name('admin.booking');
+    // Search Booking
+    Route::get('/admin/bookings/search', [AdminSearchController::class, 'bookingSearch'])->name('admin.booking.search');
     
 });

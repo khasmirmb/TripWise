@@ -24,64 +24,41 @@ class BookingController extends Controller
     /**
      * View all the booking of the user.
      */
-    public function manageBooking($user)
+    public function manageBooking()
     {
-        // Retrieve the user with their bookings
-        $user = User::with('bookings')->find($user);
-
-        if (!$user) {
-            // Handle the case where the user is not found
-            return back()->with('error', 'User not found.');
-        }
-
-        $bookings = $user->bookings()->latest()->paginate(10);
-
-        return view('manage.index', compact('user', 'bookings'));
+        return view('manage.index');
     }
 
     /**
-     * Seating of the selected paid book.
+     * View all the booking of the user.
      */
-    public function bookingSeat($user, $booking)
+    public function findBooking(Request $request)
     {
-        // Retrieve the user with their bookings
-        $user = User::with('bookings')->find($user);
+        // Validate the form data
+        $request->validate([
+            'booking_reference' => 'required|string',
+            'email' => 'required|email',
+        ]);
 
-        if (!$user) {
-            // Handle the case where the user is not found
-            return back()->with('error', 'User not found.');
+        // Retrieve the input data
+        $bookingReference = $request->input('booking_reference');
+        $email = $request->input('email');
+
+        $booking = Booking::where('reference_number', $bookingReference)->first();
+
+        if ($booking) {
+            // Booking found, now check if the provided email matches
+            if ($booking->contactPerson->email == $email) {
+
+                return redirect()->back()->with('success', 'Booking found successfully!');
+            } else {
+                // Email doesn't match the booking
+                return redirect()->back()->withInput()->with('error', 'Invalid email for the provided booking reference.');
+            }
+        } else {
+            // Booking not found
+            return redirect()->back()->withInput()->with('error', 'Booking not found with the provided reference number.');
         }
-
-        $booking = Booking::find($booking);
-
-        if (!$booking) {
-            // Handle the case where the user is not found
-            return back()->with('error', 'Booking not found.');
-        }
-
-        $payment = $booking->payment;
-
-        $contact = $booking->contactPerson;
-
-        $passengers = $booking->passengers;
-
-        $schedule = $booking->schedule;
-
-        $ferry = $schedule->ferries;
-
-        $return_accommodation = [];
-
-        foreach ($passengers as $passenger) {
-            $return_accommodation[] = $passenger->accommodation;
-        }
-
-        $seats = Seat::where('ferry_id', $ferry->id)
-        ->where('schedule_id', $schedule->id)
-        ->where('class', $return_accommodation)
-        ->get();
-
-        return view('manage.seat', compact('user', 'booking', 'payment', 'contact', 'passengers', 'schedule', 'ferry', 'seats'));
-
     }
 
     /**

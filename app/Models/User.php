@@ -51,13 +51,7 @@ class User extends Authenticatable
     protected function type(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["user", "admin", "staff"][$value],
+            get: fn ($value) =>  ["staff", "admin"][$value],
         );
-    }
-
-    // Relationship Has Many
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class, 'user_id', 'id');
     }
 }

@@ -18,7 +18,7 @@ class UsersSeeder extends Seeder
                 'firstname'=>'Staff',
                 'lastname'=>'Staff',
                 'email'=>'staff@gmail.com',
-                'type'=>2,
+                'type'=>0,
                 'password'=> bcrypt('123'),
             ],
             [
@@ -26,13 +26,6 @@ class UsersSeeder extends Seeder
                 'lastname'=>'Admin',
                 'email'=>'admin@gmail.com',
                 'type'=>1,
-                'password'=> bcrypt('123'),
-            ],
-            [
-                'firstname'=>'User',
-                'lastname'=>'Test',
-                'email'=>'user@gmail.com',
-                'type'=>0,
                 'password'=> bcrypt('123'),
             ],
         ];

@@ -159,15 +159,6 @@
                     <form method="POST" action="{{route('booking.passenger.show')}}">
                         @csrf
 
-                        @php
-                            session([
-                                'passenger' => $passenger,
-                                'origin' => $origin,
-                                'trip_type' => $trip_type,
-                                'destination' => $destination,
-                            ]);
-                        @endphp
-
                         <input type="hidden" name="depart_depart_valid" required>
                         <input type="hidden" name="return_depart_valid">
                         

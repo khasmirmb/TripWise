@@ -101,20 +101,25 @@ class AdminScheduleController extends Controller
 
                     // Check for overlapping time range with existing schedules
                     $overlappingSchedules = Schedules::where('ferry_id', $vessel)
-                        ->where('departure_date', '<=', $date)
-                        ->where('arrival_date', '>=', $date)
-                        ->where(function ($query) use ($departure_time, $arrival_time) {
-                            $query->whereBetween('departure_time', [$departure_time, $arrival_time])
-                                ->orWhereBetween('arrival_time', [$departure_time, $arrival_time])
-                                ->orWhere(function ($query) use ($departure_time, $arrival_time) {
-                                    $query->where('departure_time', '<=', $departure_time)
-                                        ->where('arrival_time', '>=', $arrival_time);
-                                });
+                    ->where('departure_date', '=', $date)
+                    ->where(function ($query) use ($departure_time, $arrival_time) {
+                        $query->where(function ($query) use ($departure_time, $arrival_time) {
+                            $query->where('departure_time', '<', $arrival_time)
+                                ->where('arrival_time', '>', $departure_time);
                         })
-                        ->exists();
+                        ->orWhere(function ($query) use ($departure_time, $arrival_time) {
+                            $query->where('departure_time', '>=', $departure_time)
+                                ->where('departure_time', '<', $arrival_time);
+                        })
+                        ->orWhere(function ($query) use ($departure_time, $arrival_time) {
+                            $query->where('arrival_time', '>', $departure_time)
+                                ->where('arrival_time', '<=', $arrival_time);
+                        });
+                    })
+                    ->exists();
 
                     if ($overlappingSchedules) {
-                        return redirect()->back()->withInput()->with('error', 'Overlapping schedule found for the selected ferry, date and time range');
+                        return redirect()->back()->withInput()->with('error', 'Overlapping schedule found for the selected ferry, date, and time range');
                     }
 
                     // Generate a unique and not very long schedule number

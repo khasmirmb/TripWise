@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Fares;
 use App\Models\Ferries;
 use App\Models\Ports;
@@ -14,23 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class AdminSearchController extends Controller
 {
-    // Search for User Client
-    public function clientSearch(Request $request)
-    {
-        $query = $request->input('query');
-        $clients = User::where(function($queryBuilder) use ($query) {
-            $queryBuilder
-                ->where('firstname', 'like', "%$query%")
-                ->orWhere('lastname', 'like', "%$query%")
-                ->orWhere('phone_number', 'like', "%$query%")
-                ->orWhere('email', 'like', "%$query%");
-        })
-        ->where('type', 0)
-        ->paginate(10);
-
-        return view('admin.users.client', compact('clients', 'query'));
-    }
-
     // Search for User Staff
     public function staffSearch(Request $request)
     {
@@ -152,5 +136,19 @@ class AdminSearchController extends Controller
         $fares = Fares::where('ferry_id', $ferryId)->get();
     
         return view('admin.schedules.seats.seat', compact('seats', 'schedules', 'query', 'seatCount', 'fares'));
+    }
+
+    // Search for Booking
+    public function bookingSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $bookings = Booking::where(function($queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('reference_number', 'like', "%$query%")
+                ->orWhere('status', 'like', "%$query%");
+        })
+        ->paginate(10);
+
+        return view('admin.bookings.booking', compact('bookings', 'query'));
     }
 }

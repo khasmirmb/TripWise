@@ -39,9 +39,6 @@
                             @endif
                         </div>
                         <button type="submit" class="w-full text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Login to your account</button>
-                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            Not registered? <a href="{{ route('register') }}" class="text-teal-700 hover:underline dark:text-teal-500">Create account</a>
-                        </div>
                     </form>
                 </div>
             </div>

@@ -25,7 +25,7 @@ class SchedulesController extends Controller
     public function search(Request $request)
     {
         $inputs = $request->all();
-
+        
         $this->validate($request, [
             'type' => 'required',
             'origin' => 'required|different:destination',
@@ -34,47 +34,29 @@ class SchedulesController extends Controller
             'return_date' => 'nullable|date_format:d/m/Y|after:depart_date',
             'passenger' => 'required|integer|max:20|min:1',
         ]);
-
-
-        $validated_date = Carbon::createFromFormat('d/m/Y', $inputs['depart_date'])->format('Y-m-d');
-
+    
+        $validated_date = $this->convertToDate($request->input('depart_date'));
         $now = Carbon::now(new DateTimeZone('Asia/Manila'));
         $today = $now->format('Y-m-d');
-        
-        $depart_schedule = DB::table('schedules')
-            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-            ->where('departure_port', '=', $inputs['origin'])
-            ->where('arrival_port', '=', $inputs['destination'])
-            ->where('departure_date', '>=', $validated_date)
-            ->where('departure_date', '>=', $today)
-            ->where('schedule_status', '=', 'In Progress')
-            ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
-            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'image')
-            ->orderBy('departure_date', 'asc')
-            ->orderBy('departure_time', 'asc')
-            ->get();
-
+    
+        $depart_schedule = $this->getSchedules($inputs['origin'], $inputs['destination'], $validated_date, $today);
+    
         $return_schedule = null;
-        
-        if(!is_null($inputs['return_date'])){
-
-            $ret_validated_date = \Carbon\Carbon::createFromFormat('d/m/Y', $inputs['return_date'])->format('Y-m-d');
-
-            $return_schedule = DB::table('schedules')
-            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-            ->where('departure_port', '=', $inputs['destination'])
-            ->where('arrival_port', '=', $inputs['origin'])
-            ->where('departure_date', '>=', $ret_validated_date)
-            ->where('schedule_status', '==', 'In Progress')
-            ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [$now])
-            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'image')
-            ->orderBy('departure_date', 'asc')
-            ->orderBy('departure_time', 'asc')
-            ->get();
+    
+        if (!is_null($inputs['return_date'])) {
+            $ret_validated_date = $this->convertToDate($inputs['return_date']);
+            $return_schedule = $this->getSchedules($inputs['destination'], $inputs['origin'], $ret_validated_date, $today);
         }
 
 
-        return view('booking.schedule',[
+        session([
+            'passenger' => $inputs['passenger'],
+            'origin' => $inputs['origin'],
+            'trip_type' => $inputs['type'],
+            'destination' => $inputs['destination'],
+        ]);
+    
+        return view('booking.schedule', [
             'trip_type' => $inputs['type'],
             'origin' => $inputs['origin'],
             'destination' => $inputs['destination'],
@@ -85,6 +67,28 @@ class SchedulesController extends Controller
             'return_schedules' => $return_schedule,
         ]);
     }
+    
+    protected function convertToDate($date)
+    {
+        return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+    }
+    
+    protected function getSchedules($departure_port, $arrival_port, $validated_date, $today)
+    {
+        return DB::table('schedules')
+            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
+            ->where('departure_port', '=', $departure_port)
+            ->where('arrival_port', '=', $arrival_port)
+            ->where('departure_date', '>=', $validated_date)
+            ->where('departure_date', '>=', $today)
+            ->where('schedule_status', '=', 'In Progress')
+            ->whereRaw("CONCAT(departure_date, ' ', departure_time) > ?", [Carbon::now(new DateTimeZone('Asia/Manila'))->toDateTimeString()])
+            ->select('schedules.id', 'ferry_id', 'departure_port', 'arrival_port', 'departure_date', 'arrival_date', 'departure_time', 'arrival_time', 'name', 'capacity', 'description', 'image')
+            ->orderBy('departure_date', 'asc')
+            ->orderBy('departure_time', 'asc')
+            ->get();
+    }
+    
 
     public function getSchedule(Request $request) {
         $scheduleId = $request->input('scheduleId');

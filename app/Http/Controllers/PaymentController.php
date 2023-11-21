@@ -83,7 +83,8 @@ class PaymentController extends Controller
     
         // Perform image classification and add more validation
         for ($x = 1; $x <= $passengerCount; $x++) {
-            if ($request->has("discountToggle{$x}")) {
+            /*** Disable the Discount
+             if ($request->has("discountToggle{$x}")) {
                 // Get the uploaded image files
                 $idFrontFile = $request->file("id_front{$x}");
                 $idBackFile = $request->file("id_back{$x}");
@@ -130,7 +131,7 @@ class PaymentController extends Controller
     
                 $passengers[] = $passengerData;
 
-            } else {
+            } else { ***/
                 // Handle passengers with no classification (e.g., store them as 'Unclassified')
                 $passengerData = [
                     'firstname' => $request->input("firstname{$x}"),
@@ -142,7 +143,7 @@ class PaymentController extends Controller
                 ];
     
                 $passengers[] = $passengerData;
-            }
+            // }
         }
 
         // Store in a session Passenger and Contact Person
@@ -222,8 +223,6 @@ class PaymentController extends Controller
         // If over the counter payment
         if($payment_method == "counter"){
 
-            $user = Auth::id();
-
             $trip_type = session('trip_type');
             $dep_sched_id = session('dep_sched_id');
             $dep_sched_type = session('dep_sched_type');
@@ -275,7 +274,6 @@ class PaymentController extends Controller
             } while (Booking::where('reference_number', $referenceNumber)->exists());
 
             $booking = new Booking();
-            $booking->user_id = $user;
             $booking->contact_person_id = $newContactPersonId;
             $booking->schedule_id = $dep_sched_id;
             $booking->payment_id = $paymentId;
@@ -323,7 +321,6 @@ class PaymentController extends Controller
                 } while (Booking::where('reference_number', $referenceNumber)->exists());
             
                 $bookingReturn = new Booking();
-                $bookingReturn->user_id = $user;
                 $bookingReturn->contact_person_id = $newContactPersonId;
                 $bookingReturn->schedule_id = $ret_sched_id;
                 $bookingReturn->payment_id = $paymentId;

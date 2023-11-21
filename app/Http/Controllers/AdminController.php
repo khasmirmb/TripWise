@@ -12,22 +12,12 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-
-    /**
-     * Display the list of users client.
-     */
-    public function clientIndex()
-    {
-        $clients = User::where('type', 0)->orderBy('id', 'desc')->paginate(10);
-        return view('admin.users.client', compact('clients'));
-    }
-
     /**
      * Display the list of users staff.
      */
     public function staffIndex()
     {
-        $staffs = User::where('type', 2)->orderBy('id', 'desc')->paginate(10);
+        $staffs = User::where('type', 0)->orderBy('id', 'desc')->paginate(10);
         return view('admin.users.staff', compact('staffs'));
     }
 

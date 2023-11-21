@@ -96,9 +96,8 @@
                                     <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
                                     <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                         <option value="">Select Type</option>
-                                        <option value="0" @if(old('type') == '0') selected @endif>User</option>
+                                        <option value="0" @if(old('type') == '0') selected @endif>Staff</option>
                                         <option value="1" @if(old('type') == '1') selected @endif>Admin</option>
-                                        <option value="2" @if(old('type') == '2') selected @endif>Staff</option>
                                     </select>
                                     @error('type')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>

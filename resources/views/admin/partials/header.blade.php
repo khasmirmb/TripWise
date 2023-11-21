@@ -15,9 +15,7 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-29165b0a.css')}}">
-
-        <script type="module" src="{{ asset('build/assets/admin-5bb25eaa.js') }}" defer></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Dark Mode Script -->
         <script>

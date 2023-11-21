@@ -10,15 +10,18 @@
         use App\Models\Schedules;
         use App\Models\Ferries;
 
-        $depart_sched = Schedules::find($dep_sched_id);
+        if ($dep_sched_id) {
 
-        $depart_ferry = Ferries::find($depart_sched->ferry_id);
+            $depart_sched = Schedules::find($dep_sched_id);
 
-        if(!is_null($return_date)){
+            $depart_ferry = Ferries::find($depart_sched->ferry_id);
 
-            $return_sched = Schedules::find($ret_sched_id);
+            if(!is_null($return_date)){
 
-            $return_ferry = Ferries::find($return_sched->ferry_id);
+                $return_sched = Schedules::find($ret_sched_id);
+
+                $return_ferry = Ferries::find($return_sched->ferry_id);
+            }
         }
 
     @endphp
