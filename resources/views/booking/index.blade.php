@@ -157,6 +157,14 @@
                 document.getElementById("return_date").value = "";
                 }
             @endif
+            @if (session('error') > 0)
+                if (document.getElementById('round-trip').checked) {
+                    document.getElementById('round-div').style.visibility = 'visible';
+                }
+                else{document.getElementById('round-div').style.visibility = 'hidden';
+                document.getElementById("return_date").value = "";
+                }
+            @endif
         </script>
         
         <script type="module">

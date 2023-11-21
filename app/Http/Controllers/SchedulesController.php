@@ -34,6 +34,31 @@ class SchedulesController extends Controller
             'return_date' => 'nullable|date_format:d/m/Y|after:depart_date',
             'passenger' => 'required|integer|max:20|min:1',
         ]);
+
+        // Check for existing schedule
+        $departureSchedule = Schedules::where('departure_port', $request->input('origin'))
+            ->where('arrival_port', $request->input('destination'))
+            ->first();
+
+        if (!$departureSchedule) {
+            // No schedule found, return back with an error
+             return redirect()->back()->withInput()->with('error', 'No schedule found for the selected trip.');
+        }
+
+        // Check for return schedule only if it's a round trip
+        if ($request->input('type') == 'Round Trip') {
+
+            $returnSchedule = Schedules::where('departure_port', $request->input('destination'))
+            ->where('arrival_port', $request->input('origin'))
+            ->first();
+
+            if (!$returnSchedule) {
+                // No schedule found, return back with an error
+                 return redirect()->back()->withInput()->with('error', 'No schedule found for the return trip.');
+            }
+
+        }
+
     
         $validated_date = $this->convertToDate($request->input('depart_date'));
         $now = Carbon::now(new DateTimeZone('Asia/Manila'));
