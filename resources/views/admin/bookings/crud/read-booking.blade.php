@@ -97,7 +97,7 @@
                 <div class="block sm:flex w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
                     <div class="w-full">
                         <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
-                            Full Name
+                            Name
                         </h5>
                         <p class="font-normal text-gray-700 dark:text-gray-400">
                             {{$booking->contactPerson->name}}
@@ -129,7 +129,7 @@
                 <div class="block sm:flex w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
                     <div class="w-full">
                         <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
-                            Full Name
+                            Name
                         </h5>
                         <p class="font-normal text-gray-700 dark:text-gray-400">
                             {{$passenger->first_name . " " . $passenger->middle_name[0] . " " . $passenger->last_name}}

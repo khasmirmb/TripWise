@@ -34,7 +34,7 @@ class PaymentController extends Controller
         $passengerCount = session('passenger');
 
         $contactPerson = [
-            'name' => $request->input('contact-person'),
+            'name' => ucfirst($request->input('contact-person')),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
             'address' => $request->input('address'),
@@ -134,9 +134,9 @@ class PaymentController extends Controller
             } else { ***/
                 // Handle passengers with no classification (e.g., store them as 'Unclassified')
                 $passengerData = [
-                    'firstname' => $request->input("firstname{$x}"),
-                    'middlename' => $request->input("middlename{$x}"),
-                    'lastname' => $request->input("lastname{$x}"),
+                    'firstname' => ucfirst($request->input("firstname{$x}")),
+                    'middlename' => ucfirst($request->input("middlename{$x}")),
+                    'lastname' => ucfirst($request->input("lastname{$x}")),
                     'gender' => $request->input("gender{$x}"),
                     'birthday' => $request->input("birthday{$x}"),
                     'classification' => 'Regular',

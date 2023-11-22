@@ -5,7 +5,7 @@
     @include('admin.components.sidebar')
 
         <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
-            <div class="rounded-lg mb-4">
+            <div class="rounded-lg mb-4 shadow-md">
                 <div class="relative bg-white dark:bg-gray-800 rounded-lg py-2">
                     <div class="flex items-start justify-start p-4">
                         <nav class="flex" aria-label="Breadcrumb">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingConfirmation;
 use App\Models\Booking;
 use App\Models\ContactPerson;
 use App\Models\Passenger;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PaymentMethod extends Controller
@@ -206,6 +208,8 @@ class PaymentMethod extends Controller
         $booking->reference_number = $referenceNumber;
 
         $booking->save(); // Save the record to the database
+
+        Mail::to($contactPersonData['email'])->send(new BookingConfirmation($booking));
 
         $newBookingId = $booking->id;
 

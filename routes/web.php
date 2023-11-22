@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminFerryController;
 use App\Http\Controllers\AdminPortController;
@@ -229,5 +230,9 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/bookings', [AdminController::class, 'bookingIndex'])->name('admin.booking');
     // Search Booking
     Route::get('/admin/bookings/search', [AdminSearchController::class, 'bookingSearch'])->name('admin.booking.search');
+
+    // CRUD for Booking
+    // Edit Form
+    Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');
     
 });

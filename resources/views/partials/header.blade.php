@@ -17,7 +17,8 @@
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-a6edb093.css')}}">
+        <!-- CSS / JS -->
+        <link rel="stylesheet" href="{{asset('build/assets/app-74823d77.css')}}">
         
         <script type="module" src="{{ asset('build/assets/app-75895fca.js') }}" defer></script>
 
