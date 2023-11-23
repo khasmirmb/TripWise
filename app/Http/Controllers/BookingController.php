@@ -213,7 +213,7 @@ class BookingController extends Controller
 
         $percentageAmount = $payment * 0.05;
 
-        $final_amount = $percentageAmount + 150;
+        $final_amount = $percentageAmount + 110;
   
         // Redirect to a success page or perform other actions
         return view('manage.payment', compact('booking', 'schedule', 'final_amount'));
@@ -242,7 +242,7 @@ class BookingController extends Controller
 
         $percentageAmount = $payment * 0.05;
 
-        $final_amount = $percentageAmount + 150;
+        $final_amount = $percentageAmount + 110;
 
         $total_amount = $final_amount;
 
@@ -290,7 +290,7 @@ class BookingController extends Controller
                     'payment_method_types' => [
                         $payment_method
                     ],
-                    'success_url' => 'http://localhost:8000/booking/manage/success',
+                    'success_url' => 'http://trip-wise.online/booking/manage/success',
                     'cancel_url' => 'http://trip-wise.online/booking/manage',
                     'description'   => 'TripWise Fare Booking',
                     'send_email_receipt' => true,
@@ -344,7 +344,6 @@ class BookingController extends Controller
 
         $booking_id = session('booking_id');
         $schedule_id = session('schedule_id');
-        $total = session('total');
         $service = session('service');
 
         $booking = Booking::find($booking_id);
