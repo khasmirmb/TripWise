@@ -22,6 +22,6 @@
 
     <p>If you have any questions or need further assistance, feel free to contact our customer support at devtripwise@gmail.com</p>
 
-    <p>Safe travels!</p>
+    <p>Safe travels on your journey!</p>
 </body>
 </html>

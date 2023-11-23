@@ -23,10 +23,6 @@ class PaymentMethod extends Controller
      */
     public function OTCBooking(Request $request)
     {
-        // Check for the presence of necessary data
-        if (!session('payment_id') || !session('contact_person_id') || !session('depart_book_id')) {
-            return view('partials.404');
-        }
         // Payment Info ID
         $paymentId = session('payment_id');
 
@@ -291,11 +287,6 @@ class PaymentMethod extends Controller
      */
     public function OnlinePaymentBooking(Request $request)
     {
-        // Check for the presence of necessary data
-        if (!session('payment_id') || !session('contact_person_id') || !session('depart_book_id')) {
-            return view('partials.404');
-        }
-        
         // Payment Info ID
         $paymentId = session('payment_id');
 
@@ -307,10 +298,6 @@ class PaymentMethod extends Controller
 
         // Return Booking Passenger and ID
         $returnBookId = session('return_book_id');
-
-        $dep_sched_id = session('dep_sched_id');
-
-        $ret_sched_id = session('ret_sched_id');
         
         $request->session()->forget(['ret_total', 'totalDiscount', 'dep_total', 'total_amount', 'service_charge']);
         $request->session()->forget('contactPerson');
@@ -322,10 +309,12 @@ class PaymentMethod extends Controller
             'passenger',
             'depart_date',
             'return_date',
+            'dep_sched_id',
             'dep_sched_type',
             'dep_sched_price',
+            'ret_sched_id',
             'ret_sched_type',
-            'ret_sched_price'
+            'ret_sched_price',
         ]);
         
 
@@ -357,7 +346,7 @@ class PaymentMethod extends Controller
         }
 
         $departSeats = Seat::where('ferry_id', $departFerry->ferry_id)
-        ->where('schedule_id', $dep_sched_id)
+        ->where('schedule_id', $departBooking->schedule->id)
         ->where('class', $depart_accommodation)
         ->get();
 
@@ -385,7 +374,7 @@ class PaymentMethod extends Controller
             }
 
             $returnSeats = Seat::where('ferry_id', $returnFerry->ferry_id)
-            ->where('schedule_id', $ret_sched_id)
+            ->where('schedule_id', $returnBooking->schedule->id)
             ->where('class', $return_accommodation)
             ->get();
 

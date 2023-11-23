@@ -147,6 +147,7 @@ class AdminSearchController extends Controller
                 ->where('reference_number', 'like', "%$query%")
                 ->orWhere('status', 'like', "%$query%");
         })
+        ->orderBy('created_at', 'desc')
         ->paginate(10);
 
         return view('admin.bookings.booking', compact('bookings', 'query'));

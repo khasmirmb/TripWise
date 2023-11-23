@@ -388,8 +388,8 @@ class PaymentController extends Controller
                         'payment_method_types' => [
                             $payment_method
                         ],
-                        'success_url' => 'http://localhost:8000/booking/success',
-                        'cancel_url' => 'http://localhost:8000/booking/payment',
+                        'success_url' => 'http://trip-wise.online/booking/success',
+                        'cancel_url' => 'http://trip-wise.online/booking/payment',
                         'description'   => 'TripWise Fare Booking',
                         'send_email_receipt' => true,
                     ],

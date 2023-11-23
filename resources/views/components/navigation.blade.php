@@ -19,7 +19,7 @@
           </button>
       </div>
       <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="navbar-user">
-          <ul class="flex flex-col font-medium p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-white dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
+          <ul class="flex flex-col font-medium p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:flex-row lg:space-x-6 lg:mt-0 lg:border-0 lg:bg-white dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
               <li>
                   <a href="/" class="block py-2 pl-3 pr-4 mt-3 mb-1 text-gray-900 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-teal-700 lg:p-0 dark:text-white lg:dark:hover:text-teal-500 dark:hover:bg-gray-700 dark:hover:text-teal-500 lg:dark:hover:bg-transparent dark:border-gray-700" >Home</a>
               </li>
@@ -69,6 +69,9 @@
                       </ul>
                   </div>
               </li>
+              <li>
+                <a href="{{route('booking.search.show')}}" class="block text-gray-900 bg-white border border-teal-300 focus:outline-none hover:bg-teal-100 focus:ring-4 focus:ring-teal-200 font-medium rounded-full text-sm px-5 py-2.5 mb-2 dark:bg-teal-800 dark:text-white dark:border-teal-600 dark:hover:bg-teal-700 dark:hover:border-teal-600 dark:focus:ring-teal-700">Book Now!</a>
+            </li>
           </ul>
       </div>
   </div>

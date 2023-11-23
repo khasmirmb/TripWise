@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminSeatController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FaresController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PassengerController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -110,6 +112,7 @@ Route::group(['middleware' => ['guest']], function() {
     Route::get('/depart-check-seat-availability', [SeatController::class, 'DepartCheckAvailability']);
     // Return Seat Check
     Route::get('/return-check-seat-availability', [SeatController::class, 'ReturnCheckAvailability']);
+
     // Booking End
 
     // Manage Booking Start
@@ -117,7 +120,16 @@ Route::group(['middleware' => ['guest']], function() {
     Route::get('/booking/manage', [BookingController::class, 'manageBooking'])->name('booking.manage.show');
     // Find Booking
     Route::post('/booking/manage/find', [BookingController::class, 'findBooking'])->name('booking.manage.find');
-
+    // Booking Seats
+    Route::get('/booking/manage/seat/{booking}/{reference}', [BookingController::class, 'bookingSeat'])->name('booking.seats');
+    // Booking Rebook
+    Route::get('/booking/manage/rebook/{booking}/{reference}/{schedule}', [BookingController::class, 'bookingRebook'])->name('booking.rebook');
+    // Booking Payment
+    Route::get('/booking/manage/rebook/payment/{booking}/{reference}/{schedule}', [BookingController::class, 'processBooking'])->name('booking.rebook.payment');
+    // Payment Process
+    Route::post('/booking/manage/rebook/payment/process/{booking}/{schedule}/', [BookingController::class, 'processPayment'])->name('booking.rebook.payment-process');
+    // Rebooking Success
+    Route::get('/booking/manage/success', [BookingController::class, 'rebookSuccess'])->name('booking.rebook.success');
     // Manage Booking End
     
 });
@@ -125,7 +137,14 @@ Route::group(['middleware' => ['guest']], function() {
 // Staff Side Routes
 Route::middleware(['auth', 'user-access:staff'])->group(function () {
   
+    // Staff Home
     Route::get('/staff', [HomeController::class, 'staffHome'])->name('staff.home');
+
+    // Scan QR
+    Route::get('/staff/scan-qr', [UserController::class, 'QRScanStaff'])->name('staff.scan.qr');
+    // Passenger List
+    Route::post('/staff/scan-qr/check-booking', [UserController::class, 'staffcheckBooking'])->name('staff.check.booking');
+
 });
 
 // Admin Side Routes
@@ -234,5 +253,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // CRUD for Booking
     // Edit Form
     Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');
+
+    // Admin Scan QR
+    Route::get('/admin/scan-qr', [UserController::class, 'QRScanAdmin'])->name('admin.scan.qr');
+    // Passenger List
+    Route::post('/admin/scan-qr/check-booking', [UserController::class, 'admincheckBooking'])->name('admin.check.booking');
     
 });

@@ -9,6 +9,10 @@ class Seat extends Model
 {
     use HasFactory;
 
+    protected $table = 'seats';
+
+    protected $fillable = ['ferry_id', 'schedule_id', 'seat_number', 'class', 'seat_status'];
+
     // Relationship has many
     public function passengers()
     {

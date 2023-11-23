@@ -15,9 +15,8 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-74823d77.css')}}">
+        @vite(['resources/css/app.css', 'resources/js/admin.js'])
         
-        <script type="module" src="{{ asset('build/assets/admin-5bb25eaa.js') }}" defer></script>
         <!-- Dark Mode Script -->
         <script>
             // On page load or when changing themes, best to add inline in `head` to avoid FOUC

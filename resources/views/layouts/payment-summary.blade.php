@@ -43,7 +43,7 @@
               </div>
               <div class="flex items-center justify-between py-2">
                   <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Price:</span>
-                  <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">₱{{$dep_sched_price}}</span>
+                  <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">₱ {{$dep_sched_price}}</span>
               </div>
           </div>
       </div>
@@ -90,7 +90,7 @@
               </div>
               <div class="flex items-center justify-between py-2">
                   <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Price:</span>
-                  <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">₱{{$ret_sched_price}}</span>
+                  <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">₱ {{$ret_sched_price}}</span>
               </div>
           </div>
       </div>       

@@ -66,7 +66,7 @@ class AdminController extends Controller
     */
     public function bookingIndex()
     {
-        $bookings = Booking::orderBy('id', 'desc')->paginate(10);
+        $bookings = Booking::orderBy('created_at', 'desc')->paginate(10);
         
         return view('admin.bookings.booking', compact('bookings'));
     }

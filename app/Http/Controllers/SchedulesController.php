@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Fares;
 use App\Models\Schedules;
 use Carbon\Carbon;
@@ -135,15 +136,6 @@ class SchedulesController extends Controller
             return response()->json(['error' => 'Schedule information not found'], 404);
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */

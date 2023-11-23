@@ -16,15 +16,24 @@
                             <div>
                                 <label for="booking_reference" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Booking Reference Number<span class="text-red-600">*</span></label>
                                 <input type="text" id="booking_reference" name="booking_reference" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="e.g. sFHO-fDQx5n6BTnD" value="{{ old('booking_reference') }}" required>
+                                @error('booking_reference')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                @enderror
                             </div>
                             <div>
                                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email<span class="text-red-600">*</span></label>
                                 <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="name@email.com" value="{{ old('email') }}" required>
+                                @error('email')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="text-sm text-left text-gray-500 newsletter-form-footer dark:text-gray-300">Should you need assistance with your booking, please submit your concerns/inquiries to our <a href="#" class="font-medium text-teal-600 dark:text-teal-500 hover:underline">Help/Support</a>.</div>
                         <div class="flex justify-end my-4">
-                            <button type="submit" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">
+                            <button type="submit" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-md lg:px-5 px-2 py-2.5 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800 md:text-sm">
+                                <svg class="w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
                                 Find My Booking
                             </button>
                         </div>
