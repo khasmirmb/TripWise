@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\BookingConfirmation;
+use App\Mail\ReturnBookingConfirmation;
 use App\Models\Booking;
 use App\Models\ContactPerson;
 use App\Models\Passenger;
@@ -256,6 +257,8 @@ class PaymentMethod extends Controller
             $bookingReturn->reference_number = $referenceNumber;
         
             $bookingReturn->save(); // Save the record to the database
+
+            Mail::to($contactPersonData['email'])->send(new ReturnBookingConfirmation($bookingReturn));
 
             $newbookingReturnid = $bookingReturn->id;
 

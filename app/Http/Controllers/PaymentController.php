@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingConfirmation;
+use App\Mail\ReturnBookingConfirmation;
 use App\Models\Booking;
 use App\Models\ContactPerson;
 use App\Models\Passenger;
@@ -13,6 +15,7 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 use Illuminate\Support\Str;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -283,6 +286,8 @@ class PaymentController extends Controller
 
             $booking->save(); // Save the record to the database
 
+            Mail::to($contactPersonData['email'])->send(new BookingConfirmation($booking));
+
             $newBookingId = $booking->id;
 
             session(['depart_book_id' => $newBookingId]);
@@ -329,6 +334,8 @@ class PaymentController extends Controller
                 $bookingReturn->reference_number = $referenceNumber;
             
                 $bookingReturn->save(); // Save the record to the database
+
+                Mail::to($contactPersonData['email'])->send(new ReturnBookingConfirmation($bookingReturn));
 
                 $newbookingReturnid = $bookingReturn->id;
 

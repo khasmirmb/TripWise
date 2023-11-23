@@ -49,9 +49,9 @@ Route::get('/', function () {
 
 
 // Fallback Errors Route
-//Route::fallback(function () {
-//  return view('partials.404');
-//});
+Route::fallback(function () {
+  return view('partials.404');
+});
 
 // User Side Routes
 Route::group(['middleware' => ['guest']], function() {
