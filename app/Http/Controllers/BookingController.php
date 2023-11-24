@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\BookingConfirmation;
 use App\Models\Booking;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Ports;
 use App\Models\Schedules;
@@ -62,6 +63,8 @@ class BookingController extends Controller
     public function manageBooking()
     {
         session()->forget('booking');
+
+        session()->forget(['booking_id', 'schedule_id', 'service']);
 
         return view('manage.index');
     }
@@ -337,6 +340,10 @@ class BookingController extends Controller
             $payment_timestamp = $attributes->paid_at;
         }
 
+        if(!$paymongo_id){
+            return view('partials.404');
+        }
+
         $payment_method = ucfirst($response->data->attributes->payment_method_used);
         $payment_status = ucfirst($payment_status);
         $payment_date = date("Y-m-d H:i:s", $payment_timestamp);
@@ -350,6 +357,11 @@ class BookingController extends Controller
 
         if (!$booking) {
             return back()->with('error', 'Booking not found.');
+        }
+
+        // Check If there's a payment for paymongo
+        if (Payment::where('paymongo_id', $paymongo_id)->exists()) {
+            return redirect()->route('booking.seats', ['booking' => $booking_id, 'reference' => $booking->reference_number]);
         }
 
         $passengers = $booking->passengers;
@@ -398,8 +410,6 @@ class BookingController extends Controller
         }
         
         Mail::to($booking->contactPerson->email)->send(new BookingConfirmation($booking));
-
-        session()->forget(['booking_id', 'schedule_id', 'service']);
 
         return redirect()->route('booking.seats', ['booking' => $booking_id, 'reference' => $referenceNumber]);
     }

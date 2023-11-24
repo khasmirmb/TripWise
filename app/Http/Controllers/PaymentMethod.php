@@ -133,7 +133,11 @@ class PaymentMethod extends Controller
             $payment_status = $attributes->status;
             $payment_timestamp = $attributes->paid_at;
         }
-        
+
+        if(!$paymongo_id){
+            return view('partials.404');
+        }
+
         $trip_type = session('trip_type');
         $dep_sched_id = session('dep_sched_id');
         $dep_sched_type = session('dep_sched_type');
@@ -150,8 +154,11 @@ class PaymentMethod extends Controller
         $payment_status = ucfirst($payment_status);
         $payment_date = date("Y-m-d H:i:s", $payment_timestamp);
 
-
         $contactPersonData = session('contactPerson');
+
+        if (Payment::where('paymongo_id', $paymongo_id)->exists()) {
+            return redirect()->route('booking.online');
+        }
 
         $payment = new Payment();
         $payment->payment_amount = $total_amount;
