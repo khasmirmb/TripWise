@@ -151,6 +151,18 @@
                             {{$passenger->gender}}
                         </p>
                     </div>
+                    <div class="w-full">
+                        <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                            Seat
+                        </h5>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">
+                            @if ($passenger->seat_id)
+                                {{$passenger->seat->seat_number}}
+                            @else
+                                None
+                            @endif
+                        </p>
+                    </div>
                 </div>
                 @endforeach
             </div>

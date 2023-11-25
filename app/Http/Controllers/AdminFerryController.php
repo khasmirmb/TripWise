@@ -68,15 +68,6 @@ class AdminFerryController extends Controller
             'seats' => 'required|numeric',
         ]);
 
-        // Check if a fare with the same type already exists for the ferry
-        $existingFare = Fares::where('ferry_id', $request->ferry_id)
-                            ->where('type', $request->type)
-                            ->first();
-
-        if ($existingFare) {
-            return redirect()->back()->withInput()->with('error', 'A fare with the same type already exists for this ferry.');
-        }
-
         if ($validatedData) {
 
             // Retrieve the fare based on the ferry_id

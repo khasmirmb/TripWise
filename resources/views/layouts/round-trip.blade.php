@@ -208,6 +208,9 @@
 
                     $('#return_fare_type').html(fare_type);
                     $('#return_fare_price').html(fare_price);
+
+                    $("input[name='return_fare_type']").val(fare_type);
+
                     // Send an AJAX request to your Laravel controller
                     $.ajax({
                         type: 'GET',

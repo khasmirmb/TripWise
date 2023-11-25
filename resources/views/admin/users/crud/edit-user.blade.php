@@ -49,11 +49,18 @@
                     <div class="px-4 py-2 mx-auto">
                         <form action="{{ route('admin.user.edit-process', ['user' => $user->id, 'type' => $user->type]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">
                                 <div class="w-full">
                                     <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Firstname<span class="text-red-600">*</span></label>
                                     <input type="text" name="firstname" id="firstname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Firstname" required="" value="{{ old('firstname', $user->firstname) }}" style="text-transform: capitalize;">
                                     @error('firstname')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                </div>
+                                <div class="w-full">
+                                    <label for="middlename" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middlename</label>
+                                    <input type="text" name="middlename" id="middlename" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Middlename" required="" value="{{ old('middlename', $user->middlename) }}" style="text-transform: capitalize;">
+                                    @error('middlename')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
@@ -72,13 +79,6 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                    <input type="tel" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="09123456789" value="{{ old('phone', $user->phone_number) }}">
-                                    @error('phone')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
                                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                                     <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="••••••••">
                                     @error('password')
@@ -89,6 +89,13 @@
                                     <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="••••••••">
                                     @error('password_confirmation')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                </div>
+                                <div class="w-full">
+                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                    <input type="tel" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="09123456789" value="{{ old('phone', $user->phone_number) }}">
+                                    @error('phone')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
@@ -116,6 +123,9 @@
                                         <img src="{{asset('profile/default.png')}}" class="rounded-full w-36 h-36 border-2">
                                         @endif
                                     </div>
+                                </div>
+                                <div class="w-full">
+
                                 </div>
                                 <div class="w-full text-center">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Image Preview</label>

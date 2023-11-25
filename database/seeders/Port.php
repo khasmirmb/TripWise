@@ -18,19 +18,19 @@ class Port extends Seeder
         $ports = [
             [
                 'name'=>'Zamboanga Port',
-                'location'=>'Zamboanga City, Zamboanga Del Sur',
+                'location'=>'Zamboanga City',
             ],
             [
                 'name'=>'Lamitan Port',
-                'location'=>'Lamitan City, Basilan',
+                'location'=>'Lamitan',
             ],
             [
                 'name'=>'Jolo Port',
-                'location'=>'Jolo, Sulu',
+                'location'=>'Jolo Sulu',
             ],
             [
                 'name'=>'Isabela Port',
-                'location'=>'Isabela City, Basilan',
+                'location'=>'Isabela',
             ],
         ];
 

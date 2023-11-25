@@ -97,7 +97,7 @@
                               <img class="w-10 h-10 rounded-full" src="{{asset('profile/default.png')}}" alt="Staff Image">
                             @endif
                             <div class="pl-3">
-                              <div class="text-base font-semibold">{{ ucfirst($staff->firstname) . " " . ucfirst($staff->lastname) }}</div>
+                              <div class="text-base font-semibold">{{ ucfirst($staff->firstname) . " ". ucfirst($staff->middlename[0]) . " " . ucfirst($staff->lastname) }}</div>
                               <div class="font-normal text-gray-500">{{ $staff->email }}</div>
                             </div>  
                           </th>

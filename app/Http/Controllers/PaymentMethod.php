@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\ContactPerson;
 use App\Models\Passenger;
 use App\Models\Payment;
+use App\Models\Schedules;
 use App\Models\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,8 +33,12 @@ class PaymentMethod extends Controller
         // Depart Booking Passenger and ID
         $departBookId = session('depart_book_id');
 
+        $departSchedId = session('dep_sched_id');
+
         // Return Booking Passenger and ID
         $returnBookId = session('return_book_id');
+
+        $returnSchedId = session('ret_sched_id');
 
         // Remove all the session that is being use after completed
         $request->session()->forget(['ret_total', 'totalDiscount', 'dep_total']);
@@ -46,10 +51,8 @@ class PaymentMethod extends Controller
             'passenger',
             'depart_date',
             'return_date',
-            'dep_sched_id',
             'dep_sched_type',
             'dep_sched_price',
-            'ret_sched_id',
             'ret_sched_type',
             'ret_sched_price'
         ]);
@@ -63,22 +66,16 @@ class PaymentMethod extends Controller
         $departBooking = Booking::find($departBookId);
         $departPassengers = Passenger::where('booking_id', $departBookId)->get();
         
-        $depSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-        ->select('bookings.*', 'schedules.*', 'ferries.*')
-        ->where('bookings.id', $departBookId)
-        ->first();
+        $depSchedData = Schedules::find($departSchedId);
 
         // If there's a round trip
         if ($returnBookId) {
+
             $returnBooking = Booking::find($returnBookId);
+
             $returnPassengers = Passenger::where('booking_id', $returnBookId)->get();
 
-            $retSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-            ->select('bookings.*', 'schedules.*', 'ferries.*')
-            ->where('bookings.id', $returnBookId)
-            ->first();
+            $retSchedData = Schedules::find($returnSchedId);
 
         } else {
             $retSchedData = null;
@@ -303,8 +300,12 @@ class PaymentMethod extends Controller
         // Depart Booking Passenger and ID
         $departBookId = session('depart_book_id');
 
+        $departSchedId = session('dep_sched_id');
+
         // Return Booking Passenger and ID
         $returnBookId = session('return_book_id');
+
+        $returnSchedId = session('ret_sched_id');
         
         $request->session()->forget(['ret_total', 'totalDiscount', 'dep_total', 'total_amount', 'service_charge']);
         $request->session()->forget('contactPerson');
@@ -316,10 +317,8 @@ class PaymentMethod extends Controller
             'passenger',
             'depart_date',
             'return_date',
-            'dep_sched_id',
             'dep_sched_type',
             'dep_sched_price',
-            'ret_sched_id',
             'ret_sched_type',
             'ret_sched_price',
         ]);
@@ -332,19 +331,12 @@ class PaymentMethod extends Controller
         $contactPerson = ContactPerson::find($contactPersonId);
 
         $departBooking = Booking::find($departBookId);
+
         $departPassengers = Passenger::where('booking_id', $departBookId)->get();
         
-        $depSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-        ->select('bookings.*', 'schedules.*', 'ferries.*')
-        ->where('bookings.id', $departBookId)
-        ->first();
+        $depSchedData = Schedules::find($departSchedId);
 
-        $departFerry = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-        ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-        ->select('ferries.id as ferry_id') // Select the ferry ID
-        ->where('bookings.id', $departBookId)
-        ->first();
+        $departFerry = $depSchedData->ferries;
 
         $depart_accommodation = [];
 
@@ -352,27 +344,20 @@ class PaymentMethod extends Controller
             $depart_accommodation[] = $passenger->accommodation;
         }
 
-        $departSeats = Seat::where('ferry_id', $departFerry->ferry_id)
-        ->where('schedule_id', $departBooking->schedule->id)
+        $departSeats = Seat::where('ferry_id', $departFerry->id)
+        ->where('schedule_id', $depSchedData->id)
         ->where('class', $depart_accommodation)
         ->get();
 
         // If there's a round trip
         if ($returnBookId) {
             $returnBooking = Booking::find($returnBookId);
+
             $returnPassengers = Passenger::where('booking_id', $returnBookId)->get();
 
-            $retSchedData = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-            ->select('bookings.*', 'schedules.*', 'ferries.*')
-            ->where('bookings.id', $returnBookId)
-            ->first();
+            $retSchedData = Schedules::find($returnSchedId);
 
-            $returnFerry = Booking::join('schedules', 'bookings.schedule_id', '=', 'schedules.id')
-            ->join('ferries', 'schedules.ferry_id', '=', 'ferries.id')
-            ->select('ferries.id as ferry_id') // Select the ferry ID
-            ->where('bookings.id', $returnBookId)
-            ->first();
+            $returnFerry = $retSchedData->ferries;
 
             $return_accommodation = [];
 
@@ -380,8 +365,8 @@ class PaymentMethod extends Controller
                 $return_accommodation[] = $passenger->accommodation;
             }
 
-            $returnSeats = Seat::where('ferry_id', $returnFerry->ferry_id)
-            ->where('schedule_id', $returnBooking->schedule->id)
+            $returnSeats = Seat::where('ferry_id', $returnFerry->id)
+            ->where('schedule_id', $retSchedData->id)
             ->where('class', $return_accommodation)
             ->get();
 

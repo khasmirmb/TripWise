@@ -16,6 +16,7 @@ class UsersSeeder extends Seeder
         $users = [
             [
                 'firstname'=>'Staff',
+                'middlename'=>'Staff',
                 'lastname'=>'Staff',
                 'email'=>'staff@gmail.com',
                 'type'=>0,
@@ -23,6 +24,7 @@ class UsersSeeder extends Seeder
             ],
             [
                 'firstname'=>'Admin',
+                'middlename'=>'Admin',
                 'lastname'=>'Admin',
                 'email'=>'admin@gmail.com',
                 'type'=>1,

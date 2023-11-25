@@ -250,6 +250,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Search Booking
     Route::get('/admin/bookings/search', [AdminSearchController::class, 'bookingSearch'])->name('admin.booking.search');
 
+    // AJAX for Booking
+    Route::get('/admin/booking/getFares', [FaresController::class, 'getFares']);
     // CRUD for Booking
     // Edit Form
     Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');

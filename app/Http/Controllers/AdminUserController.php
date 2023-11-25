@@ -18,6 +18,7 @@ class AdminUserController extends Controller
     {
         $validate = $request->validate([
             'firstname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'phone' => 'nullable|regex:/^09\d{9}$/',
@@ -30,8 +31,9 @@ class AdminUserController extends Controller
         if ($validate) {
             // If the validation succeeds, create a new user
             $user = new User();
-            $user->firstname = $request->input('firstname');
-            $user->lastname = $request->input('lastname');
+            $user->firstname = ucwords($request->input('firstname'));
+            $user->middlename = ucwords($request->input('middlename'));
+            $user->lastname = ucwords($request->input('lastname'));
             $user->email = $request->input('email');
             $user->phone_number = $request->input('phone');
             $user->password = Hash::make($request->input('password')); // Assuming you're using Hash for password hashing
@@ -49,10 +51,10 @@ class AdminUserController extends Controller
             $user->save(); // Save the user to the database
     
             // Redirect or return a response indicating success
-            if ($user->type === 1) {
-                return redirect()->route('admin.admin')->with('success', 'User created successfully');
+            if ($user->type == 'staff') {
+                return redirect()->route('admin.staff')->with('success', 'User updated successfully');
             } else {
-                return redirect()->route('admin.staff')->with('success', 'User created successfully');
+                return redirect()->route('admin.admin')->with('success', 'User updated successfully');
             }
 
         } else {
@@ -78,6 +80,7 @@ class AdminUserController extends Controller
     {
         $validatedData = $request->validate([
             'firstname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:255',
@@ -91,8 +94,9 @@ class AdminUserController extends Controller
             // Find the user by ID
             $user = User::findOrFail($user);
 
-            $user->firstname = $request->input('firstname');
-            $user->lastname = $request->input('lastname');
+            $user->firstname = ucwords($request->input('firstname'));
+            $user->middlename = ucwords($request->input('middlename'));
+            $user->lastname = ucwords($request->input('lastname'));
             $user->email = $request->input('email');
             $user->phone_number = $request->input('phone');
             $user->address = $request->input('address');
@@ -122,12 +126,10 @@ class AdminUserController extends Controller
             $user->save(); // Save the user to the database
     
             // Redirect or return a response indicating success
-            if ($type === 1) {
-                return redirect()->route('admin.admin')->with('success', 'User updated successfully');
-            } elseif ($type === 2) {
+            if ($type == 'staff') {
                 return redirect()->route('admin.staff')->with('success', 'User updated successfully');
             } else {
-                return redirect()->route('admin.client')->with('success', 'User updated successfully');
+                return redirect()->route('admin.admin')->with('success', 'User updated successfully');
             }
 
         } else {

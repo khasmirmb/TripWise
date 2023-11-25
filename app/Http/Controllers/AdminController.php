@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\City;
 use App\Models\Ferries;
 use App\Models\Ports;
 use App\Models\Schedules;
@@ -45,9 +46,11 @@ class AdminController extends Controller
     */
     public function portIndex()
     {
-        $ports = Ports::orderBy('id', 'desc')->paginate(10);
+        $ports = Ports::orderBy('name', 'asc')->paginate(10);
+
+        $cities = City::orderBy('city', 'asc')->get();
         
-        return view('admin.ports.port', compact('ports'));
+        return view('admin.ports.port', compact('ports', 'cities'));
     }
 
     /**

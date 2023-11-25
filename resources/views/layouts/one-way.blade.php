@@ -202,6 +202,9 @@
 
                     $('#depart_fare_type').html(fare_type);
                     $('#depart_fare_price').html(fare_price);
+
+                    $("input[name='depart_fare_type']").val(fare_type);
+                    
                     // Send an AJAX request to your Laravel controller
                     $.ajax({
                         type: 'GET',

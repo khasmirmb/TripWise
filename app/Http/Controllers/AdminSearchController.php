@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\City;
 use App\Models\Fares;
 use App\Models\Ferries;
 use App\Models\Ports;
@@ -69,9 +70,12 @@ class AdminSearchController extends Controller
                 ->where('name', 'like', "%$query%")
                 ->orWhere('location', 'like', "%$query%");
         })
+        ->orderBy('name', 'asc')
         ->paginate(10);
 
-        return view('admin.ports.port', compact('ports', 'query'));
+        $cities = City::orderBy('city', 'asc')->get();
+
+        return view('admin.ports.port', compact('ports', 'cities', 'query'));
     }
     
     // Search for Schedule

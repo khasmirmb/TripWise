@@ -18,4 +18,13 @@
     </button>
 </div>
 
+<script type="module">
+    $(document).ready(function () {
+        setTimeout(function() {
+                // Hide the loading message based on timer
+                $('#toast-default').hide();
+            }, 3000); // 3 seconds before hiding;
+    });
+</script>
+
 @endif

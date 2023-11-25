@@ -75,10 +75,7 @@ class SeatController extends Controller
      */
     private function checking($schedule, $fare)
     {
-        // Retrieve the total capacity of the ferry
-        $ferry = Ferries::find($schedule->ferry_id);
-
-        $totalCapacity = $ferry->capacity;
+        $totalCapacity = $fare->seats;
 
         // Calculate the number of seats already booked for the specific schedule and fare
         $bookedSeatsCount = Seat::where('ferry_id', $schedule->ferry_id)

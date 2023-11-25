@@ -49,11 +49,18 @@
                     <div class="px-4 py-2 mx-auto">
                         <form action="{{route('admin.user.add-process')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">
                                 <div class="w-full">
                                     <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Firstname<span class="text-red-600">*</span></label>
                                     <input type="text" name="firstname" id="firstname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Firstname" required="" value="{{old('firstname')}}" style="text-transform: capitalize;">
                                     @error('firstname')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                </div>
+                                <div class="w-full">
+                                    <label for="middlename" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middlename</label>
+                                    <input type="text" name="middlename" id="middlename" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Middlename" required="" value="{{old('middlename')}}" style="text-transform: capitalize;">
+                                    @error('middlename')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
@@ -72,13 +79,6 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                    <input type="tel" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="09123456789" value="{{old('phone')}}">
-                                    @error('phone')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
-                                    @enderror
-                                </div>
-                                <div class="w-full">
                                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password<span class="text-red-600">*</span></label>
                                     <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="••••••••" required="">
                                     @error('password')
@@ -93,13 +93,9 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
-                                    <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
-                                    <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                        <option value="">Select Type</option>
-                                        <option value="0" @if(old('type') == '0') selected @endif>Staff</option>
-                                        <option value="1" @if(old('type') == '1') selected @endif>Admin</option>
-                                    </select>
-                                    @error('type')
+                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                    <input type="tel" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="09123456789" value="{{old('phone')}}">
+                                    @error('phone')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
@@ -111,6 +107,17 @@
                                     @enderror
                                 </div>
                                 <div class="w-full">
+                                    <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
+                                    <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                        <option value="">Select Type</option>
+                                        <option value="0" @if(old('type') == '0') selected @endif>Staff</option>
+                                        <option value="1" @if(old('type') == '1') selected @endif>Admin</option>
+                                    </select>
+                                    @error('type')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                                    @enderror
+                                </div>
+                                <div class="w-full sm:col-span-2">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="image">Upload Image</label>
                                     <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="image_help" id="image" type="file" accept="image/*" onchange="loadFile(event)">
                                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image_help">PNG or JPG</p>
@@ -118,7 +125,7 @@
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror
                                 </div>
-                                <div class="w-full text-center">
+                                <div class="w-full text-center sm:col-span-3">
                                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Preview</label>
                                     <div class="flex justify-center">
                                         <img id="preview-image" class="rounded-full w-36 h-36 border-2">

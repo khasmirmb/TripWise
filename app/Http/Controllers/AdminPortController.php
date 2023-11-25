@@ -13,7 +13,7 @@ class AdminPortController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'location' => 'required|string|max:255|exists:cities,city',
         ]);
 
         if ($validatedData) {

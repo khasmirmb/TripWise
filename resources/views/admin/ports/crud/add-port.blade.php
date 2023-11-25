@@ -17,13 +17,24 @@
             <form action="{{route('admin.port.addport')}}" method="POST">
                 @csrf
                 <div class="grid gap-4 mb-6 grid-cols-1">
-                    <div>
+                    <div class="w-full">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                         <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Type port name" required="">
+                        @error('name')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                        @enderror 
                     </div>
-                    <div>
-                        <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
-                        <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Port Location" required="">
+                    <div class="w-full">
+                        <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location<span class="text-red-600">*</span></label>
+                        <select id="location" name="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                            <option value="" {{ old('location') == '' ? 'selected' : '' }}>Select Location</option>
+                            @foreach($cities as $city)
+                                <option value="{{ $city->city }}" {{ old('location') == $city->city ? 'selected' : '' }}>{{ $city->city }}</option>
+                            @endforeach
+                        </select>
+                        @error('location')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
+                        @enderror 
                     </div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">
