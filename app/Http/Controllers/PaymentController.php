@@ -16,7 +16,6 @@ use Illuminate\Support\Str;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -405,7 +404,7 @@ class PaymentController extends Controller
             ->asJson()
             ->post();
                             
-            Session::put('session_id', $response->data->id);
+            session(['paymongo_session' =>  $response->data->id]);
     
             return redirect()->to($response->data->attributes->checkout_url);
 

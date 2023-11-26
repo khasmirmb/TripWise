@@ -15,12 +15,17 @@
         </button>
     </div>
 
-    <script type="module">
-        $(document).ready(function () {
+    <script>
+        // Automatically hide the toast after 2 seconds with fade-out effect
+        setTimeout(function() {
+            const toast = document.getElementById('toast-admin-error');
+            toast.style.transition = 'opacity 1s';
+            toast.style.opacity = 0;
+
+            // Remove the element after the fade-out effect
             setTimeout(function() {
-                    // Hide the loading message based on timer
-                    $('#toast-admin-error').hide();
-                }, 3000); // 3 seconds before hiding;
-        });
+                toast.remove();
+            }, 1000); // Wait for 1 second (duration of the fade-out effect)
+        }, 2000);
     </script>
 @endif

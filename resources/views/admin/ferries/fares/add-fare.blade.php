@@ -14,7 +14,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form action="{{route('ferry.addfare')}}" method="POST">
+            <form action="{{route('ferry.addfare')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="{{$ferry->id}}" name="ferry_id">
                 <div class="flex items-center p-4 mb-4 text-base text-blue-800 bg-blue-50 dark:bg-blue-900 dark:text-blue-400 rounded-lg" role="alert">
@@ -46,6 +46,10 @@
                     <div>
                         <label for="seats" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
                         <input type="number" name="seats" id="seats" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="50" required="">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image">Fare Image<span class="text-red-600">*</span></label>
+                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image" type="file" required accept="image/*">
                     </div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">

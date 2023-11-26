@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Fee;
 use App\Models\Schedules;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,8 @@ class AdminBookingController extends Controller
     public function editBookingForm($booking)
     {
         $booking = Booking::find($booking);
+
+        $fee = Fee::firstOrNew();
 
         $schedule = $booking->schedule;
 
@@ -24,6 +27,6 @@ class AdminBookingController extends Controller
         }
 
         // Pass the user data to the view for editing
-        return view('admin.bookings.crud.edit-booking', compact('booking', 'schedules'));
+        return view('admin.bookings.crud.edit-booking', compact('booking', 'schedules', 'fee'));
     }
 }

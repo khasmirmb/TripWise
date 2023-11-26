@@ -45,16 +45,21 @@
 
             <div class="grid sm:grid-cols-{{count($ferry->fares)}} w-full sm:gap-6 gap-2 mb-2 sm:mb-4">
                 @foreach ($ferry->fares as $fare)
-                <div class="w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
-                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
-                        {{$fare->type}}
-                    </h5>
-                    <p class="font-normal text-gray-700 dark:text-gray-400">
-                        {{"₱" .$fare->price}}
-                    </p>
-                    <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
-                        Seats: <span class="font-normal text-gray-700 dark:text-gray-400">{{$fare->seats}}</span>
-                    </h5>
+                <div class="flex space-x-2 w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
+                    <div>
+                        <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                            {{$fare->type}}
+                        </h5>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">
+                            {{"₱" .$fare->price}}
+                        </p>
+                        <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
+                            Seats: <span class="font-normal text-gray-700 dark:text-gray-400">{{$fare->seats}}</span>
+                        </h5>
+                    </div>
+                    <div>
+                        <img src="{{asset('ferries/' . $fare->fare_image)}}" class="rounded-lg w-20 h-20">
+                    </div>
                 </div>
                 @endforeach
             </div>

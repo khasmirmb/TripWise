@@ -9,7 +9,6 @@ use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminSeatController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
-use App\Http\Controllers\FaresController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PassengerController;
@@ -250,15 +249,21 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     // Search Booking
     Route::get('/admin/bookings/search', [AdminSearchController::class, 'bookingSearch'])->name('admin.booking.search');
 
-    // AJAX for Booking
-    Route::get('/admin/booking/getFares', [FaresController::class, 'getFares']);
     // CRUD for Booking
     // Edit Form
     Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');
 
     // Admin Scan QR
     Route::get('/admin/scan-qr', [UserController::class, 'QRScanAdmin'])->name('admin.scan.qr');
-    // Passenger List
+    // Checked Passenger List
     Route::post('/admin/scan-qr/check-booking', [UserController::class, 'admincheckBooking'])->name('admin.check.booking');
+
+
+    // Admin Settings
+    Route::get('/admin/settings', [AdminController::class, 'settingIndex'])->name('admin.settings');
+    // Change Logo
+    Route::post('/admin/update/logo', [UserController::class, 'logoUpdate'])->name('admin.update.logo');
+    // Change Logo
+    Route::post('/admin/update/fee', [UserController::class, 'updateRebookingFee'])->name('admin.update.fee');
     
 });

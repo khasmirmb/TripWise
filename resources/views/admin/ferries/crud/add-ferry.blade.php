@@ -98,6 +98,9 @@
 
                                         <label for="seats[]" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
                                         <input type="number" name="seats[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="30" required value="{{ old('seats.' . $index) }}">
+
+                                        <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image[]">Fare Image<span class="text-red-600">*</span></label>
+                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image[]" type="file" required accept="image/*">
                                     </div>
                                 @endforeach
                             </div>
@@ -259,6 +262,9 @@
 
                             <label for="seats[]" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
                             <input type="number" name="seats[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="30" required>
+
+                            <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image[]">Fare Image<span class="text-red-600">*</span></label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image[]" type="file" required accept="image/*">
                             
                             <button type="button" class="remove-fare-button text-red-700 hover:text-red-800 focus:ring-4 focus:ring-red-300 font-medium text-sm mt-2">Remove</button>
                         </div>

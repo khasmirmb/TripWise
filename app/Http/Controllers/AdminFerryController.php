@@ -17,6 +17,7 @@ class AdminFerryController extends Controller
             'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
+            'fare_image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         // Check if a fare with the same type already exists for the ferry
@@ -32,12 +33,17 @@ class AdminFerryController extends Controller
 
             $ferry = Ferries::find($request->ferry_id);
 
+            $fare_image = $request->file('fare_image');
+            $fare_imageName = $ferry->name . "_" . $request->type ."_" .time() . '.' . $fare_image->getClientOriginalExtension();
+            $fare_image->move(public_path('ferries'), $fare_imageName);
+
             // Create a new Fare record
             $fare = new Fares();
             $fare->ferry_id = $request->ferry_id;
             $fare->type = $request->type;
             $fare->price = $request->price;
             $fare->seats = $request->seats;
+            $fare->fare_image = $fare_imageName;
     
             // Save the fare to the database
             $fare->save();
@@ -66,6 +72,7 @@ class AdminFerryController extends Controller
             'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
+            'fare_image' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validatedData) {
@@ -73,16 +80,36 @@ class AdminFerryController extends Controller
             // Retrieve the fare based on the ferry_id
             $fare = Fares::where('id', $request->id)->first();
 
+            // Update the ferry's capacity
+            $ferry = Ferries::find($request->ferry_id);
+
+            // Handle file upload (if an image is provided)
+            if ($request->hasFile('fare_image')) {
+                $fare_image = $request->file('fare_image');
+                $fare_imageName = $ferry->name . "_" . $request->type ."_" .time() . '.' . $fare_image->getClientOriginalExtension();
+                $fare_image->move(public_path('ferries'), $fare_imageName);
+                
+                // Delete the old image if it exists
+                if ($fare->fare_image) {
+                    $existingImagePath = public_path('ferries') . '/' . $fare->fare_image;
+                    if (file_exists($existingImagePath)) {
+                        unlink($existingImagePath);
+                    }
+                }
+
+            } else {
+                $fare_imageName = null; // No image provided
+            }
+
             if ($fare) {
                 // Update the fare record
                 $fare->type = $request->type;
                 $fare->price = $request->price;
                 $fare->seats = $request->seats;
+                $fare->fare_image = $fare_imageName;
                 // Save the changes
                 $fare->save();
 
-                // Update the ferry's capacity
-                $ferry = Ferries::find($request->ferry_id);
                 if ($ferry) {
                     // Calculate the new capacity based on the sum of all seats for the ferry
                     $newCapacity = Fares::where('ferry_id', $request->ferry_id)->sum('seats');
@@ -143,6 +170,7 @@ class AdminFerryController extends Controller
             'type.*' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price.*' => 'required|numeric',
             'seats.*' => 'required|integer',
+            'fare_image.*' => 'required|image|mimes:jpeg,png,jpg',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
             'upper' => 'nullable|image|mimes:jpeg,png,jpg',
@@ -218,21 +246,28 @@ class AdminFerryController extends Controller
             $types = $request->input('type', []);
             $prices = $request->input('price', []);
             $seats = $request->input('seats', []);
+            $fare_images = $request->file('fare_image');
 
             // Loop through the arrays and process the fare inputs
             for ($i = 0; $i < count($types); $i++) {
                 $type = $types[$i];
                 $price = $prices[$i];
                 $seat = $seats[$i];
+                $fare_image = $fare_images[$i];
 
                 // Check if fare inputs were provided
-                if (!empty($type) && !empty($price)) {
+                if (!empty($type) && !empty($price) && !empty($seat) && $request->hasFile('fare_image')) {
+
+                    $fare_name = $ferry_name . "_" . $type . "_" . time() . '.' . $fare_image->getClientOriginalExtension();
+                    $fare_image->move(public_path('ferries'), $fare_name);
+                    
                     // Create a new Fare instance and save it
                     $fare = new Fares();
                     $fare->ferry_id = $newFerryId;
                     $fare->type = $type;
                     $fare->price = $price;
                     $fare->seats = $seat;
+                    $fare->fare_image = $fare_name;
                     $fare->save();
                 }
             }

@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white">Rebook Fee:</p>
-                                        <p id="rebook_fee" class="font-semibold text-gray-900 dark:text-white">{{"₱ " . number_format($final_amount, 2)}}</p>
+                                        <p id="rebook_fee" class="font-semibold text-gray-900 dark:text-white">{{"₱ " . number_format($fee->rebooking_fee, 2)}}</p>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white">Service Charge:</p>

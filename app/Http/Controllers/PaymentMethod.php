@@ -15,7 +15,6 @@ use Illuminate\Support\Str;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 
 class PaymentMethod extends Controller
 {
@@ -112,7 +111,7 @@ class PaymentMethod extends Controller
      */
     public function paymentSuccess()
     {
-        $sessionId = Session::get('session_id');
+        $sessionId = session('paymongo_session');
 
         $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions/'. $sessionId)
         ->withHeader('accept: application/json')

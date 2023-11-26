@@ -14,7 +14,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form action="{{route('ferry.editfare')}}" method="POST">
+            <form action="{{route('ferry.editfare')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="{{$ferry->id}}" name="ferry_id">
                 <input type="hidden" value="{{$fare->id}}" name="id">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
-                        <label for="type" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
+                        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
                         <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                             <option value="Economy" {{ $fare->type == 'Economy' ? 'selected' : '' }}>Economy</option>
                             <option value="Aircon" {{ $fare->type == 'Aircon' ? 'selected' : '' }}>Aircon</option>
@@ -46,6 +46,10 @@
                     <div>
                         <label for="seats" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
                         <input type="number" name="seats" id="seats" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="₱500" required="" value="{{$fare->seats}}">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image">Fare Image</label>
+                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image" type="file" accept="image/*">
                     </div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">

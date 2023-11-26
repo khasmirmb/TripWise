@@ -276,10 +276,10 @@
         
                     // Update the payment amount based on the condition, but only once per change
                     if (isScheduleChanged && !adjustmentMade) {
-                        originalPaymentAmount += 110;
+                        originalPaymentAmount += {{$fee->rebooking_fee}};
                         adjustmentMade = true; // Mark that the adjustment has been made
                     } else if (!isScheduleChanged && adjustmentMade) {
-                        originalPaymentAmount -= 110;
+                        originalPaymentAmount -= {{$fee->rebooking_fee}};
                         adjustmentMade = false; // Mark that the adjustment has been reverted
                     }
         

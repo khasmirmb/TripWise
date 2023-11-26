@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\BookingConfirmation;
 use App\Models\Booking;
+use App\Models\Fee;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Ports;
@@ -48,6 +49,7 @@ class BookingController extends Controller
             'ret_sched_id',
             'ret_sched_type',
             'ret_sched_price',
+            'paymongo_session',
         ];
         
         foreach ($sessionKeys as $key) {
@@ -198,6 +200,8 @@ class BookingController extends Controller
 
         $booking = Booking::find($booking);
 
+        $fee = Fee::firstOrNew();
+
         if (!$booking) {
             return back()->with('error', 'Booking not found.');
         }
@@ -212,14 +216,9 @@ class BookingController extends Controller
 
         $schedule = Schedules::findOrFail($request->input('schedule'));
 
-        $payment = $booking->payment->payment_amount;
 
-        $percentageAmount = $payment * 0.05;
-
-        $final_amount = $percentageAmount + 110;
-  
         // Redirect to a success page or perform other actions
-        return view('manage.payment', compact('booking', 'schedule', 'final_amount'));
+        return view('manage.payment', compact('booking', 'schedule', 'fee'));
     }
 
     /**
@@ -231,6 +230,8 @@ class BookingController extends Controller
 
         $booking = Booking::find($booking);
 
+        $fee = Fee::firstOrNew();
+
         if (!$booking) {
             return back()->with('error', 'Booking not found.');
         }
@@ -241,13 +242,8 @@ class BookingController extends Controller
             return back()->with('error', 'Schedule not found.');
         }
 
-        $payment = $booking->payment->payment_amount;
 
-        $percentageAmount = $payment * 0.05;
-
-        $final_amount = $percentageAmount + 110;
-
-        $total_amount = $final_amount;
+        $total_amount = $fee->rebooking_fee;
 
         // Adjust the total based on the payment method
         $service_charge = 0; // Initializing the service charge

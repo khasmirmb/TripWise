@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\City;
+use App\Models\Fee;
 use App\Models\Ferries;
 use App\Models\Ports;
 use App\Models\Schedules;
@@ -72,6 +73,16 @@ class AdminController extends Controller
         $bookings = Booking::orderBy('created_at', 'desc')->paginate(10);
         
         return view('admin.bookings.booking', compact('bookings'));
+    }
+
+    /**
+     * Display the list of bookings.
+    */
+    public function settingIndex()
+    {
+        $fee = Fee::firstOrNew();
+
+        return view('admin.settings.setting', compact('fee'));
     }
 
 

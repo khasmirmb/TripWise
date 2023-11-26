@@ -81,6 +81,9 @@
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" class="px-6 py-3">
+                                                Image
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
                                                 Type
                                             </th>
                                             <th scope="col" class="px-6 py-3">
@@ -97,6 +100,9 @@
                                     <tbody>
                                         @foreach ($ferry->fares as $fare)
                                         <tr class="bg-slate-100 dark:bg-gray-900 border-b dark:border-gray-700">
+                                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                                <img class="w-20 h-20 rounded-lg" src="{{asset('ferries/' . $fare->fare_image)}}" alt="Fare Image">
+                                            </th>
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {{$fare->type}}
                                             </th>
@@ -106,7 +112,7 @@
                                             <td class="px-6 py-4">
                                                 {{$fare->seats}}
                                             </td>
-                                            <td class="px-6 py-4 flex space-x-2">
+                                            <td class="space-x-2">
                                                 <button type="button" id="edit-fare{{$fare->id}}Button" data-modal-toggle="edit-fare{{$fare->id}}" class="font-medium text-teal-600 dark:text-teal-500 hover:underline">Edit</button>
                                                 <button type="button" data-modal-target="delete-fare{{$fare->id}}" data-modal-toggle="delete-fare{{$fare->id}}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                                             </td>

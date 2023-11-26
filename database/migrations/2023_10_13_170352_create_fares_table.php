@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->decimal('price', 10, 2);
             $table->integer('seats');
+            $table->string('fare_image')->nullable();
             // Other fare-related fields can be added here
 
             $table->timestamps();
