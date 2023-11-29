@@ -15,7 +15,9 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        @vite(['resources/css/app.css', 'resources/js/admin.js'])
+        <link rel="stylesheet" href="{{asset('build/assets/app-5810583d.css')}}">
+        
+        <script type="module" src="{{ asset('build/assets/admin-5bb25eaa.js') }}" defer></script>
         
         <!-- Chart JS Script -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -15,8 +15,8 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-8de6660f.css')}}">
-                
+        <link rel="stylesheet" href="{{asset('build/assets/app-5810583d.css')}}">
+        
         <script type="module" src="{{ asset('build/assets/staff-224aaabe.js') }}" defer></script>
 
         <!-- Dark Mode Script -->

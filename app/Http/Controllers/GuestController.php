@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ferries;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
@@ -30,5 +31,22 @@ class GuestController extends Controller
 
         // You can also send a response back to the front-end if needed
         return redirect()->back()->with('success', 'Message sent successfully!');
+    }
+
+    public function accommodationIndex()
+    {
+        $ferries = Ferries::all();
+
+        return view('accommodation.accommodation', compact('ferries'));
+    }
+
+    public function bookingGuide()
+    {
+        return view('guidelines.booking');
+    }
+
+    public function rebookingGuide()
+    {
+        return view('guidelines.rebooking');
     }
 }

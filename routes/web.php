@@ -67,6 +67,15 @@ Route::group(['middleware' => ['guest']], function() {
     // Send Message
     Route::post('/contact/send', [GuestController::class, 'messageSubmit'])->name('send.message');
 
+    // Accommodation
+    Route::get('/acccommodation', [GuestController::class, 'accommodationIndex'])->name('accommodation');
+
+    // Guidelines
+    // Booking
+    Route::get('/guideline/booking', [GuestController::class, 'bookingGuide'])->name('guide.booking');
+    // Rebooking
+    Route::get('/guideline/rebooking', [GuestController::class, 'rebookingGuide'])->name('guide.rebooking');
+
     // Booking Start
     // Searching Schedule
     // Show the schedule search
