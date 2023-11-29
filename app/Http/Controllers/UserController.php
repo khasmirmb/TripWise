@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Fee;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -135,4 +136,20 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Rebooking fee updated successfully');
     }
 
+    public function markAsRead(Message $message)
+    {
+        $message->update(['read' => true]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteMessage(Message $message)
+    {
+        // If there are no related records, safely delete the ferry
+        $message->delete();
+
+        // Redirect to a success page or return a success message
+        return back()->with('success', 'Message deleted successfully.');
+    }
+ 
 }

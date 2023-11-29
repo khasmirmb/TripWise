@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminSeatController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FerriesController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\PaymentController;
@@ -54,11 +55,17 @@ Route::fallback(function () {
   return view('partials.404');
 });
 
+
 // User Side Routes
 Route::group(['middleware' => ['guest']], function() {
 
     // Home Routes
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Contact Us
+    Route::get('/contact', [GuestController::class, 'contactusIndex'])->name('contact');
+    // Send Message
+    Route::post('/contact/send', [GuestController::class, 'messageSubmit'])->name('send.message');
 
     // Booking Start
     // Searching Schedule
@@ -248,10 +255,16 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/bookings', [AdminController::class, 'bookingIndex'])->name('admin.booking');
     // Search Booking
     Route::get('/admin/bookings/search', [AdminSearchController::class, 'bookingSearch'])->name('admin.booking.search');
+    // Generate PDF
+    Route::get('admin/booking/generate-pdf', [PdfController::class, 'GeneratePDF'])->name('admin.generate.pdf');
 
     // CRUD for Booking
     // Edit Form
     Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');
+    // Edit Process Booking
+    Route::post('/admin/booking/edit/process/{booking}', [AdminBookingController::class, 'updateBooking'])->name('admin.booking.edit-process');
+    // Change Seat for Passenger
+    Route::post('/admin/booking/passenger/seat/{booking}/{passenger}', [AdminBookingController::class, 'changeSeat'])->name('admin.change.seat');
 
     // Admin Scan QR
     Route::get('/admin/scan-qr', [UserController::class, 'QRScanAdmin'])->name('admin.scan.qr');
@@ -265,5 +278,29 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/admin/update/logo', [UserController::class, 'logoUpdate'])->name('admin.update.logo');
     // Change Logo
     Route::post('/admin/update/fee', [UserController::class, 'updateRebookingFee'])->name('admin.update.fee');
+
+
+    // Records
+    // Payments
+    Route::get('/admin/records/payment', [AdminController::class, 'paymentIndex'])->name('admin.record.payment');
+    // Search Payment
+    Route::get('/admin/records/payment/search', [AdminSearchController::class, 'paymentSearch'])->name('admin.payment.search');
+
+    // Passenger
+    Route::get('/admin/records/passenger', [AdminController::class, 'passengerIndex'])->name('admin.record.passenger');
+    // Search Passenger
+    Route::get('/admin/records/passenger/search', [AdminSearchController::class, 'passengerSearch'])->name('admin.passenger.search');
+
+    // Contact Info
+    Route::get('/admin/records/contact', [AdminController::class, 'contactIndex'])->name('admin.record.contact');
+    // Search Contact
+    Route::get('/admin/records/contact/search', [AdminSearchController::class, 'contactSearch'])->name('admin.contact.search');
+
+    // Messages
+    Route::get('/admin/messages', [AdminController::class, 'messageIndex'])->name('admin.message');
+    // AJAX Read Message
+    Route::post('/admin/messages/{message}/read', [UserController::class, 'markAsRead']);
+    // Delete Message
+    Route::delete('/admin/messages/delete/{message}', [UserController::class, 'deleteMessage'])->name('admin.message.delete');
     
 });

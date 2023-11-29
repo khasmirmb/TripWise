@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\City;
+use App\Models\ContactPerson;
 use App\Models\Fares;
 use App\Models\Ferries;
+use App\Models\Passenger;
+use App\Models\Payment;
 use App\Models\Ports;
 use App\Models\Schedules;
 use App\Models\Seat;
@@ -155,5 +158,62 @@ class AdminSearchController extends Controller
         ->paginate(10);
 
         return view('admin.bookings.booking', compact('bookings', 'query'));
+    }
+
+    // Search for Payment
+    public function paymentSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $payments = Payment::where(function($queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('payment_status', 'like', "%$query%")
+                ->orWhere('payment_method', 'like', "%$query%")
+                ->orWhere('paymongo_id', 'like', "%$query%")
+                ->orWhere('payment_date', 'like', "%$query%")
+                ->orWhere('payment_amount', 'like', "%$query%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+
+        return view('admin.records.payment', compact('payments', 'query'));
+    }
+
+    // Search for Passenger
+    public function passengerSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $passengers = Passenger::join('bookings', 'passengers.booking_id', '=', 'bookings.id')
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('passengers.first_name', 'like', "%$query%")
+                ->orWhere('passengers.middle_name', 'like', "%$query%")
+                ->orWhere('passengers.last_name', 'like', "%$query%")
+                ->orWhere('passengers.gender', 'like', "%$query%")
+                ->orWhere('passengers.accommodation', 'like', "%$query%")
+                ->orWhere('bookings.reference_number', 'like', "%$query%");
+        })
+        ->orderBy('passengers.created_at', 'desc')
+        ->paginate(10);
+
+        return view('admin.records.passenger', compact('passengers', 'query'));
+    }
+
+    // Search for Contact
+    public function contactSearch(Request $request)
+    {
+        $query = $request->input('query');
+        $contacts = ContactPerson::where(function($queryBuilder) use ($query) {
+            $queryBuilder
+                ->where('name', 'like', "%$query%")
+                ->orWhere('email', 'like', "%$query%")
+                ->orWhere('phone', 'like', "%$query%")
+                ->orWhere('address', 'like', "%$query%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+
+        return view('admin.records.contact', compact('contacts', 'query'));
     }
 }

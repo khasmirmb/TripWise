@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\City;
+use App\Models\ContactPerson;
 use App\Models\Fee;
 use App\Models\Ferries;
+use App\Models\Message;
+use App\Models\Passenger;
+use App\Models\Payment;
 use App\Models\Ports;
 use App\Models\Schedules;
 use App\Models\User;
@@ -76,6 +80,16 @@ class AdminController extends Controller
     }
 
     /**
+     * Display the list of messages.
+    */
+    public function messageIndex()
+    {
+        $messages = Message::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.messages.message', compact('messages'));
+    }
+
+    /**
      * Display the list of bookings.
     */
     public function settingIndex()
@@ -85,5 +99,35 @@ class AdminController extends Controller
         return view('admin.settings.setting', compact('fee'));
     }
 
+
+    /**
+     * Display the list of payment.
+    */
+    public function paymentIndex()
+    {
+        $payments = Payment::orderBy('created_at', 'desc')->paginate(10);
+        
+        return view('admin.records.payment', compact('payments'));
+    }
+
+    /**
+     * Display the list of passenger.
+    */
+    public function passengerIndex()
+    {
+        $passengers = Passenger::orderBy('created_at', 'desc')->paginate(10);
+        
+        return view('admin.records.passenger', compact('passengers'));
+    }
+
+    /**
+     * Display the list of contact person.
+    */
+    public function contactIndex()
+    {
+        $contacts = ContactPerson::orderBy('created_at', 'desc')->paginate(10);
+        
+        return view('admin.records.contact', compact('contacts'));
+    }
 
 }

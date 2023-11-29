@@ -7,53 +7,214 @@
     <!--Make sure to always add main-->
     <main class="p-4 md:ml-64 h-auto pt-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <div
-          class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"
-        ></div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg">
+          <div class="w-full text-center p-5">
+            <div class="flex mx-auto justify-center items-center mb-4 w-10 h-10 rounded-full bg-teal-100 lg:h-12 lg:w-12 dark:bg-teal-900 mt-4">
+                <svg class="w-5 h-5 text-teal-600 lg:w-6 lg:h-6 dark:text-teal-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 16H16C17.8856 16 18.8284 16 19.4142 15.4142C20 14.8284 20 13.8856 20 12V7C20 5.11438 20 4.17157 19.4142 3.58579C18.8284 3 17.8856 3 16 3H8C6.11438 3 5.17157 3 4.58579 3.58579C4 4.17157 4 5.11438 4 7V18.5C4 17.1193 5.11929 16 6.5 16ZM9 6C7.89543 6 7 6.89543 7 8C7 9.10457 7.89543 10 9 10L15 10C16.1046 10 17 9.10457 17 8C17 6.89543 16.1046 6 15 6L9 6Z" fill="currentColor"></path>
+                      <path d="M19.4142 15.4142L18.7071 14.7071L18.7071 14.7071L19.4142 15.4142ZM19.4142 3.58579L18.7071 4.29289L18.7071 4.29289L19.4142 3.58579ZM9 6V5V6ZM9 10V9V10ZM15 10V11V10ZM15 6V5V6ZM16 15H6.5V17H16V15ZM18.7071 14.7071C18.631 14.7832 18.495 14.8774 18.0613 14.9357C17.5988 14.9979 16.9711 15 16 15V17C16.9145 17 17.701 17.0021 18.3278 16.9179C18.9833 16.8297 19.6117 16.631 20.1213 16.1213L18.7071 14.7071ZM19 12C19 12.9711 18.9979 13.5988 18.9357 14.0613C18.8774 14.495 18.7832 14.631 18.7071 14.7071L20.1213 16.1213C20.631 15.6117 20.8297 14.9833 20.9179 14.3278C21.0021 13.701 21 12.9145 21 12H19ZM19 7V12H21V7H19ZM18.7071 4.29289C18.7832 4.36902 18.8774 4.50496 18.9357 4.9387C18.9979 5.40121 19 6.02892 19 7H21C21 6.08546 21.0021 5.29896 20.9179 4.67221C20.8297 4.01669 20.631 3.38834 20.1213 2.87868L18.7071 4.29289ZM16 4C16.9711 4 17.5988 4.00212 18.0613 4.06431C18.495 4.12262 18.631 4.21677 18.7071 4.29289L20.1213 2.87868C19.6117 2.36902 18.9833 2.17027 18.3278 2.08214C17.701 1.99788 16.9145 2 16 2V4ZM8 4H16V2H8V4ZM5.29289 4.29289C5.36902 4.21677 5.50496 4.12262 5.9387 4.06431C6.40121 4.00212 7.02892 4 8 4V2C7.08546 2 6.29896 1.99788 5.67221 2.08214C5.01669 2.17027 4.38834 2.36902 3.87868 2.87868L5.29289 4.29289ZM5 7C5 6.02892 5.00212 5.40121 5.06431 4.9387C5.12262 4.50496 5.21677 4.36902 5.29289 4.29289L3.87868 2.87868C3.36902 3.38834 3.17027 4.01669 3.08214 4.67221C2.99788 5.29896 3 6.08546 3 7H5ZM5 18.5V7H3V18.5H5ZM6.5 15C4.567 15 3 16.567 3 18.5H5C5 17.6716 5.67157 17 6.5 17V15ZM8 8C8 7.44772 8.44772 7 9 7V5C7.34315 5 6 6.34315 6 8H8ZM9 9C8.44772 9 8 8.55228 8 8H6C6 9.65685 7.34315 11 9 11V9ZM15 9L9 9V11H15V9ZM16 8C16 8.55229 15.5523 9 15 9V11C16.6569 11 18 9.65686 18 8H16ZM15 7C15.5523 7 16 7.44772 16 8H18C18 6.34315 16.6569 5 15 5V7ZM9 7L15 7V5L9 5V7ZM11 20H6.5V22H11V20ZM3 18.5C3 20.433 4.567 22 6.5 22V20C5.67157 20 5 19.3284 5 18.5H3Z" fill="currentColor"></path> 
+                      <path d="M20 21H10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> 
+                  </g>
+                </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold dark:text-white">Bookings</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4 font-bold">{{$bookingCount}}</p>
+          </div>
+        </div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg">
+          <div class="w-full text-center p-5">
+            <div class="flex mx-auto justify-center items-center mb-4 w-10 h-10 rounded-full bg-teal-100 lg:h-12 lg:w-12 dark:bg-teal-900 mt-4">
+                <svg class="w-5 h-5 text-teal-600 lg:w-6 lg:h-6 dark:text-teal-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0">
+                  </g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                      <path d="M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z"></path>
+                  </g>
+                </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold dark:text-white">Schedules</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4 font-bold">{{$scheduleCount}}</p>
+          </div>
+        </div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg">
+          <div class="w-full text-center p-5">
+            <div class="flex mx-auto justify-center items-center mb-4 w-10 h-10 rounded-full bg-teal-100 lg:h-12 lg:w-12 dark:bg-teal-900 mt-4">
+                <svg class="w-5 h-5 text-teal-600 lg:w-6 lg:h-6 dark:text-teal-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M21.6297 14.6608L21.2197 16.5208C20.5097 19.7208 17.9997 22.0008 14.3797 22.0008H9.61974C5.99974 22.0008 3.48974 19.7208 2.77974 16.5208L2.36974 14.6608C2.16974 13.7508 2.70974 12.7208 3.57974 12.3708L4.99974 11.8008L10.5097 9.59078C10.9897 9.40078 11.4997 9.30078 11.9997 9.30078C12.4997 9.30078 13.0097 9.40078 13.4897 9.59078L18.9997 11.8008L20.4197 12.3708C21.2897 12.7208 21.8297 13.7508 21.6297 14.6608Z"></path> 
+                    <path d="M19 8V9.44C19 9.79 18.64 10.04 18.31 9.9L14.04 8.19C12.73 7.68 11.27 7.68 9.95 8.2L5.69 9.91C5.36 10.05 5 9.8 5 9.45V8C5 6.35 6.35 5 8 5H16C17.65 5 19 6.35 19 8Z"></path>
+                    <path d="M14.5 5H9.5V3C9.5 2.45 9.95 2 10.5 2H13.5C14.05 2 14.5 2.45 14.5 3V5Z"></path>
+                  </g>
+                </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold dark:text-white">Ferries</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4 font-bold">{{$ferriesCount}}</p>
+          </div>
+        </div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg">
+          <div class="w-full text-center p-5">
+            <div class="flex mx-auto justify-center items-center mb-4 w-10 h-10 rounded-full bg-teal-100 lg:h-12 lg:w-12 dark:bg-teal-900 mt-4">
+                <svg class="w-5 h-5 text-teal-600 lg:w-6 lg:h-6 dark:text-teal-300" fill="currentColor" viewBox="-1.5 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path fill="currentColor" fill-rule="evenodd" d="M574,120 C575.324428,120 580,114.054994 580,110.833333 C580,107.611672 577.313708,105 574,105 C570.686292,105 568,107.611672 568,110.833333 C568,114.054994 572.675572,120 574,120 Z M574,113.333333 C575.420161,113.333333 576.571429,112.214045 576.571429,110.833333 C576.571429,109.452621 575.420161,108.333333 574,108.333333 C572.579839,108.333333 571.428571,109.452621 571.428571,110.833333 C571.428571,112.214045 572.579839,113.333333 574,113.333333 Z" transform="translate(-568 -105)"></path> 
+                  </g>
+                </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold dark:text-white">Ports</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4 font-bold">{{$portCount}}</p>
+          </div>
+        </div>
       </div>
-      <div
-        class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"
-      ></div>
-      <div class="grid grid-cols-2 gap-4 mb-4">
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
+      <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg mb-4 w-full p-4">
+        <canvas id="SalesChart" class="bg-white rounded-lg w-full"></canvas>
       </div>
-      <div
-        class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"
-      ></div>
       <div class="grid grid-cols-2 gap-4">
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
-        <div
-          class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"
-        ></div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg mb-4 w-full p-4">
+          <canvas id="BookingsByMonthChart" class="bg-white rounded-lg w-full"></canvas>
+        </div>
+        <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg mb-4 w-full p-4">
+          <canvas id="SchedulesByMonthChart" class="bg-white rounded-lg w-full"></canvas>
+        </div>
+      </div>
+      <div class="shadow-md bg-white dark:bg-gray-800 rounded-lg mb-4 w-full p-4">
+        <canvas id="BookingStatusDistributionChart" class="bg-white rounded-lg w-full"></canvas>
       </div>
     </main>
+    
+    <script>
+      const payment = document.getElementById('SalesChart');
+
+
+      new Chart(payment, {
+          type: 'line',
+          data: {
+              labels: [
+                  'January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'
+              ],
+              datasets: [{
+                  label: 'Monthly Sales',
+                  data: {!! json_encode(array_values($monthlySales)) !!},
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              },
+              plugins: {
+                  legend: {
+                      display: true,
+                      position: 'top'
+                  }
+              },
+              layout: {
+                  padding: {
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                      bottom: 10
+                  }
+              },
+              responsive: true,
+              maintainAspectRatio: false,
+              aspectRatio: 2, // Adjust as needed
+              scales: {
+                  x: {
+                      barPercentage: 1.0,
+                      categoryPercentage: 1.0
+                  },
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+
+      const booking = document.getElementById('BookingsByMonthChart');
+
+      new Chart(booking, {
+          type: 'bar',
+          data: {
+              labels: [
+                  'January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'
+              ],
+              datasets: [{
+                  label: 'Bookings by Month',
+                  data: {!! json_encode(array_values($bookingsByMonth)) !!},
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 2
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+
+      const schedule = document.getElementById('SchedulesByMonthChart');
+
+      new Chart(schedule, {
+          type: 'bar',
+          data: {
+              labels: [
+                  'January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'
+              ],
+              datasets: [{
+                  label: 'Schedules by Month',
+                  data: {!! json_encode(array_values($schedulesByMonth)) !!},
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 2
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+
+      const status = document.getElementById('BookingStatusDistributionChart');
+
+      new Chart(status, {
+          type: 'pie',
+          data: {
+              labels: {!! json_encode(array_keys($statusDistribution)) !!},
+              datasets: [{
+                  data: {!! json_encode(array_values($statusDistribution)) !!},
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.6)', // Red for Cancel
+                      'rgba(255, 206, 86, 0.6)', // Yellow for Pending
+                      'rgba(54, 162, 235, 0.6)' // Blue for Paid
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false
+          }
+      });
+  </script>
     
 @include('admin.partials.footer')
