@@ -289,8 +289,8 @@ class BookingController extends Controller
                     'payment_method_types' => [
                         $payment_method
                     ],
-                    'success_url' => 'http://trip-wise.online/booking/manage/success',
-                    'cancel_url' => 'http://trip-wise.online/booking/manage',
+                    'success_url' => 'https://trip-wise.online/booking/manage/success',
+                    'cancel_url' => 'https://trip-wise.online/booking/manage',
                     'description'   => 'TripWise Fare Booking',
                     'send_email_receipt' => true,
                 ],
