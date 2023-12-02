@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="w-full">
                                     <label for="middlename" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middlename</label>
-                                    <input type="text" name="middlename" id="middlename" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Middlename" required="" value="{{old('middlename')}}" style="text-transform: capitalize;">
+                                    <input type="text" name="middlename" id="middlename" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Middlename" value="{{old('middlename')}}" style="text-transform: capitalize;">
                                     @error('middlename')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>
                                     @enderror

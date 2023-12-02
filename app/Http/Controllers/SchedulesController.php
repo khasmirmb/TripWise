@@ -39,6 +39,7 @@ class SchedulesController extends Controller
         // Check for existing schedule
         $departureSchedule = Schedules::where('departure_port', $request->input('origin'))
             ->where('arrival_port', $request->input('destination'))
+            ->where('departure_date', '>=', \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('depart_date'))->format('Y-m-d'))
             ->first();
 
         if (!$departureSchedule) {
@@ -51,6 +52,7 @@ class SchedulesController extends Controller
 
             $returnSchedule = Schedules::where('departure_port', $request->input('destination'))
             ->where('arrival_port', $request->input('origin'))
+            ->where('departure_date', '>=', \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('return_date'))->format('Y-m-d'))
             ->first();
 
             if (!$returnSchedule) {

@@ -26,6 +26,6 @@
             setTimeout(function() {
                 toast.remove();
             }, 1000); // Wait for 1 second (duration of the fade-out effect)
-        }, 2000);
+        }, 3000);
     </script>
 @endif

@@ -268,12 +268,20 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('admin/booking/generate-pdf', [PdfController::class, 'GeneratePDF'])->name('admin.generate.pdf');
 
     // CRUD for Booking
-    // Edit Form
+    // Edit Form for Booking
     Route::get('/admin/bookings/edit/{booking}', [AdminBookingController::class, 'editBookingForm'])->name('admin.booking.edit');
     // Edit Process Booking
     Route::post('/admin/booking/edit/process/{booking}', [AdminBookingController::class, 'updateBooking'])->name('admin.booking.edit-process');
-    // Change Seat for Passenger
-    Route::post('/admin/booking/passenger/seat/{booking}/{passenger}', [AdminBookingController::class, 'changeSeat'])->name('admin.change.seat');
+    // Change Seat for Passenger AJAX
+    Route::get('/admin/booking/passenger/seat/change', [AdminBookingController::class, 'changeSeat'])->name('admin.change.seat');
+    // Add Form for Booking
+    Route::get('/admin/bookings/add', [AdminBookingController::class, 'addBookingForm'])->name('admin.booking.add');
+    // Add Process for Booking
+    Route::post('/admin/bookings/add/process', [AdminBookingController::class, 'createBooking'])->name('admin.booking.add-process');
+    // AJAX Get Schedule
+    Route::get('/admin/booking/get-schedules', [AdminBookingController::class, 'getSchedules']);
+    // AJAX Get Fares
+    Route::get('/admin/booking/get-fares', [AdminBookingController::class, 'getFares']);
 
     // Admin Scan QR
     Route::get('/admin/scan-qr', [UserController::class, 'QRScanAdmin'])->name('admin.scan.qr');

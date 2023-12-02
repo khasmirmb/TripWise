@@ -8,21 +8,21 @@
     </div>
     <div class="w-full">
         <label for="firstname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name<span class="text-red-600">*</span></label>
-        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("firstname{$x}") }}" style="text-transform: capitalize;" required>
+        <input type="text" name="firstname{{$x}}" id="firstname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("firstname{$x}") }}" style="text-transform: capitalize;" placeholder="Firstname" required>
         @error("firstname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="middlename{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle Name</label>
-        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("middlename{$x}") }}" style="text-transform: capitalize;">
+        <input type="text" name="middlename{{$x}}" id="middlename{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Middlename" value="{{ old("middlename{$x}") }}" style="text-transform: capitalize;">
         @error("middlename{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
     <div class="w-full">
         <label for="lastname{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name<span class="text-red-600">*</span></label>
-        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("lastname{$x}") }}" style="text-transform: capitalize;" required>
+        <input type="text" name="lastname{{$x}}" id="lastname{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old("lastname{$x}") }}" style="text-transform: capitalize;" placeholder="Lastname" required>
         @error("lastname{$x}")
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
@@ -45,74 +45,5 @@
             <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
         @enderror
     </div>
-    <div class="w-full mt-2 sm:mt-9">
-        <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" name="discountToggle{{$x}}" value="discountToggle{{$x}}" class="sr-only peer" id="discountToggle{{$x}}" disabled>
-            <div class="w-11 h-6 bg-gray-500 rounded-full peer peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 dark:bg-gray-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"></div>
-            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">PWD/Student/Senior</span>
-        </label>
-    </div>
-    <div id="discountSection{{$x}}" class="w-full sm:col-span-3 grid gap-4 sm:grid-cols-3 sm:gap-6 rounded-lg" style="display: none;">
-        <div class="w-full">
-            <label for="dis_type{{$x}}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
-            <select id="dis_type{{$x}}" name="dis_type{{$x}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                <option selected value="">Select Type</option>
-                <option value="Student">Student</option>
-                <option value="PWD">PWD</option>
-                <option value="Senior">Senior</option>
-            </select>
-            @error("dis_type{$x}")
-                <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
-            @enderror
-        </div>
-        <div class="w-full">
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input_front{{$x}}">Upload Front of ID<span class="text-red-600">*</span></label>
-            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_front_help{{$x}}" id="file_input_front{{$x}}" type="file" name="id_front{{$x}}" accept="image/jpeg, image/png, image/jpg">
-            @error("id_front{$x}")
-                <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
-            @enderror
-        </div>
-        <div class="w-full">
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input_back{{$x}}">Upload Back of ID<span class="text-red-600">*</span></label>
-            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_back_help{{$x}}" id="file_input_back{{$x}}" type="file" name="id_back{{$x}}" accept="image/jpeg, image/png, image/jpg">
-            @error("id_back{$x}")
-                <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
-            @enderror
-        </div>
-    </div>
 </div>
 @endfor
-
-<script type="module">
-    $(document).ready(function () {
-        @for ($x = 1; $x <= $passenger; $x++)
-            const discountToggle{{$x}} = $("#discountToggle{{$x}}");
-            const discountSection{{$x}} = $("#discountSection{{$x}}");
-            const disType{{$x}} = $("#dis_type{{$x}}");
-
-            // Get the stored state from localStorage
-            const storedState{{$x}} = localStorage.getItem("discountToggleState{{$x}}");
-
-            // Set the initial state based on the stored value
-            if (storedState{{$x}} === "true") {
-                discountToggle{{$x}}.prop("checked", true);
-                discountSection{{$x}}.show();
-            }
-
-            discountToggle{{$x}}.change(function () {
-                if (discountToggle{{$x}}.prop("checked")) {
-                    discountSection{{$x}}.show();
-                } else {
-                    discountSection{{$x}}.hide();
-                    disType{{$x}}.val('');
-                }
-
-                // Store the state in localStorage
-                localStorage.setItem("discountToggleState{{$x}}", discountToggle{{$x}}.prop("checked"));
-            });
-        @endfor
-        
-        $('.birthday-input').val('2005-01-01');
-
-    });
-</script>

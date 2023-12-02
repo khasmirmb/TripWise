@@ -1,6 +1,15 @@
 <!-- Date Picking Return -->
 @if (!is_null($return_date))
-<div class="flex mb-2 mt-6 gap-1 sm:gap-4">  
+<div class="mt-2 gap-2">  
+    <h1 class="text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+        <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+            Returning Date Selection
+        </span>
+        <p class="text-xs sm:text-lg font-normal text-gray-500 dark:text-gray-400">Please choose your returning date from the options below.</p>
+    </h1>
+</div>
+
+<div class="flex my-2 gap-1 sm:gap-4">  
     <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white">{{$destination}}</h3>
     <h3 class="text-lg sm:text-3xl font-bold text-gray-600 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:w-11 sm:h-11 w-8 h-8">
     <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>

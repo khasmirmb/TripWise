@@ -265,7 +265,6 @@ class BookingController extends Controller
         // Convert the adjusted total_amount to cents
         $total = intval($total_amount * 100);
 
-
         session(['booking_id' => $booking->id, 'schedule_id' => $schedule->id, 'service' => $total_amount]);
 
         $data = [
@@ -289,8 +288,8 @@ class BookingController extends Controller
                     'payment_method_types' => [
                         $payment_method
                     ],
-                    'success_url' => 'http://trip-wise.online/booking/manage/success',
-                    'cancel_url' => 'http://trip-wise.online/booking/manage',
+                    'success_url' => 'https://trip-wise.online/booking/manage/success',
+                    'cancel_url' => 'https://trip-wise.online/booking/manage',
                     'description'   => 'TripWise Fare Booking',
                     'send_email_receipt' => true,
                 ],
@@ -378,9 +377,16 @@ class BookingController extends Controller
 
         $payment = $booking->payment;
 
+        $fee = Fee::firstOrNew();
+
+        $total_amount = $payment->payment_amount + $service;
+
+        $service_total = $payment->service_total + $fee->rebooking_fee;
+
         if ($payment) {
             $payment->update([
-                'service_total' => $service,
+                'payment_amount' => $total_amount,
+                'service_total' => $service_total,
                 'payment_date' => $payment_date,
                 'payment_status' => $payment_status,
                 'payment_method' => $payment_method,

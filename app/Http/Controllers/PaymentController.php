@@ -46,7 +46,7 @@ class PaymentController extends Controller
     
         for ($x = 1; $x <= $passengerCount; $x++) {
             $rules["firstname{$x}"] = 'required|string|max:255';
-            $rules["middlename{$x}"] = 'string|max:255';
+            $rules["middlename{$x}"] = 'nullable|string|max:255';
             $rules["lastname{$x}"] = 'required|string|max:255';
             $rules["gender{$x}"] = ['required', Rule::in(['Male', 'Female'])];
             $rules["birthday{$x}"] = 'required|date';
@@ -240,7 +240,7 @@ class PaymentController extends Controller
             $payment->discount_total = $totalDiscount;
             $payment->service_total = $service_charge;
             $payment->payment_date = null;
-            $payment->payment_method = 'OTC';
+            $payment->payment_method = 'Otc';
             $payment->payment_status = 'Pending';
 
             $payment->save(); // Save the record to the database

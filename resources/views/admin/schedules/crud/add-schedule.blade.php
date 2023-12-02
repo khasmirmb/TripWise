@@ -54,7 +54,7 @@
                                     <label for="origin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Origin<span class="text-red-600">*</span></label>
                                     <select id="origin" name="origin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                         <option selected value="">Select Location</option>
-                                        @foreach($ports as $port)
+                                        @foreach($ports->sortBy('location') as $port)
                                             <option value="{{ $port->name }}" {{ old('origin') === $port->name ? 'selected' : '' }}>{{ $port->location }}</option>
                                         @endforeach
                                     </select>
@@ -66,7 +66,7 @@
                                     <label for="destination" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination<span class="text-red-600">*</span></label>
                                     <select id="destination" name="destination" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                         <option selected value="">Select Location</option>
-                                        @foreach($ports as $port)
+                                        @foreach($ports->sortBy('location') as $port)
                                             <option value="{{ $port->name }}" {{ old('destination') === $port->name ? 'selected' : '' }}>{{ $port->location }}</option>
                                         @endforeach
                                     </select>

@@ -114,7 +114,7 @@
                                         <div class="flex">
                                             <span class="inline-flex items-center px-3 text-md text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"> Passenger
                                             </span>
-                                            <input type="number" id="passenger" name="passenger" class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-teal-500 focus:border-teal-500 block flex-1 min-w-0 w-full text-md p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" value="{{ old('passenger') }}">
+                                            <input type="number" id="passenger" name="passenger" class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-teal-500 focus:border-teal-500 block flex-1 min-w-0 w-full text-md p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="Quantity" value="{{ old('passenger') }}">
                                         </div>
                                         @error('passenger')
                                             <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{$message}}</p>

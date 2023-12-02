@@ -6,6 +6,10 @@
 
     <section class="bg-white dark:bg-gray-800">
         <div class="py-8 px-4 mx-auto max-w-7xl lg:py-10">
+            <div class="my-2">
+                <h1 class="mb-3 text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Thank you for Booking!</span></h1>
+                <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Please download your e-ticket below and present it at our office to complete the booking process after payment.</p>
+            </div>
             @if ($departBooking)
             <h3 class="text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-50 mb-3">Departure Booking Details</h3>
             @foreach ($departPassengers as $passenger)
@@ -23,7 +27,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Vessel</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{$depSchedData->name}}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{$departFerry->name}}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Reference Number</label>
@@ -85,7 +89,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Vessel</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{$retSchedData->name}}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{$returnFerry->name}}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Reference Number</label>

@@ -63,9 +63,12 @@ class PaymentMethod extends Controller
         $contactPerson = ContactPerson::find($contactPersonId);
 
         $departBooking = Booking::find($departBookId);
+
         $departPassengers = Passenger::where('booking_id', $departBookId)->get();
         
         $depSchedData = Schedules::find($departSchedId);
+
+        $departFerry = $depSchedData->ferries;
 
         // If there's a round trip
         if ($returnBookId) {
@@ -76,10 +79,13 @@ class PaymentMethod extends Controller
 
             $retSchedData = Schedules::find($returnSchedId);
 
+            $returnFerry = $retSchedData->ferries;
+
         } else {
             $retSchedData = null;
             $returnBooking = null;
             $returnPassengers = [];
+            $returnFerry = null;
         }
         
         return view('booking.complete', compact(
@@ -87,9 +93,11 @@ class PaymentMethod extends Controller
             'contactPerson',
             'departBooking',
             'depSchedData',
+            'departFerry',
             'departPassengers',
             'returnBooking',
             'retSchedData',
+            'returnFerry',
             'returnPassengers',
             'paymentId',
             'contactPersonId',
@@ -216,7 +224,6 @@ class PaymentMethod extends Controller
         session(['depart_book_id' => $newBookingId]);
 
         $passengers = session('passengers');
-
 
         if (!empty($passengers)) {
             foreach ($passengers as $passengerData) {
