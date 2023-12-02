@@ -132,7 +132,7 @@
                             Name
                         </h5>
                         <p class="font-normal text-gray-700 dark:text-gray-400">
-                            {{$passenger->first_name . " " . $passenger->middle_name[0] . " " . $passenger->last_name}}
+                            {{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}
                         </p>
                     </div>
                     <div class="w-full">

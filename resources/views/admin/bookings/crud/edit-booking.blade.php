@@ -99,7 +99,7 @@
                                         @foreach ($booking->passengers as $passenger)
                                         <tr class="bg-slate-100 dark:bg-gray-900 border-b dark:border-gray-700">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{$passenger->first_name . " " . $passenger->middle_name[0] . " " . $passenger->last_name}}
+                                                {{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}
                                             </th>
                                             <td class="px-6 py-4">
                                                 {{ \Carbon\Carbon::parse($passenger->birthdate)->format('M d, Y') }}

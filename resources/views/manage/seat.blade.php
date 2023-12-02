@@ -52,6 +52,14 @@
             @if ($passengers)
                 @if (!$passenger_seat)
                     @if ($ferry)
+                        <div class="my-2 gap-2">  
+                            <h1 class="text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+                                    Departure Seat Selection
+                                </span>
+                                <p class="text-xs sm:text-lg font-normal text-gray-500 dark:text-gray-400">Please choose your seat from the options below.</p>
+                            </h1>
+                        </div>
                         <div id="indicators-carousel" class="relative w-full" data-carousel="static">
                             <!-- Carousel wrapper -->
                             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
@@ -114,7 +122,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                     <div class="font-medium text-gray-800 dark:text-white">
-                                        <div>{{ $passenger->first_name . " " . $passenger->middle_name[0] . " " . $passenger->last_name }}</div>
+                                        <div>{{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}</div>
                                         <div class="text-sm text-gray-500 dark:text-gray-400">{{ $passenger->accommodation }}</div>
                                         <h6 class="text-base font-semi text-gray-800 dark:text-gray-300">Departure</h6>
                                     </div>

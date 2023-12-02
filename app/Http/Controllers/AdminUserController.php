@@ -144,10 +144,6 @@ class AdminUserController extends Controller
         if (Auth::user()->id === $user->id) {
             return back()->with('error', 'You currently logged in and cant delete yourself.');
         }
-        // Check if the user has associated bookings
-        if ($user->bookings()->exists()) {
-            return back()->with('error', 'Cannot delete the user as they have associated bookings.');
-        }
 
         // Delete the user's image if it exists
         if ($user->image) {
@@ -158,7 +154,7 @@ class AdminUserController extends Controller
             }
         }
 
-        // If there are no associated bookings, safely delete the user
+        // Delete the user
         $user->delete();
 
         // Redirect to a success page or return a success message

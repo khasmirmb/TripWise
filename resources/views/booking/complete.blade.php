@@ -35,7 +35,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Full Name</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ substr($passenger->middle_name, 0, 1) }} {{ $passenger->last_name }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Gender</label>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Full Name</label>
-                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ $passenger->first_name }} {{ substr($passenger->middle_name, 0, 1) }} {{ $passenger->last_name }}</h5>
+                    <h5 class="mb-1 text-base sm:text-lg font-medium text-gray-700 dark:text-white">{{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}</h5>
                 </div>
                 <div class="block">
                     <label for="first_name" class="block mb-1 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Gender</label>

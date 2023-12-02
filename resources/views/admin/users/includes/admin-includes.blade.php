@@ -27,7 +27,7 @@
              </div>
 
              <div class="text-base font-normal text-gray-500">Name:</div>
-             <div class="text-base font-semibold text-gray-900 dark:text-white sm:text-end">{{ ucfirst($admin->firstname) . " ". ucfirst($admin->middlename[0]) . " " . ucfirst($admin->lastname) }}</div>
+             <div class="text-base font-semibold text-gray-900 dark:text-white sm:text-end">{{ ucfirst($admin->firstname) . " ". ucfirst(substr($admin->middlename, 0, 1)) . " " . ucfirst($admin->lastname) }}</div>
 
              <div class="text-base font-normal text-gray-500">Email:</div>
              <div class="text-base font-semibold text-gray-900 dark:text-white sm:text-end">{{$admin->email}}</div>

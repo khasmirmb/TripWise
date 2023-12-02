@@ -103,7 +103,7 @@
               <div class="contact-person border-b border-gray-300">
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Contact Person:</span>
-                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{$contactPerson['name']}}</span>
+                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{ucfirst($contactPerson['name'])}}</span>
                   </div>
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Email:</span>
@@ -126,7 +126,7 @@
                   </div>
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Name:</span>
-                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{$passenger['firstname']. " " . $passenger['middlename'][0] . " " . $passenger['lastname']}}</span>
+                      <span class="text-xs sm:text-base font-semibold text-gray-700 dark:text-white">{{ucfirst($passenger['firstname']) . " " . ucfirst(substr($passenger['middlename'], 0, 1)) . " " . ucfirst($passenger['lastname'])}}</span>
                   </div>
                   <div class="flex items-center justify-between py-2">
                       <span class="text-xs sm:text-base dark:text-gray-400 text-gray-500">Gender:</span>

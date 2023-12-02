@@ -42,7 +42,7 @@
                                 @foreach ($booking->passengers as $passenger)
                                 <tr class="bg-white dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{$passenger->first_name . " " . $passenger->middle_name . " " . $passenger->last_name}}
+                                        {{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}
                                     </th>
                                     <td class="px-6 py-4">
                                         {{$passenger->accommodation}}

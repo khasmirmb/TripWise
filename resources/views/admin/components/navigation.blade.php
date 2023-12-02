@@ -77,7 +77,9 @@
           <div class="py-3 px-4">
             <span
               class="block text-sm font-semibold text-gray-900 dark:text-white"
-              >{{ ucfirst(Auth::user()->firstname) ." " . ucfirst(Auth::user()->lastname)}}</span
+              >
+              {{ ucfirst(Auth::user()->firstname) . " " . ucfirst(substr(Auth::user()->middlename, 0, 1)) . " " . ucfirst(Auth::user()->lastname) }}
+              </span
             >
             <span
               class="block text-sm text-gray-900 truncate dark:text-white"

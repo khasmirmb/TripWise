@@ -88,7 +88,7 @@
                                 </div>
                             </td>
                             <td class="text-center px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                {{$passenger->first_name . " " . $passenger->middle_name[0]. " " . $passenger->last_name}}
+                                {{ ucfirst($passenger->first_name) . " " . ucfirst(substr($passenger->middle_name, 0, 1)) . " " . ucfirst($passenger->last_name) }}
                             </td>
                             <td class="text-center px-6 py-3">
                                 {{$passenger->booking->reference_number}}
