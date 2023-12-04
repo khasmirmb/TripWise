@@ -82,12 +82,12 @@
                                         <label for="type[]" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
                                         <select id="type[]" name="type[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                             <option value="" disabled selected>Choose a type</option>
-                                            <option value="Economy" {{ old('type.' . $index) == 'Economy' ? 'selected' : '' }}>Economy</option>
-                                            <option value="Aircon" {{ old('type.' . $index) == 'Aircon' ? 'selected' : '' }}>Aircon</option>
-                                            <option value="Tourist" {{ old('type.' . $index) == 'Tourist' ? 'selected' : '' }}>Tourist</option>
-                                            <option value="Business" {{ old('type.' . $index) == 'Business' ? 'selected' : '' }}>Business</option>
-                                            <option value="Cabin" {{ old('type.' . $index) == 'Cabin' ? 'selected' : '' }}>Cabin</option>
-                                            <option value="Suite" {{ old('type.' . $index) == 'Suite' ? 'selected' : '' }}>Suite</option>
+                                            
+                                            @foreach($accommodations->sortBy('acc_type') as $accommodation)
+                                                <option value="{{ $accommodation->acc_type }}" {{ old('type.' . $index) == $accommodation->acc_type ? 'selected' : '' }}>
+                                                    {{ $accommodation->acc_type }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         @error('type.' . $index)
                                             <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -249,12 +249,11 @@
                             <label for="type[]" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Type<span class="text-red-600">*</span></label>
                             <select id="type[]" name="type[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
                                 <option selected>Choose a type</option>
-                                <option value="Economy">Economy</option>
-                                <option value="Aircon">Aircon</option>
-                                <option value="Tourist">Tourist</option>
-                                <option value="Business">Business</option>
-                                <option value="Cabin">Cabin</option>
-                                <option value="Suite">Suite</option>
+                                @foreach($accommodations->sortBy('acc_type') as $accommodation)
+                                    <option value="{{ $accommodation->acc_type }}">
+                                        {{ $accommodation->acc_type }}
+                                    </option>
+                                @endforeach
                             </select>
                             
                             <label for="price[]" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Price<span class="text-red-600">*</span></label>
@@ -263,8 +262,14 @@
                             <label for="seats[]" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Seats<span class="text-red-600">*</span></label>
                             <input type="number" name="seats[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="30" required>
 
-                            <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image[]">Fare Image<span class="text-red-600">*</span></label>
-                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image[]" type="file" required accept="image/*">
+                            <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image1[]">Image 1<span class="text-red-600">*</span></label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image1[]" type="file" required accept=".jpg, .jpeg, .png">
+
+                            <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image2[]">Image 2</label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image2[]" type="file" accept=".jpg, .jpeg, .png">
+
+                            <label class="block my-2 text-sm font-medium text-gray-900 dark:text-white" for="fare_image3[]">Image 3</label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="fare_image3[]" type="file" accept=".jpg, .jpeg, .png">
                             
                             <button type="button" class="remove-fare-button text-red-700 hover:text-red-800 focus:ring-4 focus:ring-red-300 font-medium text-sm mt-2">Remove</button>
                         </div>

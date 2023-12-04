@@ -43,9 +43,9 @@
                 </div>
             </div>
 
-            <div class="grid sm:grid-cols-{{count($ferry->fares)}} w-full sm:gap-6 gap-2 mb-2 sm:mb-4">
+            <div class="grid sm:grid-cols-1 w-full sm:gap-6 gap-2 mb-2 sm:mb-4">
                 @foreach ($ferry->fares as $fare)
-                <div class="flex space-x-2 w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
+                <div class="flex justify-between w-full p-3 rounded-lg bg-slate-200 dark:bg-gray-700">
                     <div>
                         <h5 class="mb-1 text-base font-bold tracking-tight text-gray-900 dark:text-white">
                             {{$fare->type}}
@@ -57,8 +57,28 @@
                             Seats: <span class="font-normal text-gray-700 dark:text-gray-400">{{$fare->seats}}</span>
                         </h5>
                     </div>
-                    <div>
-                        <img src="{{asset('ferries/' . $fare->fare_image)}}" class="rounded-lg w-20 h-20">
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            @if ($fare->fare_image1)
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('ferries/' . $fare->fare_image1)}}" alt="Fare Image1">
+                            @else
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('images/no_image.png')}}" alt="Fare Image1">
+                            @endif
+                        </div>
+                        <div>
+                            @if ($fare->fare_image2)
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('ferries/' . $fare->fare_image2)}}" alt="Fare Image2">
+                            @else
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('images/no_image.png')}}" alt="Fare Image2">
+                            @endif
+                        </div>
+                        <div>
+                            @if ($fare->fare_image3)
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('ferries/' . $fare->fare_image3)}}" alt="Fare Image3">
+                            @else
+                                <img class="h-32 w-32 rounded-lg object-cover" src="{{asset('images/no_image.png')}}" alt="Fare Image3">
+                            @endif
+                        </div>
                     </div>
                 </div>
                 @endforeach

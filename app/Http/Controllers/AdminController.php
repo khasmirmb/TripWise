@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accommodation;
 use App\Models\Booking;
 use App\Models\City;
 use App\Models\ContactPerson;
@@ -96,7 +97,9 @@ class AdminController extends Controller
     {
         $fee = Fee::firstOrNew();
 
-        return view('admin.settings.setting', compact('fee'));
+        $accommodations = Accommodation::all();
+
+        return view('admin.settings.setting', compact('fee', 'accommodations'));
     }
 
 

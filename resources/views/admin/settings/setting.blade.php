@@ -112,9 +112,61 @@
                             </div>
                         </form>
                     </div>
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+                            <div class="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+                              <div>
+                                <h5 class="mr-3 font-semibold dark:text-white">Accommodation List</h5>
+                                <p class="text-gray-500 dark:text-gray-400">Manage Accommodation</p>
+                              </div>
+                              <button type="button"        data-modal-toggle="add-accommodation" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800">
+                                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                                </svg>
+                                Add New
+                              </button>
+                            </div>
+                        </div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ( $accommodations->sortBy('acc_type') as $accommodation)
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{$accommodation->acc_type}}
+                                            </th>
+                                            <td class="space-x-2">
+                                                <button type="button" 
+                                                data-modal-target="edit-accommodation{{$accommodation->id}}" data-modal-toggle="edit-accommodation{{$accommodation->id}}"
+                                                class="font-medium text-teal-600 dark:text-teal-500 hover:underline">Edit</button>
+                                                <button type="button" data-modal-target="delete-accommodation{{$accommodation->id}}" data-modal-toggle="delete-accommodation{{$accommodation->id}}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                            </td>
+                                        </tr>
+
+                                        @include('admin.settings.crud.delete-accommo')
+
+                                        @include('admin.settings.crud.edit-accommo')
+
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>                        
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    @include('admin.settings.crud.add-accommo')
 
 @include('admin.partials.footer')

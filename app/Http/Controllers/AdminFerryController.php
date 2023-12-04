@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accommodation;
 use App\Models\Fares;
 use App\Models\Ferries;
 use Illuminate\Http\Request;
@@ -17,7 +18,9 @@ class AdminFerryController extends Controller
             'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
-            'fare_image' => 'required|image|mimes:jpeg,png,jpg',
+            'fare_image1' => 'required|image|mimes:jpeg,png,jpg',
+            'fare_image2' => 'nullable|image|mimes:jpeg,png,jpg',
+            'fare_image3' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
 
         // Check if a fare with the same type already exists for the ferry
@@ -33,9 +36,28 @@ class AdminFerryController extends Controller
 
             $ferry = Ferries::find($request->ferry_id);
 
-            $fare_image = $request->file('fare_image');
-            $fare_imageName = $ferry->name . "_" . $request->type ."_" .time() . '.' . $fare_image->getClientOriginalExtension();
-            $fare_image->move(public_path('ferries'), $fare_imageName);
+            $fare_image1 = $request->file('fare_image1');
+            $fare_image1Name = $ferry->name . "_" . $request->type ."_1_" .time() . '.' . $fare_image1->getClientOriginalExtension();
+            $fare_image1->move(public_path('ferries'), $fare_image1Name);
+
+            // Handle file upload (if an image is provided)
+            if ($request->hasFile('fare_image2')) {
+                $image = $request->file('fare_image2');
+                $fare_image2Name = $ferry->name . "_" . $request->type ."_2_" .time() . '.' . $fare_image1->getClientOriginalExtension();
+                $image->move(public_path('ferries'), $fare_image2Name);
+            } else {
+                $fare_image2Name = null; // No image provided
+            }
+
+            // Handle file upload (if an image is provided)
+            if ($request->hasFile('fare_image3')) {
+                $image = $request->file('fare_image3');
+                $fare_image3Name = $ferry->name . "_" . $request->type ."_3_" .time() . '.' . $fare_image1->getClientOriginalExtension();
+                $image->move(public_path('ferries'), $fare_image3Name);
+            } else {
+                $fare_image3Name = null; // No image provided
+            }
+
 
             // Create a new Fare record
             $fare = new Fares();
@@ -43,7 +65,9 @@ class AdminFerryController extends Controller
             $fare->type = $request->type;
             $fare->price = $request->price;
             $fare->seats = $request->seats;
-            $fare->fare_image = $fare_imageName;
+            $fare->fare_image1 = $fare_image1Name;
+            $fare->fare_image2 = $fare_image2Name;
+            $fare->fare_image3 = $fare_image3Name;
     
             // Save the fare to the database
             $fare->save();
@@ -72,7 +96,9 @@ class AdminFerryController extends Controller
             'type' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price' => 'required|numeric',
             'seats' => 'required|numeric',
-            'fare_image' => 'nullable|image|mimes:jpeg,png,jpg',
+            'fare_image1' => 'nullable|image|mimes:jpeg,png,jpg',
+            'fare_image2' => 'nullable|image|mimes:jpeg,png,jpg',
+            'fare_image3' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validatedData) {
@@ -84,21 +110,57 @@ class AdminFerryController extends Controller
             $ferry = Ferries::find($request->ferry_id);
 
             // Handle file upload (if an image is provided)
-            if ($request->hasFile('fare_image')) {
-                $fare_image = $request->file('fare_image');
-                $fare_imageName = $ferry->name . "_" . $request->type ."_" .time() . '.' . $fare_image->getClientOriginalExtension();
-                $fare_image->move(public_path('ferries'), $fare_imageName);
+            if ($request->hasFile('fare_image1')) {
+                $fare_image1 = $request->file('fare_image1');
+                $fare_image1Name = $ferry->name . "_" . $request->type ."_1_" .time() . '.' . $fare_image1->getClientOriginalExtension();
+                $fare_image1->move(public_path('ferries'), $fare_image1Name);
                 
                 // Delete the old image if it exists
-                if ($fare->fare_image) {
-                    $existingImagePath = public_path('ferries') . '/' . $fare->fare_image;
+                if ($fare->fare_image1) {
+                    $existingImagePath = public_path('ferries') . '/' . $fare->fare_image1;
                     if (file_exists($existingImagePath)) {
                         unlink($existingImagePath);
                     }
                 }
 
             } else {
-                $fare_imageName = null; // No image provided
+                $fare_image1Name = $fare->fare_image1; // Use the existing image if no new image is provided
+            }
+
+            // Handle file upload (if an image is provided)
+            if ($request->hasFile('fare_image2')) {
+                $fare_image2 = $request->file('fare_image2');
+                $fare_image2Name = $ferry->name . "_" . $request->type ."_2_" .time() . '.' . $fare_image2->getClientOriginalExtension();
+                $fare_image2->move(public_path('ferries'), $fare_image2Name);
+                
+                // Delete the old image if it exists
+                if ($fare->fare_image2) {
+                    $existingImagePath = public_path('ferries') . '/' . $fare->fare_image2;
+                    if (file_exists($existingImagePath)) {
+                        unlink($existingImagePath);
+                    }
+                }
+
+            } else {
+                $fare_image2Name = $fare->fare_image2; // Use the existing image if no new image is provided
+            }
+
+            // Handle file upload (if an image is provided)
+            if ($request->hasFile('fare_image3')) {
+                $fare_image3 = $request->file('fare_image3');
+                $fare_image3Name = $ferry->name . "_" . $request->type ."_3_" .time() . '.' . $fare_image3->getClientOriginalExtension();
+                $fare_image3->move(public_path('ferries'), $fare_image3Name);
+                
+                // Delete the old image if it exists
+                if ($fare->fare_image3) {
+                    $existingImagePath = public_path('ferries') . '/' . $fare->fare_image3;
+                    if (file_exists($existingImagePath)) {
+                        unlink($existingImagePath);
+                    }
+                }
+
+            } else {
+                $fare_image3Name = $fare->fare_image3; // Use the existing image if no new image is provided
             }
 
             if ($fare) {
@@ -106,7 +168,9 @@ class AdminFerryController extends Controller
                 $fare->type = $request->type;
                 $fare->price = $request->price;
                 $fare->seats = $request->seats;
-                $fare->fare_image = $fare_imageName;
+                $fare->fare_image1 = $fare_image1Name;
+                $fare->fare_image2 = $fare_image2Name;
+                $fare->fare_image3 = $fare_image3Name;
                 // Save the changes
                 $fare->save();
 
@@ -159,7 +223,10 @@ class AdminFerryController extends Controller
     // View Add Ferry Form
     public function addFerryForm()
     {
-        return view('admin.ferries.crud.add-ferry');
+
+        $accommodations = Accommodation::all();
+
+        return view('admin.ferries.crud.add-ferry', compact('accommodations'));
     }
 
     // Add Ferry Process
@@ -170,7 +237,9 @@ class AdminFerryController extends Controller
             'type.*' => 'required|in:Economy,Aircon,Tourist,Business,Cabin,Suite',
             'price.*' => 'required|numeric',
             'seats.*' => 'required|integer',
-            'fare_image.*' => 'required|image|mimes:jpeg,png,jpg',
+            'fare_image1.*' => 'required|image|mimes:jpeg,png,jpg',
+            'fare_image2.*' => 'nullable|image|mimes:jpeg,png,jpg',
+            'fare_image3.*' => 'nullable|image|mimes:jpeg,png,jpg',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
             'upper' => 'nullable|image|mimes:jpeg,png,jpg',
@@ -246,29 +315,49 @@ class AdminFerryController extends Controller
             $types = $request->input('type', []);
             $prices = $request->input('price', []);
             $seats = $request->input('seats', []);
-            $fare_images = $request->file('fare_image');
+            $fare_images1 = $request->file('fare_image1');
+            $fare_images2 = $request->file('fare_image2');
+            $fare_images3 = $request->file('fare_image3');
 
             // Loop through the arrays and process the fare inputs
             for ($i = 0; $i < count($types); $i++) {
                 $type = $types[$i];
                 $price = $prices[$i];
                 $seat = $seats[$i];
-                $fare_image = $fare_images[$i];
+                $fare_image1 = $fare_images1[$i];
+                $fare_image2 = $fare_images2[$i] ?? null;
+                $fare_image3 = $fare_images3[$i] ?? null;
 
                 // Check if fare inputs were provided
-                if (!empty($type) && !empty($price) && !empty($seat) && $request->hasFile('fare_image')) {
+                if (!empty($type) && !empty($price) && !empty($seat) && $request->hasFile('fare_image1')) {
 
-                    $fare_name = $ferry_name . "_" . $type . "_" . time() . '.' . $fare_image->getClientOriginalExtension();
-                    $fare_image->move(public_path('ferries'), $fare_name);
-                    
+                    $fare_name1 = $ferry_name . "_" . $type . "_1_" . time() . '.' . $fare_image1->getClientOriginalExtension();
+                    $fare_image1->move(public_path('ferries'), $fare_name1);
+
                     // Create a new Fare instance and save it
                     $fare = new Fares();
                     $fare->ferry_id = $newFerryId;
                     $fare->type = $type;
                     $fare->price = $price;
                     $fare->seats = $seat;
-                    $fare->fare_image = $fare_name;
+                    $fare->fare_image1 = $fare_name1;
+
+                    // Process and save fare_image2
+                    if ($fare_image2) {
+                        $fare_name2 = $ferry_name . "_" . $type . "_2_" . time() . '.' . $fare_image2->getClientOriginalExtension();
+                        $fare_image2->move(public_path('ferries'), $fare_name2);
+                        $fare->fare_image2 = $fare_name2;
+                    }
+
+                    // Process and save fare_image3
+                    if ($fare_image3) {
+                        $fare_name3 = $ferry_name . "_" . $type . "_3_" . time() . '.' . $fare_image3->getClientOriginalExtension();
+                        $fare_image3->move(public_path('ferries'), $fare_name3);
+                        $fare->fare_image3 = $fare_name3;
+                    }
+
                     $fare->save();
+                    
                 }
             }
 
@@ -288,8 +377,10 @@ class AdminFerryController extends Controller
             return redirect()->back()->with('error', 'Ferry not found.');
         }
 
+        $accommodations = Accommodation::all();
+
         // Pass the user data to the view for editing
-        return view('admin.ferries.crud.edit-ferry', compact('ferry'));
+        return view('admin.ferries.crud.edit-ferry', compact('ferry', 'accommodations'));
     }
 
     // Update Ferry Process

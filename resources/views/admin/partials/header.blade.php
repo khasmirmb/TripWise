@@ -15,7 +15,7 @@
         <script type="text/javascript" src=".../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-a7a95f17.css')}}">
+        <link rel="stylesheet" href="{{asset('build/assets/app-f1897aef.css')}}">
         
         <script type="module" src="{{ asset('build/assets/admin-5bb25eaa.js') }}" defer></script>
         

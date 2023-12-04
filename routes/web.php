@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\AdminSeatController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FaresController;
 use App\Http\Controllers\FerriesController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HomeController;
@@ -295,6 +296,13 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/admin/update/logo', [UserController::class, 'logoUpdate'])->name('admin.update.logo');
     // Change Logo
     Route::post('/admin/update/fee', [UserController::class, 'updateRebookingFee'])->name('admin.update.fee');
+    // CRUD for Accommodation
+    // Add
+    Route::post('/admin/settings/add-accommodation', [FaresController::class, 'addAccommodation'])->name('admin.accommodation.add');
+    // Edit
+    Route::post('/admin/settings/edit-accommodation', [FaresController::class, 'editAccommodation'])->name('admin.accommodation.edit');
+    // Delete
+    Route::delete('/admin/settings/delete/{accommodation}', [FaresController::class, 'deleteAcommodation'])->name('admin.accommodation.delete');
 
 
     // Records
