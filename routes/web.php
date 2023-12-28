@@ -47,6 +47,20 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', function () {
+
+    if(Auth::check()) {
+
+        if(Auth::user()->type == 'staff'){
+
+            return redirect()->route('staff.home');
+
+        } else if(Auth::user()->type == 'admin'){
+
+            return redirect()->route('admin.home');
+
+        }
+    }
+
     return view('home');
 });
 
