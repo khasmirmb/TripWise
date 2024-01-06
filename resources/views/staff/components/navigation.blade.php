@@ -35,7 +35,7 @@
         </svg>
         <span class="sr-only">Toggle sidebar</span>
       </button>
-      <a href="{{route('admin.home')}}" class="flex items-center justify-between mr-4">
+      <a href="{{route('staff.home')}}" class="flex items-center justify-between mr-4">
         <img
           src="{{ asset('logo/tripwise.png')}}"
           class="h-8 mr-3 hidden sm:block"
@@ -122,6 +122,6 @@
 
 @include('components.message')
 
-@include('components.success-message')
+@include('admin.components.success-message')
 
-@include('components.error-message')
+@include('admin.components.error-message')

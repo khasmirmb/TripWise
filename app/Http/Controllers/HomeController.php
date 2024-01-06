@@ -106,7 +106,9 @@ class HomeController extends Controller
      */
     public function staffHome()
     {
-        return view('staff.index');
+        $schedules = Schedules::orderBy('departure_date')->paginate(10);
+
+        return view('staff.schedules.schedule', compact('schedules'));
     }
 
 }

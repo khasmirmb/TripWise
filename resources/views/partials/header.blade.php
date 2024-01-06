@@ -17,9 +17,7 @@
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 
         <!-- CSS / JS -->
-        <link rel="stylesheet" href="{{asset('build/assets/app-f1897aef.css')}}">
-        
-        <script type="module" src="{{ asset('build/assets/app-75895fca.js') }}" defer></script>
+        @vite(['resources/css/app.css','resources/js/app.js'])
 
         <!-- Dark Mode Script -->
         <script>

@@ -20,6 +20,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PortsController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -170,10 +171,54 @@ Route::middleware(['auth', 'user-access:staff'])->group(function () {
     // Staff Home
     Route::get('/staff', [HomeController::class, 'staffHome'])->name('staff.home');
 
+    // Search Schedule
+    Route::get('/staff/schedules/search', [StaffController::class, 'scheduleSearch'])->name('staff.schedule.search');
+    // Filter Schedule
+    Route::get('/staff/schedules/filter', [StaffController::class, 'scheduleFilter'])->name('staff.schedule.filter');
+
     // Scan QR
     Route::get('/staff/scan-qr', [UserController::class, 'QRScanStaff'])->name('staff.scan.qr');
     // Passenger List
     Route::post('/staff/scan-qr/check-booking', [UserController::class, 'staffcheckBooking'])->name('staff.check.booking');
+
+    // Staff Booking
+    Route::get('/staff/bookings', [StaffController::class, 'staffBooking'])->name('staff.booking');
+    // Search Booking
+    Route::get('/staff/bookings/search', [StaffController::class, 'bookingSearch'])->name('staff.booking.search');
+    // Generate PDF
+    Route::get('staff/booking/generate-pdf', [StaffController::class, 'GeneratePDF'])->name('staff.generate.pdf');
+
+    // CRUD for Booking
+    // Edit Form for Booking
+    Route::get('/staff/bookings/edit/{booking}', [StaffController::class, 'editBookingForm'])->name('staff.booking.edit');
+    // Edit Process Booking
+    Route::post('/staff/booking/edit/process/{booking}', [StaffController::class, 'updateBooking'])->name('staff.booking.edit-process');
+    // Change Seat for Passenger AJAX
+    Route::get('/staff/booking/passenger/seat/change', [StaffController::class, 'changeSeat'])->name('staff.change.seat');
+    // Add Form for Booking
+    Route::get('/staff/bookings/add', [StaffController::class, 'addBookingForm'])->name('staff.booking.add');
+    // Add Process for Booking
+    Route::post('/staff/bookings/add/process', [StaffController::class, 'createBooking'])->name('staff.booking.add-process');
+    // AJAX Get Schedule
+    Route::get('/staff/booking/get-schedules', [StaffController::class, 'getSchedules']);
+    // AJAX Get Fares
+    Route::get('/staff/booking/get-fares', [StaffController::class, 'getFares']);
+
+    // Records
+    // Payments
+    Route::get('/staff/records/payment', [StaffController::class, 'paymentIndex'])->name('staff.record.payment');
+    // Search Payment
+    Route::get('/staff/records/payment/search', [StaffController::class, 'paymentSearch'])->name('staff.payment.search');
+
+    // Passenger
+    Route::get('/staff/records/passenger', [StaffController::class, 'passengerIndex'])->name('staff.record.passenger');
+    // Search Passenger
+    Route::get('/staff/records/passenger/search', [StaffController::class, 'passengerSearch'])->name('staff.passenger.search');
+
+    // Contact Info
+    Route::get('/staff/records/contact', [StaffController::class, 'contactIndex'])->name('staff.record.contact');
+    // Search Contact
+    Route::get('/staff/records/contact/search', [StaffController::class, 'contactSearch'])->name('staff.contact.search');
 
 });
 

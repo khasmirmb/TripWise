@@ -1,8 +1,8 @@
-@include('admin.partials.header')
+@include('staff.partials.header')
 
-    @include('admin.components.navigation')
+    @include('staff.components.navigation')
 
-    @include('admin.components.sidebar')
+    @include('staff.components.sidebar')
     
         <main class="p-4 md:ml-64 pt-20 border-gray-300 dark:border-gray-600">
             <div class="rounded-lg mb-4 shadow-md">
@@ -11,7 +11,7 @@
                         <nav class="flex" aria-label="Breadcrumb">
                             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                               <li class="inline-flex items-center">
-                                <a href="{{route('admin.home')}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-teal-600 dark:text-gray-400 dark:hover:text-white">
+                                <a href="{{route('staff.home')}}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-teal-600 dark:text-gray-400 dark:hover:text-white">
                                   <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                                   </svg>
@@ -23,7 +23,7 @@
                                   <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                                   </svg>
-                                  <a href="{{route('admin.booking')}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-teal-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Bookings</a>
+                                  <a href="{{route('staff.booking')}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-teal-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Bookings</a>
                                 </div>
                               </li>
                               <li aria-current="page">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="px-4 py-2 mx-auto">
-                        <form action="{{route('admin.booking.add-process')}}" method="POST">
+                        <form action="{{route('staff.booking.add-process')}}" method="POST">
                             @csrf
                             <div class="w-full my-1 sm:my-3">
                                 <h5 class="mr-3 font-semibold dark:text-white">Booking's Schedule Details</h5>
@@ -318,7 +318,7 @@
 
                     // Make an AJAX request to get schedules based on origin and destination
                     $.ajax({
-                        url: '/admin/booking/get-schedules', // Replace with your backend route to fetch schedules
+                        url: '/staff/booking/get-schedules', // Replace with your backend route to fetch schedules
                         method: 'GET',
                         data: {
                             origin: origin,
@@ -361,7 +361,7 @@
 
                                 // Make an AJAX request to get fare types based on the selected schedule
                                 $.ajax({
-                                    url: '/admin/booking/get-fares', // Replace with your backend route to fetch fare types
+                                    url: '/staff/booking/get-fares', // Replace with your backend route to fetch fare types
                                     method: 'GET',
                                     data: {
                                         schedule_id: scheduleId
@@ -396,4 +396,4 @@
             });
         </script>
 
-@include('admin.partials.footer')   
+@include('staff.partials.footer')   
