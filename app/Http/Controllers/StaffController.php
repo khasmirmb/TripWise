@@ -207,7 +207,7 @@ class StaffController extends Controller
 
         $booking->save(); // Save the record to the database
 
-        //Mail::to($request->input('contact-email'))->send(new BookingConfirmation($booking));
+        Mail::to($request->input('contact-email'))->send(new BookingConfirmation($booking));
         
         // Get ID
         $bookingId = $booking->id;
