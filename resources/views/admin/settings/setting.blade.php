@@ -100,14 +100,17 @@
                 <div class="col-span-2">
                     <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                         <h3 class="mb-4 text-xl font-semibold dark:text-white">Social information</h3>
-                        <form action="#">
+                        <form action="{{ route('admin.socials.update') }}" method="POST">
+                            @csrf
                             <div class="grid grid-cols-6 gap-6">
+                                @foreach($socials as $name => $url)
                                 <div class="sm:col-span-6">
-                                    <label for="facebook" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Facebook</label>
-                                    <input type="text" name="facebook" id="facebook" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="facebook.com/" required>
+                                    <label for="{{ $name }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ ucfirst($name) }}</label>
+                                    <input type="text" name="{{ $name }}" id="{{ $name }}" value="{{ $url }}" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500" placeholder="{{ ucfirst($name) }} URL" required>
                                 </div>
+                                @endforeach
                                 <div class="col-span-6 sm:col-full">
-                                    <button class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800" type="submit">Save</button>
+                                    <button type="submit" class="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800">Save</button>
                                 </div>
                             </div>
                         </form>

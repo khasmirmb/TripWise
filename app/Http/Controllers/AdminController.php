@@ -13,6 +13,7 @@ use App\Models\Passenger;
 use App\Models\Payment;
 use App\Models\Ports;
 use App\Models\Schedules;
+use App\Models\Social;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -97,9 +98,11 @@ class AdminController extends Controller
     {
         $fee = Fee::firstOrNew();
 
+        $socials = Social::all()->pluck('url', 'name')->toArray();
+
         $accommodations = Accommodation::all();
 
-        return view('admin.settings.setting', compact('fee', 'accommodations'));
+        return view('admin.settings.setting', compact('fee', 'accommodations', 'socials'));
     }
 
 

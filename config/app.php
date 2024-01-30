@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
     ])->toArray(),
 
     /*

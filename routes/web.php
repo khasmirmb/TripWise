@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminFerryController;
@@ -362,6 +363,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/admin/settings/edit-accommodation', [FaresController::class, 'editAccommodation'])->name('admin.accommodation.edit');
     // Delete
     Route::delete('/admin/settings/delete/{accommodation}', [FaresController::class, 'deleteAcommodation'])->name('admin.accommodation.delete');
+    // Social Media Information
+    Route::post('/admin/settings/socials', [SocialController::class, 'update'])->name('admin.socials.update');
 
 
     // Records
