@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Booking;
 
+// Requires Deployment
 class ReturnBookingConfirmation extends Mailable
 {
     use Queueable, SerializesModels;

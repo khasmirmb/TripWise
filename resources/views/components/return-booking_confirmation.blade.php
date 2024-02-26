@@ -13,7 +13,6 @@
     <ul>
         <li><strong>Reference Number:</strong> {{ $booking->reference_number }}</li>
         <li><strong>Schedule Number:</strong> {{ $booking->schedule->schedule_number }}</li>
-        <!-- Include other return trip details as needed -->
     </ul>
 
     <p>We appreciate your continued business!</p>
